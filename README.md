@@ -135,20 +135,6 @@ flutter pub get
 flutter run -d chrome
 ```
 
-#### Windows
-
-```bash
-flutter run -d windows
-```
-
-#### Linux
-
-```bash
-flutter run -d linux
-```
-
----
-
 ## Supported Metadata
 
 The application currently displays any EXIF tag returned by the image.
