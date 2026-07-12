@@ -3,6 +3,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:exif/exif.dart';
 import 'package:exifapp/services/exif.dart';
 import 'package:exifapp/services/files.dart';
+import 'package:exifapp/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:toastification/toastification.dart';
@@ -11,7 +12,17 @@ void main() {
   runApp(
     ToastificationWrapper(
       config: ToastificationConfig(alignment: Alignment.bottomCenter),
-      child: MaterialApp(debugShowCheckedModeBanner: false, home: ExifApp()),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: ExifApp(),
+        theme: AppTheme.lightTheme.copyWith(
+          extensions: [AppThemeExtension.light],
+        ),
+
+        darkTheme: AppTheme.darkTheme.copyWith(
+          extensions: [AppThemeExtension.dark],
+        ),
+      ),
     ),
   );
 }
