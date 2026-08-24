@@ -9,6 +9,7 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:toastification/toastification.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     ToastificationWrapper(
       config: ToastificationConfig(alignment: Alignment.bottomCenter),
@@ -27,11 +28,27 @@ void main() {
   );
 }
 
+class DeviceDetails {
+  final String manufacturer;
+  final String model;
+  final String softwareVersion;
+
+  const DeviceDetails({
+    required this.manufacturer,
+    required this.model,
+    required this.softwareVersion,
+  });
+}
+
 class ExifApp extends StatefulWidget {
   const ExifApp({super.key});
 
   @override
   State<ExifApp> createState() => _ExifAppState();
+}
+
+class PhotographyDetails {
+  //exposure,ISO, flash status, orientation, resolution
 }
 
 class PhotoLocation {
@@ -42,89 +59,109 @@ class PhotoLocation {
 }
 
 class _ExifAppState extends State<ExifApp> {
-  bool _dragging = false;
+  bool _isDragging = false;
+
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: DropTarget(
-          onDragDone: (detail) async {
-            if (detail.files.length > 1) {
-              toastification.show(
-                title: Text("Error"),
-                description: Text("Only one file is allowed"),
-                type: ToastificationType.error,
-              );
-              return;
-            }
-            if (detail.files.isEmpty) {
-              toastification.show(
-                title: Text("Error"),
-                description: Text("You have not selected any file"),
-                type: ToastificationType.error,
-              );
-              return;
-            }
+        child: _isLoading
+            ? CircularProgressIndicator()
+            : DropTarget(
+                onDragDone: (detail) async {
+                  if (detail.files.length > 1) {
+                    toastification.show(
+                      title: Text("Error"),
+                      description: Text("Only one file is allowed"),
+                      type: ToastificationType.error,
+                    );
+                    return;
+                  }
+                  if (detail.files.isEmpty) {
+                    toastification.show(
+                      title: Text("Error"),
+                      description: Text("You have not selected any file"),
+                      type: ToastificationType.error,
+                    );
+                    return;
+                  }
 
-            var bytes = await detail.files.first.readAsBytes();
-            var data = await ExifServices.readExifData(bytes);
-            _showExifResults(data);
-          },
-          onDragEntered: (detail) {
-            setState(() {
-              _dragging = true;
-            });
-          },
-          onDragExited: (detail) {
-            setState(() {
-              _dragging = false;
-            });
-          },
-          child: DottedBorder(
-            options: RoundedRectDottedBorderOptions(
-              dashPattern: [10, 7],
-              strokeWidth: 3,
-              color: _dragging ? Colors.green : Colors.blueGrey,
-              radius: Radius.circular(10),
-            ),
-            child: Container(
-              padding: EdgeInsets.all(16),
-              height: 300,
-              width: 400,
+                  setState(() {
+                    _isLoading = true;
+                  });
 
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "Select or drag and drop file here to extract EXIF data",
+                  var bytes = await detail.files.first.readAsBytes();
+                  var data = await ExifServices.readExifData(bytes);
+                  setState(() {
+                    _isLoading = false;
+                  });
+                  _showExifResults(data);
+                },
+                onDragEntered: (detail) {
+                  setState(() {
+                    _isDragging = true;
+                  });
+                },
+                onDragExited: (detail) {
+                  setState(() {
+                    _isDragging = false;
+                  });
+                },
+                child: DottedBorder(
+                  options: RoundedRectDottedBorderOptions(
+                    dashPattern: [10, 7],
+                    strokeWidth: 3,
+                    color: _isDragging ? Colors.green : Colors.blueGrey,
+                    radius: Radius.circular(10),
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.all(16),
+                    height: 300,
+                    width: 400,
+
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Select or drag and drop file here to extract EXIF data",
+                          ),
+                          TextButton.icon(
+                            onPressed: () async {
+                              setState(() {
+                                _isLoading = true;
+                              });
+                              try {
+                                var bytes =
+                                    await FileServices.selectImageFileAndReturnBytes();
+                                final data = await ExifServices.readExifData(
+                                  bytes,
+                                );
+
+                                _showExifResults(data);
+                              } catch (e) {
+                                toastification.show(
+                                  title: Text("Error"),
+                                  type: ToastificationType.error,
+                                  description: Text(e.toString()),
+                                );
+                              } finally {
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                              }
+                            },
+                            icon: Icon(Icons.upload_file),
+                            label: Text("Select File"),
+                          ),
+                        ],
+                      ),
                     ),
-                    TextButton.icon(
-                      onPressed: () async {
-                        try {
-                          var bytes =
-                              await FileServices.selectImageFileAndReturnBytes();
-                          final data = await ExifServices.readExifData(bytes);
-
-                          _showExifResults(data);
-                        } catch (e) {
-                          toastification.show(
-                            title: Text("Error"),
-                            type: ToastificationType.error,
-                            description: Text(e.toString()),
-                          );
-                        }
-                      },
-                      icon: Icon(Icons.upload_file),
-                      label: Text("Select File"),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }
@@ -183,6 +220,8 @@ class _ExifAppState extends State<ExifApp> {
   void _showExifResults(Map<String, dynamic> data) {
     bool hasGpsData = data.containsKey('GPS GPSLongitude');
 
+    /* */
+
     // display modal with the data as a table
     showDialog(
       context: context,
@@ -199,7 +238,6 @@ class _ExifAppState extends State<ExifApp> {
                 trailing: hasGpsData && entry.key == 'GPS GPSLongitude'
                     ? IconButton(
                         onPressed: () async {
-                          print(data.runtimeType);
                           PhotoLocation location = extractLocation(data)!;
 
                           Navigator.pop(context);
@@ -229,8 +267,15 @@ class _ExifAppState extends State<ExifApp> {
 
     showDialog(
       context: context,
+
       builder: (context) {
         return AlertDialog(
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Close'),
+            ),
+          ],
           title: Text('Photo Location'),
           content: SizedBox(
             width: 700,
