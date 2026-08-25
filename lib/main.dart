@@ -1,12 +1,14 @@
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:exif/exif.dart';
-import 'package:exifapp/services/exif.dart';
-import 'package:exifapp/services/files.dart';
+import 'package:exifapp/core/services/exif.dart';
+import 'package:exifapp/core/services/files.dart';
 import 'package:exifapp/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:toastification/toastification.dart';
+
+import 'core/models/models.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,34 +30,11 @@ void main() {
   );
 }
 
-class DeviceDetails {
-  final String manufacturer;
-  final String model;
-  final String softwareVersion;
-
-  const DeviceDetails({
-    required this.manufacturer,
-    required this.model,
-    required this.softwareVersion,
-  });
-}
-
 class ExifApp extends StatefulWidget {
   const ExifApp({super.key});
 
   @override
   State<ExifApp> createState() => _ExifAppState();
-}
-
-class PhotographyDetails {
-  //exposure,ISO, flash status, orientation, resolution
-}
-
-class PhotoLocation {
-  final double latitude;
-  final double longitude;
-
-  const PhotoLocation({required this.latitude, required this.longitude});
 }
 
 class _ExifAppState extends State<ExifApp> {
