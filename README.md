@@ -23,6 +23,7 @@ EXIF Forensics helps investigators, photographers, journalists, OSINT researcher
 - Automatic DMS → Decimal coordinate conversion
 - Interactive OpenStreetMap integration
 - GPS location visualization with map markers
+- Generative AI Detection
 
 ### Example Metadata
 

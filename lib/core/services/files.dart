@@ -1,19 +1,37 @@
-import 'package:flutter/foundation.dart';
+import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 
+class SelectedFileData {
+  final Uint8List bytes;
+  final String fileName;
+
+  const SelectedFileData({required this.bytes, required this.fileName});
+}
+
 class FileServices {
-  static Future<Uint8List> selectImageFileAndReturnBytes() async {
-    final picker = ImagePicker();
+  static final ImagePicker _picker = ImagePicker();
+
+  /// Opens system file picker to select an image and returns bytes + file name
+  static Future<SelectedFileData> selectImageFile() async {
     try {
-      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      final XFile? image = await _picker.pickImage(
+        source: ImageSource.gallery,
+      );
       if (image == null) {
         throw Exception("No file selected");
       }
 
       final bytes = await image.readAsBytes();
-      return bytes;
+      return SelectedFileData(bytes: bytes, fileName: image.name);
     } catch (e) {
       rethrow;
     }
   }
+
+  /// Legacy helper for backwards compatibility
+  static Future<Uint8List> selectImageFileAndReturnBytes() async {
+    final fileData = await selectImageFile();
+    return fileData.bytes;
+  }
 }
+

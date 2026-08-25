@@ -23,6 +23,7 @@ dependencies:
   url_launcher: ^6.3.2
   flutter_launcher_icons: ^0.14.4
   font_awesome_flutter: ^11.0.0
+  crypto: ^3.0.3
 
 dev_dependencies:
   flutter_test:
