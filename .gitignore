@@ -47,3 +47,7 @@ app.*.map.json
 
 # test images
 test-images/
+
+# signing keys
+android/key.properties
+android/app/app.keystore
