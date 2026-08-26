@@ -13,7 +13,9 @@ class AppHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? const Color(0xFF14171A) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF262B30) : const Color(0xFFE5E8EB);
+    final borderColor = isDark
+        ? const Color(0xFF262B30)
+        : const Color(0xFFE5E8EB);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -60,7 +62,10 @@ class AppHeader extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
                       color: BrandColors.tertiary,
                       borderRadius: BorderRadius.circular(4),
@@ -95,7 +100,9 @@ class AppHeader extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E2328) : const Color(0xFFF0F3F6),
+                color: isDark
+                    ? const Color(0xFF1E2328)
+                    : const Color(0xFFF0F3F6),
                 borderRadius: BorderRadius.circular(AppRadius.md),
                 border: Border.all(color: borderColor),
               ),
@@ -116,7 +123,9 @@ class AppHeader extends StatelessWidget {
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                         overflow: TextOverflow.ellipsis,
-                        color: isDark ? BrandColors.white : BrandColors.darkGrey,
+                        color: isDark
+                            ? BrandColors.white
+                            : BrandColors.darkGrey,
                       ),
                     ),
                   ),
@@ -129,7 +138,10 @@ class AppHeader extends StatelessWidget {
             OutlinedButton.icon(
               onPressed: () => showExportDialog(context, controller.report!),
               style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
@@ -145,7 +157,10 @@ class AppHeader extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: BrandColors.primary,
                 foregroundColor: BrandColors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),

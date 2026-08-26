@@ -65,7 +65,9 @@ class ForensicsReport {
   String toMarkdownReport() {
     final buffer = StringBuffer();
     buffer.writeln('# EXIF Forensics Investigation Report');
-    buffer.writeln('**Generated on:** ${DateTime.now().toUtc().toIso8601String()} UTC');
+    buffer.writeln(
+      '**Generated on:** ${DateTime.now().toUtc().toIso8601String()} UTC',
+    );
     buffer.writeln('');
     buffer.writeln('## 1. File & Cryptographic Integrity');
     buffer.writeln('- **File Name:** `${file.fileName}`');
@@ -90,14 +92,20 @@ class ForensicsReport {
       buffer.writeln('- **Embedded Prompt:** `${aiDetection.prompt}`');
     }
     if (aiDetection.hasC2paManifest) {
-      buffer.writeln('- **C2PA Credentials:** Present (${aiDetection.c2paIssuer ?? 'Issuer Verified'})');
+      buffer.writeln(
+        '- **C2PA Credentials:** Present (${aiDetection.c2paIssuer ?? 'Issuer Verified'})',
+      );
     }
     buffer.writeln('');
 
     buffer.writeln('## 3. Capture & Timestamps');
-    buffer.writeln('- **Original Capture Time:** ${captureDateTimeString ?? 'N/A'}');
+    buffer.writeln(
+      '- **Original Capture Time:** ${captureDateTimeString ?? 'N/A'}',
+    );
     if (modifiedDateTime != null) {
-      buffer.writeln('- **Modified Time:** ${modifiedDateTime!.toIso8601String()}');
+      buffer.writeln(
+        '- **Modified Time:** ${modifiedDateTime!.toIso8601String()}',
+      );
     }
     if (timeZoneOffset != null) {
       buffer.writeln('- **Offset / TimeZone:** $timeZoneOffset');
@@ -106,20 +114,28 @@ class ForensicsReport {
 
     buffer.writeln('## 4. Hardware & Camera Device');
     buffer.writeln('- **Device:** ${device.displayName}');
-    if (device.manufacturer != null) buffer.writeln('- **Manufacturer:** ${device.manufacturer}');
+    if (device.manufacturer != null)
+      buffer.writeln('- **Manufacturer:** ${device.manufacturer}');
     if (device.model != null) buffer.writeln('- **Model:** ${device.model}');
-    if (device.softwareVersion != null) buffer.writeln('- **Software / Firmware:** ${device.softwareVersion}');
-    if (device.lensModel != null) buffer.writeln('- **Lens Model:** ${device.lensModel}');
-    if (device.bodySerialNumber != null) buffer.writeln('- **Body Serial Number:** ${device.bodySerialNumber}');
-    if (device.artist != null) buffer.writeln('- **Artist / Photographer:** ${device.artist}');
-    if (device.copyright != null) buffer.writeln('- **Copyright:** ${device.copyright}');
+    if (device.softwareVersion != null)
+      buffer.writeln('- **Software / Firmware:** ${device.softwareVersion}');
+    if (device.lensModel != null)
+      buffer.writeln('- **Lens Model:** ${device.lensModel}');
+    if (device.bodySerialNumber != null)
+      buffer.writeln('- **Body Serial Number:** ${device.bodySerialNumber}');
+    if (device.artist != null)
+      buffer.writeln('- **Artist / Photographer:** ${device.artist}');
+    if (device.copyright != null)
+      buffer.writeln('- **Copyright:** ${device.copyright}');
     buffer.writeln('');
 
     buffer.writeln('## 5. Photographic Parameters');
     buffer.writeln('- **ISO:** ${photography.iso ?? 'N/A'}');
     buffer.writeln('- **Exposure Time:** ${photography.exposureTime ?? 'N/A'}');
     buffer.writeln('- **Aperture (F-Stop):** ${photography.fNumber ?? 'N/A'}');
-    buffer.writeln('- **Focal Length:** ${photography.focalLength ?? 'N/A'} (35mm equiv: ${photography.focalLength35mm ?? 'N/A'})');
+    buffer.writeln(
+      '- **Focal Length:** ${photography.focalLength ?? 'N/A'} (35mm equiv: ${photography.focalLength35mm ?? 'N/A'})',
+    );
     buffer.writeln('- **Flash:** ${photography.flash ?? 'N/A'}');
     buffer.writeln('- **White Balance:** ${photography.whiteBalance ?? 'N/A'}');
     buffer.writeln('- **Metering Mode:** ${photography.meteringMode ?? 'N/A'}');
@@ -128,10 +144,14 @@ class ForensicsReport {
 
     if (location != null) {
       buffer.writeln('## 6. Geolocation & GPS Intelligence');
-      buffer.writeln('- **Coordinates (Decimal):** `${location!.formattedDecimal}`');
+      buffer.writeln(
+        '- **Coordinates (Decimal):** `${location!.formattedDecimal}`',
+      );
       buffer.writeln('- **Coordinates (DMS):** `${location!.formattedDms}`');
       if (location!.altitude != null) {
-        buffer.writeln('- **Altitude:** ${location!.altitude!.toStringAsFixed(1)} m');
+        buffer.writeln(
+          '- **Altitude:** ${location!.altitude!.toStringAsFixed(1)} m',
+        );
       }
       if (location!.speed != null) {
         buffer.writeln('- **Speed:** ${location!.speed} km/h');
@@ -139,8 +159,12 @@ class ForensicsReport {
       if (location!.imgDirection != null) {
         buffer.writeln('- **Heading / Direction:** ${location!.imgDirection}°');
       }
-      buffer.writeln('- **OpenStreetMap:** [View Map](${location!.openStreetMapUrl})');
-      buffer.writeln('- **Google Maps:** [View Map](${location!.googleMapsUrl})');
+      buffer.writeln(
+        '- **OpenStreetMap:** [View Map](${location!.openStreetMapUrl})',
+      );
+      buffer.writeln(
+        '- **Google Maps:** [View Map](${location!.googleMapsUrl})',
+      );
       buffer.writeln('');
     }
 

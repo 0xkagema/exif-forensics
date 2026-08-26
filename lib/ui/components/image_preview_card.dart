@@ -42,10 +42,7 @@ class ImagePreviewCard extends StatelessWidget {
               maxScale: 4.0,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(AppRadius.md),
-                child: Image.memory(
-                  imageBytes!,
-                  fit: BoxFit.contain,
-                ),
+                child: Image.memory(imageBytes!, fit: BoxFit.contain),
               ),
             ),
             Positioned(
@@ -58,7 +55,11 @@ class ImagePreviewCard extends StatelessWidget {
                 ),
                 child: IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const FaIcon(FontAwesomeIcons.xmark, color: Colors.white, size: 16),
+                  icon: const FaIcon(
+                    FontAwesomeIcons.xmark,
+                    color: Colors.white,
+                    size: 16,
+                  ),
                 ),
               ),
             ),
@@ -72,7 +73,9 @@ class ImagePreviewCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardBg = isDark ? const Color(0xFF191C20) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF262C32) : const Color(0xFFE2E6EA);
+    final borderColor = isDark
+        ? const Color(0xFF262C32)
+        : const Color(0xFFE2E6EA);
 
     return Container(
       decoration: BoxDecoration(
@@ -85,13 +88,17 @@ class ImagePreviewCard extends StatelessWidget {
         children: [
           // Image Preview Container
           ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(AppRadius.lg),
+            ),
             child: Stack(
               children: [
                 Container(
                   width: double.infinity,
                   height: 220,
-                  color: isDark ? const Color(0xFF0F1113) : const Color(0xFFF0F3F5),
+                  color: isDark
+                      ? const Color(0xFF0F1113)
+                      : const Color(0xFFF0F3F5),
                   child: imageBytes != null
                       ? Image.memory(
                           imageBytes!,
@@ -141,7 +148,10 @@ class ImagePreviewCard extends StatelessWidget {
                   bottom: 10,
                   left: 10,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.black87,
                       borderRadius: BorderRadius.circular(4),
@@ -176,13 +186,18 @@ class ImagePreviewCard extends StatelessWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           overflow: TextOverflow.ellipsis,
-                          color: isDark ? BrandColors.white : BrandColors.darkGrey,
+                          color: isDark
+                              ? BrandColors.white
+                              : BrandColors.darkGrey,
                         ),
                       ),
                     ),
                     const SizedBox(width: 8),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: BrandColors.secondary.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(4),
@@ -192,7 +207,9 @@ class ImagePreviewCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w600,
-                          color: isDark ? BrandColors.secondary : BrandColors.tertiary,
+                          color: isDark
+                              ? BrandColors.secondary
+                              : BrandColors.tertiary,
                         ),
                       ),
                     ),
@@ -203,7 +220,9 @@ class ImagePreviewCard extends StatelessWidget {
                   file.mimeType,
                   style: TextStyle(
                     fontSize: 11.5,
-                    color: isDark ? BrandColors.neutral : const Color(0xFF6B7280),
+                    color: isDark
+                        ? BrandColors.neutral
+                        : const Color(0xFF6B7280),
                   ),
                 ),
                 const Divider(height: 24),
@@ -223,7 +242,9 @@ class ImagePreviewCard extends StatelessWidget {
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 0.3,
-                        color: isDark ? BrandColors.white : BrandColors.darkGrey,
+                        color: isDark
+                            ? BrandColors.white
+                            : BrandColors.darkGrey,
                       ),
                     ),
                   ],
@@ -243,7 +264,8 @@ class ImagePreviewCard extends StatelessWidget {
                 _HashRow(
                   label: 'SHA-256',
                   hash: file.sha256Hash,
-                  onCopy: () => _copyToClipboard(context, file.sha256Hash, 'SHA-256'),
+                  onCopy: () =>
+                      _copyToClipboard(context, file.sha256Hash, 'SHA-256'),
                   isDark: isDark,
                 ),
               ],
@@ -292,7 +314,9 @@ class _HashRow extends StatelessWidget {
               style: TextStyle(
                 fontSize: 9.5,
                 fontWeight: FontWeight.w700,
-                color: isDark ? const Color(0xFFBAC2CB) : const Color(0xFF424A53),
+                color: isDark
+                    ? const Color(0xFFBAC2CB)
+                    : const Color(0xFF424A53),
               ),
             ),
           ),
@@ -304,7 +328,9 @@ class _HashRow extends StatelessWidget {
                 fontFamily: 'monospace',
                 fontSize: 10.5,
                 overflow: TextOverflow.ellipsis,
-                color: isDark ? const Color(0xFFB0B7C0) : const Color(0xFF333B44),
+                color: isDark
+                    ? const Color(0xFFB0B7C0)
+                    : const Color(0xFF333B44),
               ),
             ),
           ),

@@ -36,7 +36,9 @@ class _HomePageState extends State<HomePage> {
     final controller = widget.controller;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0D0F11) : const Color(0xFFF4F6F8),
+      backgroundColor: isDark
+          ? const Color(0xFF0D0F11)
+          : const Color(0xFFF4F6F8),
       body: SafeArea(
         child: Column(
           children: [
@@ -56,7 +58,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildBody(BuildContext context, ForensicsController controller, bool isDark) {
+  Widget _buildBody(
+    BuildContext context,
+    ForensicsController controller,
+    bool isDark,
+  ) {
     switch (controller.status) {
       case ForensicsStatus.initial:
         return DropZone(controller: controller);
@@ -146,9 +152,7 @@ class _HomePageState extends State<HomePage> {
         decoration: BoxDecoration(
           color: isDark ? const Color(0xFF1A1516) : Colors.white,
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(
-            color: BrandColors.danger.withValues(alpha: 0.4),
-          ),
+          border: Border.all(color: BrandColors.danger.withValues(alpha: 0.4)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -176,12 +180,15 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 8),
             Text(
-              controller.errorMessage ?? 'An unexpected error occurred while parsing the file.',
+              controller.errorMessage ??
+                  'An unexpected error occurred while parsing the file.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 13,
                 height: 1.4,
-                color: isDark ? const Color(0xFFD4B8B9) : const Color(0xFF666666),
+                color: isDark
+                    ? const Color(0xFFD4B8B9)
+                    : const Color(0xFF666666),
               ),
             ),
             const SizedBox(height: 24),
@@ -190,7 +197,10 @@ class _HomePageState extends State<HomePage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: BrandColors.primary,
                 foregroundColor: BrandColors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
@@ -323,11 +333,16 @@ class _HomePageState extends State<HomePage> {
                 onTap: () => controller.setActiveTab(idx),
                 borderRadius: BorderRadius.circular(AppRadius.md),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     color: isSelected
                         ? BrandColors.primary
-                        : (isDark ? Colors.transparent : const Color(0xFFF3F5F7)),
+                        : (isDark
+                              ? Colors.transparent
+                              : const Color(0xFFF3F5F7)),
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
                   child: Row(
@@ -338,27 +353,38 @@ class _HomePageState extends State<HomePage> {
                         size: 13,
                         color: isSelected
                             ? Colors.white
-                            : (isDark ? BrandColors.neutral : const Color(0xFF555E68)),
+                            : (isDark
+                                  ? BrandColors.neutral
+                                  : const Color(0xFF555E68)),
                       ),
                       const SizedBox(width: 8),
                       Text(
                         item.title,
                         style: TextStyle(
                           fontSize: 12.5,
-                          fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                          fontWeight: isSelected
+                              ? FontWeight.w700
+                              : FontWeight.w500,
                           color: isSelected
                               ? Colors.white
-                              : (isDark ? BrandColors.white : BrandColors.darkGrey),
+                              : (isDark
+                                    ? BrandColors.white
+                                    : BrandColors.darkGrey),
                         ),
                       ),
                       if (item.badge != null) ...[
                         const SizedBox(width: 6),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 5,
+                            vertical: 1,
+                          ),
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? Colors.white.withValues(alpha: 0.25)
-                                : (isDark ? const Color(0xFF262C32) : const Color(0xFFE0E5EA)),
+                                : (isDark
+                                      ? const Color(0xFF262C32)
+                                      : const Color(0xFFE0E5EA)),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(
@@ -368,7 +394,9 @@ class _HomePageState extends State<HomePage> {
                               fontWeight: FontWeight.w700,
                               color: isSelected
                                   ? Colors.white
-                                  : (isDark ? const Color(0xFF9AA4B2) : const Color(0xFF47525E)),
+                                  : (isDark
+                                        ? const Color(0xFF9AA4B2)
+                                        : const Color(0xFF47525E)),
                             ),
                           ),
                         ),
@@ -415,10 +443,5 @@ class _TabItem {
   final FaIconData icon;
   final String? badge;
 
-  const _TabItem({
-    required this.title,
-    required this.icon,
-    this.badge,
-  });
+  const _TabItem({required this.title, required this.icon, this.badge});
 }
-

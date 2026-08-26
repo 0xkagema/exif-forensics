@@ -50,7 +50,9 @@ class AiStatusCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardBg = isDark ? const Color(0xFF191C20) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF262C32) : const Color(0xFFE2E6EA);
+    final borderColor = isDark
+        ? const Color(0xFF262C32)
+        : const Color(0xFFE2E6EA);
     final statusColor = _getStatusColor();
     final statusIcon = _getStatusIcon();
 
@@ -68,8 +70,12 @@ class AiStatusCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             decoration: BoxDecoration(
               color: statusColor.withValues(alpha: 0.1),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
-              border: Border(bottom: BorderSide(color: statusColor.withValues(alpha: 0.2))),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(AppRadius.lg),
+              ),
+              border: Border(
+                bottom: BorderSide(color: statusColor.withValues(alpha: 0.2)),
+              ),
             ),
             child: Row(
               children: [
@@ -79,11 +85,7 @@ class AiStatusCard extends StatelessWidget {
                     color: statusColor.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
-                  child: FaIcon(
-                    statusIcon,
-                    color: statusColor,
-                    size: 16,
-                  ),
+                  child: FaIcon(statusIcon, color: statusColor, size: 16),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -98,13 +100,18 @@ class AiStatusCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
-                                color: isDark ? BrandColors.white : BrandColors.darkGrey,
+                                color: isDark
+                                    ? BrandColors.white
+                                    : BrandColors.darkGrey,
                               ),
                             ),
                           ),
                           const SizedBox(width: 8),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
                             decoration: BoxDecoration(
                               color: statusColor.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(4),
@@ -125,7 +132,9 @@ class AiStatusCard extends StatelessWidget {
                         'AI & Provenance Forensics',
                         style: TextStyle(
                           fontSize: 11,
-                          color: isDark ? BrandColors.neutral : const Color(0xFF666666),
+                          color: isDark
+                              ? BrandColors.neutral
+                              : const Color(0xFF666666),
                         ),
                       ),
                     ],
@@ -147,13 +156,16 @@ class AiStatusCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13,
                     height: 1.5,
-                    color: isDark ? const Color(0xFFD0D6DC) : const Color(0xFF374151),
+                    color: isDark
+                        ? const Color(0xFFD0D6DC)
+                        : const Color(0xFF374151),
                   ),
                 ),
                 const SizedBox(height: 16),
 
                 // Generator & Model pills if detected
-                if (aiDetection.generator != null || aiDetection.model != null) ...[
+                if (aiDetection.generator != null ||
+                    aiDetection.model != null) ...[
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
@@ -184,7 +196,9 @@ class AiStatusCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: BrandColors.info.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(AppRadius.md),
-                      border: Border.all(color: BrandColors.info.withValues(alpha: 0.25)),
+                      border: Border.all(
+                        color: BrandColors.info.withValues(alpha: 0.25),
+                      ),
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,7 +227,9 @@ class AiStatusCard extends StatelessWidget {
                                   'Issuer: ${aiDetection.c2paIssuer}',
                                   style: TextStyle(
                                     fontSize: 11.5,
-                                    color: isDark ? const Color(0xFFC5CEE0) : const Color(0xFF334155),
+                                    color: isDark
+                                        ? const Color(0xFFC5CEE0)
+                                        : const Color(0xFF334155),
                                   ),
                                 ),
                               ],
@@ -223,7 +239,9 @@ class AiStatusCard extends StatelessWidget {
                                   'Actions: ${aiDetection.c2paActions.join(", ")}',
                                   style: TextStyle(
                                     fontSize: 11,
-                                    color: isDark ? BrandColors.neutral : const Color(0xFF64748B),
+                                    color: isDark
+                                        ? BrandColors.neutral
+                                        : const Color(0xFF64748B),
                                   ),
                                 ),
                               ],
@@ -237,7 +255,8 @@ class AiStatusCard extends StatelessWidget {
                 ],
 
                 // Embedded Prompt Inspector if available
-                if (aiDetection.prompt != null && aiDetection.prompt!.isNotEmpty) ...[
+                if (aiDetection.prompt != null &&
+                    aiDetection.prompt!.isNotEmpty) ...[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -254,13 +273,16 @@ class AiStatusCard extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
-                              color: isDark ? BrandColors.white : BrandColors.darkGrey,
+                              color: isDark
+                                  ? BrandColors.white
+                                  : BrandColors.darkGrey,
                             ),
                           ),
                         ],
                       ),
                       IconButton(
-                        onPressed: () => _copyText(context, aiDetection.prompt!, 'Prompt'),
+                        onPressed: () =>
+                            _copyText(context, aiDetection.prompt!, 'Prompt'),
                         tooltip: 'Copy Prompt',
                         icon: const FaIcon(FontAwesomeIcons.copy, size: 12),
                         padding: EdgeInsets.zero,
@@ -273,10 +295,14 @@ class AiStatusCard extends StatelessWidget {
                     width: double.infinity,
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF121417) : const Color(0xFFF3F5F7),
+                      color: isDark
+                          ? const Color(0xFF121417)
+                          : const Color(0xFFF3F5F7),
                       borderRadius: BorderRadius.circular(AppRadius.sm),
                       border: Border.all(
-                        color: isDark ? const Color(0xFF22272E) : const Color(0xFFE2E7EC),
+                        color: isDark
+                            ? const Color(0xFF22272E)
+                            : const Color(0xFFE2E7EC),
                       ),
                     ),
                     child: SelectableText(
@@ -285,7 +311,9 @@ class AiStatusCard extends StatelessWidget {
                         fontFamily: 'monospace',
                         fontSize: 11.5,
                         height: 1.4,
-                        color: isDark ? const Color(0xFFC0CAD5) : const Color(0xFF2D3748),
+                        color: isDark
+                            ? const Color(0xFFC0CAD5)
+                            : const Color(0xFF2D3748),
                       ),
                     ),
                   ),
@@ -320,7 +348,9 @@ class AiStatusCard extends StatelessWidget {
                               sig,
                               style: TextStyle(
                                 fontSize: 12,
-                                color: isDark ? const Color(0xFFB5BDC6) : const Color(0xFF4B5563),
+                                color: isDark
+                                    ? const Color(0xFFB5BDC6)
+                                    : const Color(0xFF4B5563),
                               ),
                             ),
                           ),

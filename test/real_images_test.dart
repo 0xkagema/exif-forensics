@@ -29,7 +29,10 @@ void main() {
     expect(report.device.softwareVersion, contains('00WW_2_470'));
 
     // Verify AI / Authenticity Classification
-    expect(report.aiDetection.classification, ForensicClassification.cameraOriginal);
+    expect(
+      report.aiDetection.classification,
+      ForensicClassification.cameraOriginal,
+    );
     expect(report.aiDetection.isAiGenerated, isFalse);
 
     // Verify GPS location

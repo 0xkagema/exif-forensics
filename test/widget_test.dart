@@ -3,7 +3,9 @@ import 'package:exifapp/main.dart';
 import 'package:exifapp/ui/components/drop_zone.dart';
 
 void main() {
-  testWidgets('App renders correctly with initial DropZone', (WidgetTester tester) async {
+  testWidgets('App renders correctly with initial DropZone', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const ExifForensicsApp());
     await tester.pump();
 

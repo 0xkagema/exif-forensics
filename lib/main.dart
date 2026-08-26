@@ -1,60 +1,90 @@
+// The original content is temporarily commented out to allow generating a self-contained demo - feel free to uncomment later.
+
+// import 'package:flutter/material.dart';
+// import 'package:toastification/toastification.dart';
+//
+// import 'core/state/forensics_controller.dart';
+// import 'theme.dart';
+// import 'ui/pages/home.dart';
+//
+// void main() {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   runApp(const ExifForensicsApp());
+// }
+//
+// class ExifForensicsApp extends StatefulWidget {
+//   const ExifForensicsApp({super.key});
+//
+//   @override
+//   State<ExifForensicsApp> createState() => _ExifForensicsAppState();
+// }
+//
+// class _ExifForensicsAppState extends State<ExifForensicsApp> {
+//   late final ForensicsController _controller;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return ToastificationWrapper(
+//       config: const ToastificationConfig(alignment: Alignment.bottomRight),
+//       child: MaterialApp(
+//         title: 'EXIF Forensics',
+//         debugShowCheckedModeBanner: false,
+//         themeMode: _controller.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+//         theme: AppTheme.lightTheme.copyWith(
+//           extensions: [AppThemeExtension.light],
+//         ),
+//         darkTheme: AppTheme.darkTheme.copyWith(
+//           extensions: [AppThemeExtension.dark],
+//         ),
+//         home: HomePage(controller: _controller),
+//       ),
+//     );
+//   }
+//
+//   @override
+//   void dispose() {
+//     _controller.removeListener(_onStateChange);
+//     _controller.dispose();
+//     super.dispose();
+//   }
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _controller = ForensicsController();
+//     _controller.addListener(_onStateChange);
+//   }
+//
+//   void _onStateChange() {
+//     setState(() {});
+//   }
+// }
+//
+//
+
 import 'package:flutter/material.dart';
-import 'package:toastification/toastification.dart';
+import 'package:exifapp/src/rust/api/simple.dart';
+import 'package:exifapp/src/rust/frb_generated.dart';
 
-import 'core/state/forensics_controller.dart';
-import 'theme.dart';
-import 'ui/pages/home.dart';
-
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(const ExifForensicsApp());
+Future<void> main() async {
+  await RustLib.init();
+  runApp(const MyApp());
 }
 
-class ExifForensicsApp extends StatefulWidget {
-  const ExifForensicsApp({super.key});
-
-  @override
-  State<ExifForensicsApp> createState() => _ExifForensicsAppState();
-}
-
-class _ExifForensicsAppState extends State<ExifForensicsApp> {
-  late final ForensicsController _controller;
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ToastificationWrapper(
-      config: const ToastificationConfig(alignment: Alignment.bottomRight),
-      child: MaterialApp(
-        title: 'EXIF Forensics',
-        debugShowCheckedModeBanner: false,
-        themeMode: _controller.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-        theme: AppTheme.lightTheme.copyWith(
-          extensions: [AppThemeExtension.light],
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('flutter_rust_bridge quickstart')),
+        body: Center(
+          child: Text(
+            'Action: Call Rust `greet("Tom")`\nResult: `${greet(name: "Tom")}`',
+          ),
         ),
-        darkTheme: AppTheme.darkTheme.copyWith(
-          extensions: [AppThemeExtension.dark],
-        ),
-        home: HomePage(controller: _controller),
       ),
     );
   }
-
-  @override
-  void dispose() {
-    _controller.removeListener(_onStateChange);
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = ForensicsController();
-    _controller.addListener(_onStateChange);
-  }
-
-  void _onStateChange() {
-    setState(() {});
-  }
 }
-

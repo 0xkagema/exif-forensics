@@ -84,7 +84,8 @@ class ForensicsController extends ChangeNotifier {
     _imageBytes = bytes;
     _fileName = fileName;
     _errorMessage = null;
-    _loadingStage = 'Extracting EXIF metadata & calculating cryptographic hashes...';
+    _loadingStage =
+        'Extracting EXIF metadata & calculating cryptographic hashes...';
     notifyListeners();
 
     try {
@@ -126,8 +127,10 @@ class ForensicsController extends ChangeNotifier {
         if (category == 'GPS') return entry.key.startsWith('GPS ');
         if (category == 'Image') return entry.key.startsWith('Image ');
         if (category == 'EXIF') return entry.key.startsWith('EXIF ');
-        if (category == 'Interoperability') return entry.key.startsWith('Interoperability ');
-        if (category == 'MakerNote') return entry.key.toLowerCase().contains('makernote');
+        if (category == 'Interoperability')
+          return entry.key.startsWith('Interoperability ');
+        if (category == 'MakerNote')
+          return entry.key.toLowerCase().contains('makernote');
         if (category == 'Thumbnail') return entry.key.startsWith('Thumbnail ');
         return true;
       }),

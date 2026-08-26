@@ -65,7 +65,9 @@ class C2paService {
         _containsIgnoreCase(byteString, 'ComfyUI') ||
         _containsIgnoreCase(byteString, 'StableDiffusion')) {
       generator = 'Stable Diffusion Ecosystem';
-      signatures.add('Stable Diffusion / Automatic1111 / ComfyUI metadata structure found');
+      signatures.add(
+        'Stable Diffusion / Automatic1111 / ComfyUI metadata structure found',
+      );
 
       _extractStableDiffusionParams(
         tagString.isNotEmpty ? tagString : byteString,
@@ -98,7 +100,8 @@ class C2paService {
         _containsIgnoreCase(byteString, 'Midjourney') ||
         _containsIgnoreCase(tagString, '--v 5') ||
         _containsIgnoreCase(tagString, '--v 6') ||
-        _containsIgnoreCase(tagString, '--ar ') && _containsIgnoreCase(tagString, '--stylize')) {
+        _containsIgnoreCase(tagString, '--ar ') &&
+            _containsIgnoreCase(tagString, '--stylize')) {
       generator = 'Midjourney';
       signatures.add('Midjourney generation signature detected');
 
@@ -123,7 +126,8 @@ class C2paService {
     if (_containsIgnoreCase(tagString, 'DALL·E') ||
         _containsIgnoreCase(tagString, 'DALL-E') ||
         _containsIgnoreCase(byteString, 'DALL-E') ||
-        _containsIgnoreCase(tagString, 'OpenAI') && _containsIgnoreCase(tagString, 'generative')) {
+        _containsIgnoreCase(tagString, 'OpenAI') &&
+            _containsIgnoreCase(tagString, 'generative')) {
       generator = 'OpenAI DALL·E';
       signatures.add('DALL·E provenance signature detected');
 
@@ -131,7 +135,8 @@ class C2paService {
         classification: ForensicClassification.aiGenerated,
         confidence: AiConfidence.high,
         verdict: 'AI-Generated Image (DALL·E / OpenAI)',
-        explanation: 'Image contains OpenAI / DALL-E synthetic image generation watermarks or tags.',
+        explanation:
+            'Image contains OpenAI / DALL-E synthetic image generation watermarks or tags.',
         generator: generator,
         model: 'DALL·E 3 / DALL·E 2',
         prompt: prompt,
@@ -154,7 +159,8 @@ class C2paService {
         classification: ForensicClassification.aiGenerated,
         confidence: AiConfidence.high,
         verdict: 'AI-Generated Image (Adobe Firefly)',
-        explanation: 'Adobe Firefly generative AI provenance tags and assertions found in metadata.',
+        explanation:
+            'Adobe Firefly generative AI provenance tags and assertions found in metadata.',
         generator: generator,
         model: 'Firefly Image Model',
         prompt: prompt,
@@ -176,7 +182,8 @@ class C2paService {
         classification: ForensicClassification.aiGenerated,
         confidence: AiConfidence.high,
         verdict: 'AI-Generated Image (FLUX.1)',
-        explanation: 'Black Forest Labs FLUX.1 generation signatures identified.',
+        explanation:
+            'Black Forest Labs FLUX.1 generation signatures identified.',
         generator: generator,
         model: 'FLUX.1',
         prompt: prompt,
@@ -191,13 +198,17 @@ class C2paService {
     final hasCameraMake = exifTags.containsKey('Image Make');
     final hasCameraModel = exifTags.containsKey('Image Model');
     final hasExposure =
-        exifTags.containsKey('EXIF ExposureTime') || exifTags.containsKey('EXIF FNumber');
+        exifTags.containsKey('EXIF ExposureTime') ||
+        exifTags.containsKey('EXIF FNumber');
     final hasIso = exifTags.containsKey('EXIF ISOSpeedRatings');
     final hasDateOriginal = exifTags.containsKey('EXIF DateTimeOriginal');
     final hasGps =
-        exifTags.containsKey('GPS GPSLatitude') && exifTags.containsKey('GPS GPSLongitude');
+        exifTags.containsKey('GPS GPSLatitude') &&
+        exifTags.containsKey('GPS GPSLongitude');
 
-    if (hasCameraMake && hasCameraModel && (hasExposure || hasIso || hasDateOriginal)) {
+    if (hasCameraMake &&
+        hasCameraModel &&
+        (hasExposure || hasIso || hasDateOriginal)) {
       final make = exifTags['Image Make']?.toString() ?? '';
       final modelName = exifTags['Image Model']?.toString() ?? '';
 

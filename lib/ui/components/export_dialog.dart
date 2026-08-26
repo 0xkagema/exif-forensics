@@ -44,8 +44,8 @@ class _ExportDialogState extends State<ExportDialog> {
         _selectedFormat == 0
             ? 'Markdown report copied'
             : _selectedFormat == 1
-                ? 'JSON data copied'
-                : 'Text summary copied',
+            ? 'JSON data copied'
+            : 'Text summary copied',
       ),
       type: ToastificationType.success,
       autoCloseDuration: const Duration(seconds: 3),
@@ -56,10 +56,14 @@ class _ExportDialogState extends State<ExportDialog> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardBg = isDark ? const Color(0xFF191C20) : const Color(0xFFF7F9FA);
-    final borderColor = isDark ? const Color(0xFF2B3138) : const Color(0xFFE2E6EA);
+    final borderColor = isDark
+        ? const Color(0xFF2B3138)
+        : const Color(0xFFE2E6EA);
 
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+      ),
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 750, maxHeight: 650),
         child: Padding(
@@ -130,7 +134,9 @@ class _ExportDialogState extends State<ExportDialog> {
                         fontFamily: 'monospace',
                         fontSize: 12.5,
                         height: 1.5,
-                        color: isDark ? const Color(0xFFD4D8DD) : const Color(0xFF2C3238),
+                        color: isDark
+                            ? const Color(0xFFD4D8DD)
+                            : const Color(0xFF2C3238),
                       ),
                     ),
                   ),
@@ -152,7 +158,10 @@ class _ExportDialogState extends State<ExportDialog> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: BrandColors.primary,
                       foregroundColor: BrandColors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 12,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(AppRadius.md),
                       ),

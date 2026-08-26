@@ -81,7 +81,9 @@ class _LocationMapViewState extends State<LocationMapView> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardBg = isDark ? const Color(0xFF191C20) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF262C32) : const Color(0xFFE2E6EA);
+    final borderColor = isDark
+        ? const Color(0xFF262C32)
+        : const Color(0xFFE2E6EA);
     final loc = widget.location;
 
     if (loc == null) {
@@ -99,7 +101,9 @@ class _LocationMapViewState extends State<LocationMapView> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF21262C) : const Color(0xFFF0F4F8),
+                  color: isDark
+                      ? const Color(0xFF21262C)
+                      : const Color(0xFFF0F4F8),
                   shape: BoxShape.circle,
                 ),
                 child: const FaIcon(
@@ -126,7 +130,9 @@ class _LocationMapViewState extends State<LocationMapView> {
                   style: TextStyle(
                     fontSize: 12.5,
                     height: 1.4,
-                    color: isDark ? BrandColors.neutral : const Color(0xFF6B7280),
+                    color: isDark
+                        ? BrandColors.neutral
+                        : const Color(0xFF6B7280),
                   ),
                 ),
               ),
@@ -172,14 +178,18 @@ class _LocationMapViewState extends State<LocationMapView> {
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
-                          color: isDark ? BrandColors.white : BrandColors.darkGrey,
+                          color: isDark
+                              ? BrandColors.white
+                              : BrandColors.darkGrey,
                         ),
                       ),
                       Text(
                         'Exact physical coordinates extracted from EXIF GPS tags',
                         style: TextStyle(
                           fontSize: 12,
-                          color: isDark ? BrandColors.neutral : const Color(0xFF6B7280),
+                          color: isDark
+                              ? BrandColors.neutral
+                              : const Color(0xFF6B7280),
                         ),
                       ),
                     ],
@@ -189,16 +199,25 @@ class _LocationMapViewState extends State<LocationMapView> {
                 OutlinedButton.icon(
                   onPressed: () => _launchUrl(loc.googleMapsUrl),
                   style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 8,
+                    ),
                   ),
                   icon: const FaIcon(FontAwesomeIcons.mapLocationDot, size: 12),
-                  label: const Text('Google Maps', style: TextStyle(fontSize: 11)),
+                  label: const Text(
+                    'Google Maps',
+                    style: TextStyle(fontSize: 11),
+                  ),
                 ),
                 const SizedBox(width: 8),
                 OutlinedButton.icon(
                   onPressed: () => _launchUrl(loc.openStreetMapUrl),
                   style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 8,
+                    ),
                   ),
                   icon: const FaIcon(FontAwesomeIcons.globe, size: 12),
                   label: const Text('OSM', style: TextStyle(fontSize: 11)),
@@ -215,15 +234,16 @@ class _LocationMapViewState extends State<LocationMapView> {
             child: OSMFlutter(
               controller: _mapController!,
               osmOption: const OSMOption(
-                zoomOption: ZoomOption(initZoom: 15, minZoomLevel: 3, maxZoomLevel: 19),
+                zoomOption: ZoomOption(
+                  initZoom: 15,
+                  minZoomLevel: 3,
+                  maxZoomLevel: 19,
+                ),
               ),
               onMapIsReady: (isReady) async {
                 if (isReady) {
                   await _mapController!.addMarker(
-                    GeoPoint(
-                      latitude: loc.latitude,
-                      longitude: loc.longitude,
-                    ),
+                    GeoPoint(latitude: loc.latitude, longitude: loc.longitude),
                   );
                 }
               },
@@ -244,7 +264,8 @@ class _LocationMapViewState extends State<LocationMapView> {
                         value: loc.formattedDecimal,
                         icon: FontAwesomeIcons.crosshairs,
                         isDark: isDark,
-                        onCopy: () => _copy(loc.formattedDecimal, 'Decimal Coordinates'),
+                        onCopy: () =>
+                            _copy(loc.formattedDecimal, 'Decimal Coordinates'),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -254,7 +275,8 @@ class _LocationMapViewState extends State<LocationMapView> {
                         value: loc.formattedDms,
                         icon: FontAwesomeIcons.compass,
                         isDark: isDark,
-                        onCopy: () => _copy(loc.formattedDms, 'DMS Coordinates'),
+                        onCopy: () =>
+                            _copy(loc.formattedDms, 'DMS Coordinates'),
                       ),
                     ),
                   ],
@@ -348,7 +370,9 @@ class _CoordPill extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 10.5,
                   fontWeight: FontWeight.w600,
-                  color: isDark ? const Color(0xFF8B949E) : const Color(0xFF57606A),
+                  color: isDark
+                      ? const Color(0xFF8B949E)
+                      : const Color(0xFF57606A),
                 ),
               ),
               const Spacer(),

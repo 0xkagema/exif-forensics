@@ -17,6 +17,13 @@ class FileMetadata {
     this.height,
   });
 
+  String get dimensionsString {
+    if (width != null && height != null) {
+      return '$width × $height px';
+    }
+    return 'Unknown';
+  }
+
   String get formattedSize {
     if (fileSizeBytes < 1024) {
       return '$fileSizeBytes B';
@@ -27,12 +34,7 @@ class FileMetadata {
     }
   }
 
-  String get dimensionsString {
-    if (width != null && height != null) {
-      return '$width × $height px';
-    }
-    return 'Unknown';
-  }
+  Map<String, dynamic> toJson() => toMap();
 
   Map<String, dynamic> toMap() {
     return {
@@ -47,6 +49,4 @@ class FileMetadata {
       'dimensions': dimensionsString,
     };
   }
-
-  Map<String, dynamic> toJson() => toMap();
 }

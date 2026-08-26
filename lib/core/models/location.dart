@@ -58,4 +58,3 @@ class PhotoLocation {
 
   Map<String, dynamic> toJson() => toMap();
 }
-

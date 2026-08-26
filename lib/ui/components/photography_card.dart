@@ -12,7 +12,9 @@ class PhotographyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardBg = isDark ? const Color(0xFF191C20) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF262C32) : const Color(0xFFE2E6EA);
+    final borderColor = isDark
+        ? const Color(0xFF262C32)
+        : const Color(0xFFE2E6EA);
 
     return Container(
       decoration: BoxDecoration(
@@ -49,14 +51,18 @@ class PhotographyCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
-                        color: isDark ? BrandColors.white : BrandColors.darkGrey,
+                        color: isDark
+                            ? BrandColors.white
+                            : BrandColors.darkGrey,
                       ),
                     ),
                     Text(
                       'Sensor parameters, exposure, and color calibration',
                       style: TextStyle(
                         fontSize: 12,
-                        color: isDark ? BrandColors.neutral : const Color(0xFF6B7280),
+                        color: isDark
+                            ? BrandColors.neutral
+                            : const Color(0xFF6B7280),
                       ),
                     ),
                   ],
@@ -84,13 +90,18 @@ class PhotographyCard extends StatelessWidget {
                     _MetricTile(
                       icon: FontAwesomeIcons.gaugeHigh,
                       label: 'Shutter Speed',
-                      value: photography.exposureTime ?? photography.shutterSpeed ?? 'N/A',
+                      value:
+                          photography.exposureTime ??
+                          photography.shutterSpeed ??
+                          'N/A',
                       isDark: isDark,
                     ),
                     _MetricTile(
                       icon: FontAwesomeIcons.camera,
                       label: 'Aperture',
-                      value: photography.fNumber != null ? 'f/${photography.fNumber}' : 'N/A',
+                      value: photography.fNumber != null
+                          ? 'f/${photography.fNumber}'
+                          : 'N/A',
                       isDark: isDark,
                     ),
                     _MetricTile(
@@ -215,7 +226,9 @@ class _MetricTile extends StatelessWidget {
                     fontSize: 10.5,
                     fontWeight: FontWeight.w600,
                     overflow: TextOverflow.ellipsis,
-                    color: isDark ? const Color(0xFF8B949E) : const Color(0xFF6E7781),
+                    color: isDark
+                        ? const Color(0xFF8B949E)
+                        : const Color(0xFF6E7781),
                   ),
                 ),
               ),

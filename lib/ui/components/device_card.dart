@@ -24,7 +24,9 @@ class DeviceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardBg = isDark ? const Color(0xFF191C20) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF262C32) : const Color(0xFFE2E6EA);
+    final borderColor = isDark
+        ? const Color(0xFF262C32)
+        : const Color(0xFFE2E6EA);
 
     return Container(
       decoration: BoxDecoration(
@@ -62,14 +64,18 @@ class DeviceCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
-                          color: isDark ? BrandColors.white : BrandColors.darkGrey,
+                          color: isDark
+                              ? BrandColors.white
+                              : BrandColors.darkGrey,
                         ),
                       ),
                       Text(
                         device.displayName,
                         style: TextStyle(
                           fontSize: 12,
-                          color: isDark ? BrandColors.neutral : const Color(0xFF6B7280),
+                          color: isDark
+                              ? BrandColors.neutral
+                              : const Color(0xFF6B7280),
                         ),
                       ),
                     ],
@@ -91,7 +97,8 @@ class DeviceCard extends StatelessWidget {
                   value: device.manufacturer ?? 'Not Specified',
                   isDark: isDark,
                   onCopy: device.manufacturer != null
-                      ? () => _copy(context, device.manufacturer!, 'Manufacturer')
+                      ? () =>
+                            _copy(context, device.manufacturer!, 'Manufacturer')
                       : null,
                 ),
                 const SizedBox(height: 12),
@@ -111,29 +118,40 @@ class DeviceCard extends StatelessWidget {
                   value: device.softwareVersion ?? 'Not Specified',
                   isDark: isDark,
                   onCopy: device.softwareVersion != null
-                      ? () => _copy(context, device.softwareVersion!, 'Software Version')
+                      ? () => _copy(
+                          context,
+                          device.softwareVersion!,
+                          'Software Version',
+                        )
                       : null,
                 ),
                 const SizedBox(height: 12),
                 _DeviceInfoTile(
                   icon: FontAwesomeIcons.circleDot,
                   title: 'Lens Model',
-                  value: device.lensModel ?? device.lensSpecification ?? 'Not Specified',
+                  value:
+                      device.lensModel ??
+                      device.lensSpecification ??
+                      'Not Specified',
                   isDark: isDark,
                   onCopy: (device.lensModel ?? device.lensSpecification) != null
                       ? () => _copy(
-                            context,
-                            device.lensModel ?? device.lensSpecification!,
-                            'Lens Model',
-                          )
+                          context,
+                          device.lensModel ?? device.lensSpecification!,
+                          'Lens Model',
+                        )
                       : null,
                 ),
-                if (device.bodySerialNumber != null || device.lensSerialNumber != null) ...[
+                if (device.bodySerialNumber != null ||
+                    device.lensSerialNumber != null) ...[
                   const SizedBox(height: 12),
                   _DeviceInfoTile(
                     icon: FontAwesomeIcons.barcode,
                     title: 'Serial Number',
-                    value: device.bodySerialNumber ?? device.lensSerialNumber ?? 'N/A',
+                    value:
+                        device.bodySerialNumber ??
+                        device.lensSerialNumber ??
+                        'N/A',
                     isDark: isDark,
                     onCopy: () => _copy(
                       context,
@@ -208,7 +226,9 @@ class _DeviceInfoTile extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: isDark ? const Color(0xFF9EA7B3) : const Color(0xFF57606A),
+                color: isDark
+                    ? const Color(0xFF9EA7B3)
+                    : const Color(0xFF57606A),
               ),
             ),
           ),
@@ -222,7 +242,9 @@ class _DeviceInfoTile extends StatelessWidget {
                 fontWeight: isSpecified ? FontWeight.w700 : FontWeight.w400,
                 color: isSpecified
                     ? (isDark ? BrandColors.white : BrandColors.darkGrey)
-                    : (isDark ? const Color(0xFF6E7681) : const Color(0xFF8C959F)),
+                    : (isDark
+                          ? const Color(0xFF6E7681)
+                          : const Color(0xFF8C959F)),
               ),
             ),
           ),

@@ -40,7 +40,10 @@ class ExifServices {
     final photography = _extractPhotography(rawTags);
 
     // 7. Extract Timestamps
-    final captureStr = _getTagPrintable(rawTags, ['EXIF DateTimeOriginal', 'Image DateTime']);
+    final captureStr = _getTagPrintable(rawTags, [
+      'EXIF DateTimeOriginal',
+      'Image DateTime',
+    ]);
     final digitizedStr = _getTagPrintable(rawTags, ['EXIF DateTimeDigitized']);
     final modifiedStr = _getTagPrintable(rawTags, ['Image DateTime']);
     final offsetStr = _getTagPrintable(rawTags, [
@@ -54,8 +57,12 @@ class ExifServices {
     final modifiedDateTime = _parseExifDate(modifiedStr);
 
     // 8. Determine Dimensions
-    int? width = _parseInt(_getTagPrintable(rawTags, ['EXIF ExifImageWidth', 'Image ImageWidth']));
-    int? height = _parseInt(_getTagPrintable(rawTags, ['EXIF ExifImageLength', 'Image ImageLength']));
+    int? width = _parseInt(
+      _getTagPrintable(rawTags, ['EXIF ExifImageWidth', 'Image ImageWidth']),
+    );
+    int? height = _parseInt(
+      _getTagPrintable(rawTags, ['EXIF ExifImageLength', 'Image ImageLength']),
+    );
 
     final fileMeta = FileMetadata(
       fileName: fileName,
@@ -104,7 +111,10 @@ class ExifServices {
   }
 
   static String _detectMimeType(Uint8List bytes, String fileName) {
-    if (bytes.length >= 3 && bytes[0] == 0xFF && bytes[1] == 0xD8 && bytes[2] == 0xFF) {
+    if (bytes.length >= 3 &&
+        bytes[0] == 0xFF &&
+        bytes[1] == 0xD8 &&
+        bytes[2] == 0xFF) {
       return 'image/jpeg';
     }
     if (bytes.length >= 8 &&
@@ -126,8 +136,14 @@ class ExifServices {
       return 'image/webp';
     }
     if (bytes.length >= 4 &&
-        ((bytes[0] == 0x49 && bytes[1] == 0x49 && bytes[2] == 0x2A && bytes[3] == 0x00) ||
-            (bytes[0] == 0x4D && bytes[1] == 0x4D && bytes[2] == 0x00 && bytes[3] == 0x2A))) {
+        ((bytes[0] == 0x49 &&
+                bytes[1] == 0x49 &&
+                bytes[2] == 0x2A &&
+                bytes[3] == 0x00) ||
+            (bytes[0] == 0x4D &&
+                bytes[1] == 0x4D &&
+                bytes[2] == 0x00 &&
+                bytes[3] == 0x2A))) {
       return 'image/tiff';
     }
 
@@ -140,7 +156,9 @@ class ExifServices {
     return 'image/unknown';
   }
 
-  static Map<String, Map<String, dynamic>> _groupTags(Map<String, dynamic> rawTags) {
+  static Map<String, Map<String, dynamic>> _groupTags(
+    Map<String, dynamic> rawTags,
+  ) {
     final Map<String, Map<String, dynamic>> groups = {
       'GPS': {},
       'Image': {},
@@ -181,15 +199,26 @@ class ExifServices {
     final lngTag = exif['GPS GPSLongitude'];
     final lngRefTag = exif['GPS GPSLongitudeRef'];
 
-    if (latTag == null || latRefTag == null || lngTag == null || lngRefTag == null) {
+    if (latTag == null ||
+        latRefTag == null ||
+        lngTag == null ||
+        lngRefTag == null) {
       return null;
     }
 
     try {
-      final latPrintable = latTag is IfdTag ? latTag.printable : latTag.toString();
-      final latRef = latRefTag is IfdTag ? latRefTag.printable : latRefTag.toString();
-      final lngPrintable = lngTag is IfdTag ? lngTag.printable : lngTag.toString();
-      final lngRef = lngRefTag is IfdTag ? lngRefTag.printable : lngRefTag.toString();
+      final latPrintable = latTag is IfdTag
+          ? latTag.printable
+          : latTag.toString();
+      final latRef = latRefTag is IfdTag
+          ? latRefTag.printable
+          : latRefTag.toString();
+      final lngPrintable = lngTag is IfdTag
+          ? lngTag.printable
+          : lngTag.toString();
+      final lngRef = lngRefTag is IfdTag
+          ? lngRefTag.printable
+          : lngRefTag.toString();
 
       final lat = _parseExifCoordinate(latPrintable, latRef);
       final lng = _parseExifCoordinate(lngPrintable, lngRef);
@@ -206,7 +235,9 @@ class ExifServices {
         final altStr = altTag is IfdTag ? altTag.printable : altTag.toString();
         altitude = _parseFractionOrDouble(altStr);
         if (altitude != null && altRefTag != null) {
-          final altRefStr = altRefTag is IfdTag ? altRefTag.printable : altRefTag.toString();
+          final altRefStr = altRefTag is IfdTag
+              ? altRefTag.printable
+              : altRefTag.toString();
           if (altRefStr == '1' || altRefStr.toLowerCase().contains('below')) {
             altitude = -altitude;
           }
@@ -217,8 +248,13 @@ class ExifServices {
       final timeStamp = _getTagPrintable(exif, ['GPS GPSTimeStamp']);
       final speedStr = _getTagPrintable(exif, ['GPS GPSSpeed']);
       final speed = speedStr != null ? _parseFractionOrDouble(speedStr) : null;
-      final dirStr = _getTagPrintable(exif, ['GPS GPSImgDirection', 'GPS GPSTrack']);
-      final imgDirection = dirStr != null ? _parseFractionOrDouble(dirStr) : null;
+      final dirStr = _getTagPrintable(exif, [
+        'GPS GPSImgDirection',
+        'GPS GPSTrack',
+      ]);
+      final imgDirection = dirStr != null
+          ? _parseFractionOrDouble(dirStr)
+          : null;
       final mapDatum = _getTagPrintable(exif, ['GPS GPSMapDatum']);
 
       return PhotoLocation(
@@ -298,8 +334,14 @@ class ExifServices {
       lensMake: _getTagPrintable(exif, ['EXIF LensMake']),
       lensModel: _getTagPrintable(exif, ['EXIF LensModel']),
       lensSpecification: _getTagPrintable(exif, ['EXIF LensSpecification']),
-      cameraOwner: _getTagPrintable(exif, ['EXIF CameraOwnerName', 'Image CameraOwnerName']),
-      bodySerialNumber: _getTagPrintable(exif, ['EXIF BodySerialNumber', 'EXIF SerialNumber']),
+      cameraOwner: _getTagPrintable(exif, [
+        'EXIF CameraOwnerName',
+        'Image CameraOwnerName',
+      ]),
+      bodySerialNumber: _getTagPrintable(exif, [
+        'EXIF BodySerialNumber',
+        'EXIF SerialNumber',
+      ]),
       lensSerialNumber: _getTagPrintable(exif, ['EXIF LensSerialNumber']),
       artist: _getTagPrintable(exif, ['Image Artist']),
       copyright: _getTagPrintable(exif, ['Image Copyright']),
@@ -308,7 +350,10 @@ class ExifServices {
 
   static PhotographyDetails _extractPhotography(Map<String, dynamic> exif) {
     return PhotographyDetails(
-      iso: _getTagPrintable(exif, ['EXIF ISOSpeedRatings', 'EXIF PhotographicSensitivity']),
+      iso: _getTagPrintable(exif, [
+        'EXIF ISOSpeedRatings',
+        'EXIF PhotographicSensitivity',
+      ]),
       exposureTime: _getTagPrintable(exif, ['EXIF ExposureTime']),
       fNumber: _getTagPrintable(exif, ['EXIF FNumber']),
       shutterSpeed: _getTagPrintable(exif, ['EXIF ShutterSpeedValue']),
@@ -320,9 +365,16 @@ class ExifServices {
       flash: _getTagPrintable(exif, ['EXIF Flash']),
       whiteBalance: _getTagPrintable(exif, ['EXIF WhiteBalance']),
       colorSpace: _getTagPrintable(exif, ['EXIF ColorSpace']),
-      orientation: _getTagPrintable(exif, ['Image Orientation', 'EXIF Orientation']),
-      imageWidth: _parseInt(_getTagPrintable(exif, ['EXIF ExifImageWidth', 'Image ImageWidth'])),
-      imageHeight: _parseInt(_getTagPrintable(exif, ['EXIF ExifImageLength', 'Image ImageLength'])),
+      orientation: _getTagPrintable(exif, [
+        'Image Orientation',
+        'EXIF Orientation',
+      ]),
+      imageWidth: _parseInt(
+        _getTagPrintable(exif, ['EXIF ExifImageWidth', 'Image ImageWidth']),
+      ),
+      imageHeight: _parseInt(
+        _getTagPrintable(exif, ['EXIF ExifImageLength', 'Image ImageLength']),
+      ),
       xResolution: _getTagPrintable(exif, ['Image XResolution']),
       yResolution: _getTagPrintable(exif, ['Image YResolution']),
       resolutionUnit: _getTagPrintable(exif, ['Image ResolutionUnit']),
@@ -336,7 +388,10 @@ class ExifServices {
     );
   }
 
-  static String? _getTagPrintable(Map<String, dynamic> exif, List<String> tagNames) {
+  static String? _getTagPrintable(
+    Map<String, dynamic> exif,
+    List<String> tagNames,
+  ) {
     for (final name in tagNames) {
       if (exif.containsKey(name)) {
         final val = exif[name];
@@ -369,4 +424,3 @@ class ExifServices {
     }
   }
 }
-

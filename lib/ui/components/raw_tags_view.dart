@@ -38,10 +38,20 @@ class RawTagsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardBg = isDark ? const Color(0xFF191C20) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF262C32) : const Color(0xFFE2E6EA);
+    final borderColor = isDark
+        ? const Color(0xFF262C32)
+        : const Color(0xFFE2E6EA);
     final filteredTags = controller.filteredRawTags;
     final totalTags = controller.report?.rawTags.length ?? 0;
-    final categories = ['All', 'EXIF', 'GPS', 'Image', 'Interoperability', 'MakerNote', 'Thumbnail'];
+    final categories = [
+      'All',
+      'EXIF',
+      'GPS',
+      'Image',
+      'Interoperability',
+      'MakerNote',
+      'Thumbnail',
+    ];
 
     return Container(
       decoration: BoxDecoration(
@@ -82,14 +92,18 @@ class RawTagsView extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w700,
-                              color: isDark ? BrandColors.white : BrandColors.darkGrey,
+                              color: isDark
+                                  ? BrandColors.white
+                                  : BrandColors.darkGrey,
                             ),
                           ),
                           Text(
                             'Showing ${filteredTags.length} of $totalTags extracted tags',
                             style: TextStyle(
                               fontSize: 12,
-                              color: isDark ? BrandColors.neutral : const Color(0xFF6B7280),
+                              color: isDark
+                                  ? BrandColors.neutral
+                                  : const Color(0xFF6B7280),
                             ),
                           ),
                         ],
@@ -99,10 +113,16 @@ class RawTagsView extends StatelessWidget {
                       OutlinedButton.icon(
                         onPressed: () => _copyAllTags(context, filteredTags),
                         style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 8,
+                          ),
                         ),
                         icon: const FaIcon(FontAwesomeIcons.copy, size: 12),
-                        label: const Text('Copy All', style: TextStyle(fontSize: 11)),
+                        label: const Text(
+                          'Copy All',
+                          style: TextStyle(fontSize: 11),
+                        ),
                       ),
                   ],
                 ),
@@ -112,20 +132,30 @@ class RawTagsView extends StatelessWidget {
                 TextField(
                   onChanged: (val) => controller.setSearchQuery(val),
                   decoration: InputDecoration(
-                    hintText: 'Search tag name or value (e.g. GPS, Shutter, ISO, Make)...',
+                    hintText:
+                        'Search tag name or value (e.g. GPS, Shutter, ISO, Make)...',
                     prefixIcon: const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12),
                       child: FaIcon(FontAwesomeIcons.magnifyingGlass, size: 14),
                     ),
-                    prefixIconConstraints: const BoxConstraints(minWidth: 40, minHeight: 40),
+                    prefixIconConstraints: const BoxConstraints(
+                      minWidth: 40,
+                      minHeight: 40,
+                    ),
                     suffixIcon: controller.searchQuery.isNotEmpty
                         ? IconButton(
-                            icon: const FaIcon(FontAwesomeIcons.circleXmark, size: 14),
+                            icon: const FaIcon(
+                              FontAwesomeIcons.circleXmark,
+                              size: 14,
+                            ),
                             onPressed: () => controller.setSearchQuery(''),
                           )
                         : null,
                     isDense: true,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 12,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -136,16 +166,22 @@ class RawTagsView extends StatelessWidget {
                   child: Row(
                     children: categories.map((cat) {
                       final isSelected =
-                          (controller.selectedTagCategory == null && cat == 'All') ||
+                          (controller.selectedTagCategory == null &&
+                              cat == 'All') ||
                           controller.selectedTagCategory == cat;
 
                       return Padding(
                         padding: const EdgeInsets.only(right: 6),
                         child: ChoiceChip(
-                          label: Text(cat, style: const TextStyle(fontSize: 11)),
+                          label: Text(
+                            cat,
+                            style: const TextStyle(fontSize: 11),
+                          ),
                           selected: isSelected,
                           onSelected: (selected) {
-                            controller.setSelectedTagCategory(selected ? cat : 'All');
+                            controller.setSelectedTagCategory(
+                              selected ? cat : 'All',
+                            );
                           },
                         ),
                       );
@@ -176,7 +212,9 @@ class RawTagsView extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 13.5,
                         fontWeight: FontWeight.w600,
-                        color: isDark ? BrandColors.white : BrandColors.darkGrey,
+                        color: isDark
+                            ? BrandColors.white
+                            : BrandColors.darkGrey,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -184,7 +222,9 @@ class RawTagsView extends StatelessWidget {
                       'Try clearing the search query or changing the filter category.',
                       style: TextStyle(
                         fontSize: 12,
-                        color: isDark ? BrandColors.neutral : const Color(0xFF6B7280),
+                        color: isDark
+                            ? BrandColors.neutral
+                            : const Color(0xFF6B7280),
                       ),
                     ),
                   ],
@@ -201,18 +241,28 @@ class RawTagsView extends StatelessWidget {
                 final entry = filteredTags.entries.elementAt(index);
                 final key = entry.key;
                 final value = entry.value.toString();
-                final tagCategory = key.contains(' ') ? key.split(' ').first : 'TAG';
+                final tagCategory = key.contains(' ')
+                    ? key.split(' ').first
+                    : 'TAG';
 
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Tag category pill
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
-                          color: isDark ? const Color(0xFF22272E) : const Color(0xFFE2E7ED),
+                          color: isDark
+                              ? const Color(0xFF22272E)
+                              : const Color(0xFFE2E7ED),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
@@ -220,7 +270,9 @@ class RawTagsView extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
-                            color: isDark ? const Color(0xFF8B949E) : const Color(0xFF57606A),
+                            color: isDark
+                                ? const Color(0xFF8B949E)
+                                : const Color(0xFF57606A),
                           ),
                         ),
                       ),
@@ -234,7 +286,9 @@ class RawTagsView extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 12.5,
                             fontWeight: FontWeight.w600,
-                            color: isDark ? const Color(0xFFD2D9E0) : const Color(0xFF24292F),
+                            color: isDark
+                                ? const Color(0xFFD2D9E0)
+                                : const Color(0xFF24292F),
                           ),
                         ),
                       ),
@@ -248,7 +302,9 @@ class RawTagsView extends StatelessWidget {
                           style: TextStyle(
                             fontFamily: 'monospace',
                             fontSize: 12,
-                            color: isDark ? const Color(0xFF7EE787) : const Color(0xFF116329),
+                            color: isDark
+                                ? const Color(0xFF7EE787)
+                                : const Color(0xFF116329),
                           ),
                         ),
                       ),

@@ -39,7 +39,10 @@ class _DropZoneState extends State<DropZone> {
             children: [
               // Hero Badge
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: primaryColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
@@ -61,7 +64,9 @@ class _DropZoneState extends State<DropZone> {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: isDark ? BrandColors.white : BrandColors.darkGrey,
+                        color: isDark
+                            ? BrandColors.white
+                            : BrandColors.darkGrey,
                       ),
                     ),
                   ],
@@ -100,7 +105,9 @@ class _DropZoneState extends State<DropZone> {
                   if (detail.files.length > 1) {
                     toastification.show(
                       title: const Text("Multiple Files Detected"),
-                      description: const Text("Analyzing the first dropped image."),
+                      description: const Text(
+                        "Analyzing the first dropped image.",
+                      ),
                       type: ToastificationType.info,
                       autoCloseDuration: const Duration(seconds: 3),
                     );
@@ -159,7 +166,9 @@ class _DropZoneState extends State<DropZone> {
                                 _isDragging
                                     ? FontAwesomeIcons.fileCirclePlus
                                     : FontAwesomeIcons.cloudArrowUp,
-                                color: _isDragging ? dragHoverColor : primaryColor,
+                                color: _isDragging
+                                    ? dragHoverColor
+                                    : primaryColor,
                                 size: 30,
                               ),
                             ),
@@ -174,7 +183,9 @@ class _DropZoneState extends State<DropZone> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              color: isDark ? BrandColors.white : BrandColors.darkGrey,
+                              color: isDark
+                                  ? BrandColors.white
+                                  : BrandColors.darkGrey,
                             ),
                           ),
                           const SizedBox(height: 6),
@@ -182,7 +193,9 @@ class _DropZoneState extends State<DropZone> {
                             'Supports JPG, PNG, WebP, TIFF, and HEIC files',
                             style: TextStyle(
                               fontSize: 12.5,
-                              color: isDark ? BrandColors.neutral : const Color(0xFF777777),
+                              color: isDark
+                                  ? BrandColors.neutral
+                                  : const Color(0xFF777777),
                             ),
                           ),
                           const SizedBox(height: 24),
@@ -198,7 +211,9 @@ class _DropZoneState extends State<DropZone> {
                                 vertical: 14,
                               ),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(AppRadius.md),
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.md,
+                                ),
                               ),
                               elevation: 3,
                             ),
@@ -284,11 +299,7 @@ class _FeaturePill extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FaIcon(
-            icon,
-            size: 12,
-            color: BrandColors.secondary,
-          ),
+          FaIcon(icon, size: 12, color: BrandColors.secondary),
           const SizedBox(width: 6),
           Text(
             label,

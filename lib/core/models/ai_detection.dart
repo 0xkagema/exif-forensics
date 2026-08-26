@@ -1,12 +1,5 @@
 enum AiConfidence { high, medium, low, none }
 
-enum ForensicClassification {
-  aiGenerated,
-  cameraOriginal,
-  digitallyEdited,
-  inconclusive,
-}
-
 class AiDetectionResult {
   final ForensicClassification classification;
   final AiConfidence confidence;
@@ -38,9 +31,6 @@ class AiDetectionResult {
     this.detectedSignatures = const [],
   });
 
-  bool get isAiGenerated =>
-      classification == ForensicClassification.aiGenerated;
-
   String get confidenceLabel {
     switch (confidence) {
       case AiConfidence.high:
@@ -53,6 +43,11 @@ class AiDetectionResult {
         return 'Not Applicable';
     }
   }
+
+  bool get isAiGenerated =>
+      classification == ForensicClassification.aiGenerated;
+
+  Map<String, dynamic> toJson() => toMap();
 
   Map<String, dynamic> toMap() {
     return {
@@ -71,6 +66,11 @@ class AiDetectionResult {
       'detectedSignatures': detectedSignatures,
     };
   }
+}
 
-  Map<String, dynamic> toJson() => toMap();
+enum ForensicClassification {
+  aiGenerated,
+  cameraOriginal,
+  digitallyEdited,
+  inconclusive,
 }

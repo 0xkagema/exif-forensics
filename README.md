@@ -25,6 +25,10 @@ EXIF Forensics helps investigators, photographers, journalists, OSINT researcher
 - GPS location visualization with map markers
 - Generative AI Detection
 
+### Stuff I wish it had -> coming up
+
+- Details about the software that edited the image -> Adobe Photoshop etc
+
 ### Example Metadata
 
 ```text

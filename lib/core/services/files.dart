@@ -1,12 +1,6 @@
 import 'dart:typed_data';
+
 import 'package:image_picker/image_picker.dart';
-
-class SelectedFileData {
-  final Uint8List bytes;
-  final String fileName;
-
-  const SelectedFileData({required this.bytes, required this.fileName});
-}
 
 class FileServices {
   static final ImagePicker _picker = ImagePicker();
@@ -14,9 +8,7 @@ class FileServices {
   /// Opens system file picker to select an image and returns bytes + file name
   static Future<SelectedFileData> selectImageFile() async {
     try {
-      final XFile? image = await _picker.pickImage(
-        source: ImageSource.gallery,
-      );
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
       if (image == null) {
         throw Exception("No file selected");
       }
@@ -35,3 +27,9 @@ class FileServices {
   }
 }
 
+class SelectedFileData {
+  final Uint8List bytes;
+  final String fileName;
+
+  const SelectedFileData({required this.bytes, required this.fileName});
+}

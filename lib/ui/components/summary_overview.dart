@@ -23,7 +23,9 @@ class SummaryOverview extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardBg = isDark ? const Color(0xFF191C20) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF262C32) : const Color(0xFFE2E6EA);
+    final borderColor = isDark
+        ? const Color(0xFF262C32)
+        : const Color(0xFFE2E6EA);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,9 +48,10 @@ class SummaryOverview extends StatelessWidget {
                   title: 'AI Forensics',
                   value: report.aiDetection.isAiGenerated
                       ? 'AI Generated'
-                      : report.aiDetection.classification == ForensicClassification.cameraOriginal
-                          ? 'Optical Camera'
-                          : 'Inconclusive',
+                      : report.aiDetection.classification ==
+                            ForensicClassification.cameraOriginal
+                      ? 'Optical Camera'
+                      : 'Inconclusive',
                   subtitle: report.aiDetection.confidenceLabel,
                   iconColor: report.aiDetection.isAiGenerated
                       ? BrandColors.primary
@@ -58,9 +61,15 @@ class SummaryOverview extends StatelessWidget {
                 _StatTile(
                   icon: FontAwesomeIcons.locationDot,
                   title: 'GPS Location',
-                  value: report.hasLocation ? report.location!.formattedDecimal : 'No GPS Data',
-                  subtitle: report.hasLocation ? 'OpenStreetMap available' : 'Coordinates missing',
-                  iconColor: report.hasLocation ? BrandColors.info : BrandColors.neutral,
+                  value: report.hasLocation
+                      ? report.location!.formattedDecimal
+                      : 'No GPS Data',
+                  subtitle: report.hasLocation
+                      ? 'OpenStreetMap available'
+                      : 'Coordinates missing',
+                  iconColor: report.hasLocation
+                      ? BrandColors.info
+                      : BrandColors.neutral,
                   isDark: isDark,
                   onTap: report.hasLocation ? onNavigateToMap : null,
                 ),
@@ -68,7 +77,8 @@ class SummaryOverview extends StatelessWidget {
                   icon: FontAwesomeIcons.camera,
                   title: 'Capture Hardware',
                   value: report.device.displayName,
-                  subtitle: report.device.softwareVersion ?? 'Firmware unlisted',
+                  subtitle:
+                      report.device.softwareVersion ?? 'Firmware unlisted',
                   iconColor: BrandColors.secondary,
                   isDark: isDark,
                   onTap: onNavigateToDevice,
@@ -98,7 +108,8 @@ class SummaryOverview extends StatelessWidget {
                   icon: FontAwesomeIcons.tags,
                   title: 'IFD Tags Extracted',
                   value: '${report.rawTags.length} Tags',
-                  subtitle: '${report.groupedTags.keys.length} Categories parsed',
+                  subtitle:
+                      '${report.groupedTags.keys.length} Categories parsed',
                   iconColor: BrandColors.primary,
                   isDark: isDark,
                   onTap: onNavigateToTags,
@@ -150,7 +161,9 @@ class SummaryOverview extends StatelessWidget {
               _TimelineEvent(
                 icon: FontAwesomeIcons.microchip,
                 label: 'Sensor Digitization',
-                time: report.digitizedDateTime?.toIso8601String() ?? 'Same as original',
+                time:
+                    report.digitizedDateTime?.toIso8601String() ??
+                    'Same as original',
                 isRecorded: report.digitizedDateTime != null,
                 isDark: isDark,
               ),
@@ -158,7 +171,9 @@ class SummaryOverview extends StatelessWidget {
               _TimelineEvent(
                 icon: FontAwesomeIcons.penToSquare,
                 label: 'File Modification / Last Saved',
-                time: report.modifiedDateTime?.toIso8601String() ?? 'No modification record',
+                time:
+                    report.modifiedDateTime?.toIso8601String() ??
+                    'No modification record',
                 isRecorded: report.modifiedDateTime != null,
                 isDark: isDark,
               ),
@@ -191,7 +206,9 @@ class _StatTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderColor = isDark ? const Color(0xFF262C32) : const Color(0xFFE2E6EA);
+    final borderColor = isDark
+        ? const Color(0xFF262C32)
+        : const Color(0xFFE2E6EA);
     final cardBg = isDark ? const Color(0xFF191C20) : Colors.white;
 
     final content = Container(
@@ -216,7 +233,9 @@ class _StatTile extends StatelessWidget {
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                     overflow: TextOverflow.ellipsis,
-                    color: isDark ? const Color(0xFF8B949E) : const Color(0xFF57606A),
+                    color: isDark
+                        ? const Color(0xFF8B949E)
+                        : const Color(0xFF57606A),
                   ),
                 ),
               ),
@@ -224,7 +243,9 @@ class _StatTile extends StatelessWidget {
                 FaIcon(
                   FontAwesomeIcons.arrowRight,
                   size: 10,
-                  color: isDark ? const Color(0xFF6E7681) : const Color(0xFF8C959F),
+                  color: isDark
+                      ? const Color(0xFF6E7681)
+                      : const Color(0xFF8C959F),
                 ),
             ],
           ),
@@ -314,8 +335,12 @@ class _TimelineEvent extends StatelessWidget {
                   fontFamily: 'monospace',
                   fontSize: 11.5,
                   color: isRecorded
-                      ? (isDark ? const Color(0xFF88D2D0) : const Color(0xFF0D7E7C))
-                      : (isDark ? BrandColors.neutral : const Color(0xFF777777)),
+                      ? (isDark
+                            ? const Color(0xFF88D2D0)
+                            : const Color(0xFF0D7E7C))
+                      : (isDark
+                            ? BrandColors.neutral
+                            : const Color(0xFF777777)),
                 ),
               ),
             ],

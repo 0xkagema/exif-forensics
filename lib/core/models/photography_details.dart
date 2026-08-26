@@ -102,4 +102,3 @@ class PhotographyDetails {
 
   Map<String, dynamic> toJson() => toMap();
 }
-

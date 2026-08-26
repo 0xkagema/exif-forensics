@@ -25,14 +25,6 @@ class DeviceDetails {
     this.copyright,
   });
 
-  bool get hasDeviceData =>
-      (manufacturer?.isNotEmpty ?? false) ||
-      (model?.isNotEmpty ?? false) ||
-      (softwareVersion?.isNotEmpty ?? false) ||
-      (lensModel?.isNotEmpty ?? false) ||
-      (bodySerialNumber?.isNotEmpty ?? false) ||
-      (artist?.isNotEmpty ?? false);
-
   String get displayName {
     final mfg = manufacturer?.trim() ?? '';
     final mdl = model?.trim() ?? '';
@@ -41,6 +33,16 @@ class DeviceDetails {
     if (mfg.isNotEmpty && mdl.isNotEmpty) return '$mfg $mdl';
     return mfg.isNotEmpty ? mfg : mdl;
   }
+
+  bool get hasDeviceData =>
+      (manufacturer?.isNotEmpty ?? false) ||
+      (model?.isNotEmpty ?? false) ||
+      (softwareVersion?.isNotEmpty ?? false) ||
+      (lensModel?.isNotEmpty ?? false) ||
+      (bodySerialNumber?.isNotEmpty ?? false) ||
+      (artist?.isNotEmpty ?? false);
+
+  Map<String, dynamic> toJson() => toMap();
 
   Map<String, dynamic> toMap() {
     return {
@@ -58,7 +60,4 @@ class DeviceDetails {
       'displayName': displayName,
     };
   }
-
-  Map<String, dynamic> toJson() => toMap();
 }
-

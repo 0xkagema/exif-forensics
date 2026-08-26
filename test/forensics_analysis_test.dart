@@ -104,9 +104,7 @@ void main() {
     });
 
     test('Detects digital editing software without camera sensor tags', () {
-      final tags = {
-        'Image Software': 'Adobe Photoshop 2024 (Windows)',
-      };
+      final tags = {'Image Software': 'Adobe Photoshop 2024 (Windows)'};
 
       final result = C2paService.analyzeProvenance(
         bytes: Uint8List.fromList([0xFF, 0xD8, 0xFF]),
@@ -121,7 +119,18 @@ void main() {
   group('ExifServices Tests', () {
     test('Calculates hashes and generates complete ForensicsReport', () async {
       final dummyBytes = Uint8List.fromList([
-        0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10, 0x4A, 0x46, 0x49, 0x46, 0x00, 0x01,
+        0xFF,
+        0xD8,
+        0xFF,
+        0xE0,
+        0x00,
+        0x10,
+        0x4A,
+        0x46,
+        0x49,
+        0x46,
+        0x00,
+        0x01,
       ]);
 
       final report = await ExifServices.analyzeImageBytes(
@@ -133,7 +142,10 @@ void main() {
       expect(report.file.mimeType, 'image/jpeg');
       expect(report.file.md5Hash, isNotEmpty);
       expect(report.file.sha256Hash, isNotEmpty);
-      expect(report.toMarkdownReport(), contains('EXIF Forensics Investigation Report'));
+      expect(
+        report.toMarkdownReport(),
+        contains('EXIF Forensics Investigation Report'),
+      );
       expect(report.toFormattedJson(), contains('test_sample.jpg'));
     });
   });
