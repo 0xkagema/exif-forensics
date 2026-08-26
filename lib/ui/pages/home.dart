@@ -1,5 +1,8 @@
+import 'package:exifapp/src/rust/api/simple.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:toastification/toastification.dart';
+
 import '../../core/state/forensics_controller.dart';
 import '../../theme.dart';
 import '../components/components.dart';
@@ -15,27 +18,27 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
-  void initState() {
-    super.initState();
-    widget.controller.addListener(_onControllerUpdate);
-  }
-
-  @override
-  void dispose() {
-    widget.controller.removeListener(_onControllerUpdate);
-    super.dispose();
-  }
-
-  void _onControllerUpdate() {
-    if (mounted) setState(() {});
-  }
-
-  @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final controller = widget.controller;
 
+    void greetMe() {
+      toastification.show(
+        alignment: Alignment.topCenter,
+        type: ToastificationType.success,
+        title: Text("Rust"),
+        description: Text(greet(name: "Kagema")),
+      );
+    }
+
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: greetMe,
+        child: CircleAvatar(
+          foregroundImage: AssetImage('rust.png'),
+          radius: 20,
+        ),
+      ),
       backgroundColor: isDark
           ? const Color(0xFF0D0F11)
           : const Color(0xFFF4F6F8),
@@ -58,6 +61,43 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  @override
+  void dispose() {
+    widget.controller.removeListener(_onControllerUpdate);
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_onControllerUpdate);
+  }
+
+  Widget _buildActiveTabContent(ForensicsController controller, bool isDark) {
+    final report = controller.report!;
+
+    switch (controller.activeTabIndex) {
+      case 0:
+        return SummaryOverview(
+          report: report,
+          onNavigateToMap: () => controller.setActiveTab(3),
+          onNavigateToDevice: () => controller.setActiveTab(1),
+          onNavigateToPhotography: () => controller.setActiveTab(2),
+          onNavigateToTags: () => controller.setActiveTab(4),
+        );
+      case 1:
+        return DeviceCard(device: report.device);
+      case 2:
+        return PhotographyCard(photography: report.photography);
+      case 3:
+        return LocationMapView(location: report.location);
+      case 4:
+        return RawTagsView(controller: controller);
+      default:
+        return const SizedBox.shrink();
+    }
+  }
+
   Widget _buildBody(
     BuildContext context,
     ForensicsController controller,
@@ -76,71 +116,6 @@ class _HomePageState extends State<HomePage> {
       case ForensicsStatus.success:
         return _buildSuccessDashboard(controller, isDark);
     }
-  }
-
-  Widget _buildLoadingView(ForensicsController controller, bool isDark) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
-        decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF16191D) : Colors.white,
-          borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(
-            color: isDark ? const Color(0xFF262C32) : const Color(0xFFE2E6EA),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.15),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: BrandColors.primary.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
-              child: const FaIcon(
-                FontAwesomeIcons.shieldHalved,
-                size: 32,
-                color: BrandColors.primary,
-              ),
-            ),
-            const SizedBox(height: 24),
-            const SizedBox(
-              width: 180,
-              child: LinearProgressIndicator(
-                backgroundColor: Color(0xFF2B313A),
-                valueColor: AlwaysStoppedAnimation<Color>(BrandColors.primary),
-                minHeight: 4,
-              ),
-            ),
-            const SizedBox(height: 18),
-            Text(
-              'Scanning & Analyzing Image',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: isDark ? BrandColors.white : BrandColors.darkGrey,
-              ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              controller.loadingStage,
-              style: TextStyle(
-                fontSize: 12.5,
-                color: isDark ? BrandColors.neutral : const Color(0xFF6B7280),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   Widget _buildErrorView(ForensicsController controller, bool isDark) {
@@ -207,6 +182,71 @@ class _HomePageState extends State<HomePage> {
               ),
               icon: const FaIcon(FontAwesomeIcons.arrowRotateLeft, size: 14),
               label: const Text('Try Another Image'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoadingView(ForensicsController controller, bool isDark) {
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
+        decoration: BoxDecoration(
+          color: isDark ? const Color(0xFF16191D) : Colors.white,
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          border: Border.all(
+            color: isDark ? const Color(0xFF262C32) : const Color(0xFFE2E6EA),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.15),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: BrandColors.primary.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: const FaIcon(
+                FontAwesomeIcons.shieldHalved,
+                size: 32,
+                color: BrandColors.primary,
+              ),
+            ),
+            const SizedBox(height: 24),
+            const SizedBox(
+              width: 180,
+              child: LinearProgressIndicator(
+                backgroundColor: Color(0xFF2B313A),
+                valueColor: AlwaysStoppedAnimation<Color>(BrandColors.primary),
+                minHeight: 4,
+              ),
+            ),
+            const SizedBox(height: 18),
+            Text(
+              'Scanning & Analyzing Image',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: isDark ? BrandColors.white : BrandColors.darkGrey,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              controller.loadingStage,
+              style: TextStyle(
+                fontSize: 12.5,
+                color: isDark ? BrandColors.neutral : const Color(0xFF6B7280),
+              ),
             ),
           ],
         ),
@@ -412,29 +452,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildActiveTabContent(ForensicsController controller, bool isDark) {
-    final report = controller.report!;
-
-    switch (controller.activeTabIndex) {
-      case 0:
-        return SummaryOverview(
-          report: report,
-          onNavigateToMap: () => controller.setActiveTab(3),
-          onNavigateToDevice: () => controller.setActiveTab(1),
-          onNavigateToPhotography: () => controller.setActiveTab(2),
-          onNavigateToTags: () => controller.setActiveTab(4),
-        );
-      case 1:
-        return DeviceCard(device: report.device);
-      case 2:
-        return PhotographyCard(photography: report.photography);
-      case 3:
-        return LocationMapView(location: report.location);
-      case 4:
-        return RawTagsView(controller: controller);
-      default:
-        return const SizedBox.shrink();
-    }
+  void _onControllerUpdate() {
+    if (mounted) setState(() {});
   }
 }
 

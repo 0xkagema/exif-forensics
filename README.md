@@ -110,7 +110,9 @@ flutter pub get
 #### Web
 
 ```bash
-flutter run -d chrome
+flutter_rust_bridge_codegen build-web
+# ... or any other standard Flutter ways
+flutter run --web-header=Cross-Origin-Opener-Policy=same-origin --web-header=Cross-Origin-Embedder-Policy=require-corp
 ```
 
 ## Supported Metadata
