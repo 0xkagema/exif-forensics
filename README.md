@@ -111,8 +111,8 @@ flutter pub get
 #### Web
 
 ```bash
-flutter_rust_bridge_codegen build-web 
-flutter run --web-header=Cross-Origin-Opener-Policy=same-origin --web-header=Cross-Origin-Embedder-Policy=require-corp
+flutter_rust_bridge_codegen build-web
+flutter run --web-header=Cross-Origin-Opener-Policy=same-origin --web-header=Cross-Origin-Embedder-Policy=credentialless
 ```
 
 #### Linux, Windows & Mac
