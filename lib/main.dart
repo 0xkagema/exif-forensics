@@ -1,4 +1,3 @@
-import 'package:exifapp/src/rust/api/simple.dart';
 import 'package:exifapp/src/rust/frb_generated.dart';
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
@@ -8,6 +7,7 @@ import 'theme.dart';
 import 'ui/pages/home.dart';
 
 Future<void> main() async {
+  // init Rust bridge
   await RustLib.init();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const ExifForensicsApp());
