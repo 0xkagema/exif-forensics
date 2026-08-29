@@ -96,6 +96,24 @@ class ForensicsReport {
       buffer.writeln(
         '- **C2PA Credentials:** Present (${aiDetection.c2paIssuer ?? 'Issuer Verified'})',
       );
+      if (aiDetection.c2paSignature?.validationState != null) {
+        buffer.writeln(
+          '- **Signature Status:** ${aiDetection.c2paSignature!.validationState} (Algorithm: ${aiDetection.c2paSignature!.algorithm?.toUpperCase() ?? 'N/A'})',
+        );
+      }
+      if (aiDetection.c2paSignature?.signingTime != null) {
+        buffer.writeln(
+          '- **Signing Time:** ${aiDetection.c2paSignature!.signingTime}',
+        );
+      }
+      if (aiDetection.c2paActionSummaries.isNotEmpty) {
+        buffer.writeln('- **Provenance Actions:**');
+        for (final act in aiDetection.c2paActionSummaries) {
+          buffer.writeln(
+            '  - `${act.action}`${act.softwareAgent != null ? " by ${act.softwareAgent}" : ""}${act.when != null ? " at ${act.when}" : ""}',
+          );
+        }
+      }
     }
     buffer.writeln('');
 

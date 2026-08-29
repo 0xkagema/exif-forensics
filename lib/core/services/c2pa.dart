@@ -1,17 +1,30 @@
 import 'dart:typed_data';
 
+import '../../src/rust/api/simple.dart';
 import '../models/ai_detection.dart';
-
-
-// Rust comes in here
 
 class C2paService {
   /// Analyzes image bytes and extracted EXIF tags for AI generation markers,
-  /// C2PA manifests, and digital provenance signatures.
+  /// C2PA manifests, and digital provenance signatures using the Rust C2PA engine.
   static AiDetectionResult analyzeProvenance({
     required Uint8List bytes,
     required Map<String, dynamic> exifTags,
+    String? mimeType,
   }) {
+    C2paResponseModel? c2paModel;
+
+    // 1. Invoke high-performance Rust C2PA parser
+    try {
+      final rustJson = parseC2Pa(
+        imageBytes: bytes,
+        mimeType: mimeType,
+      );
+      c2paModel = C2paResponseModel.fromRawJson(rustJson);
+    } catch (_) {
+      // Graceful fallback if Rust bridge is not initialized
+      c2paModel = null;
+    }
+
     final signatures = <String>[];
     final c2paActions = <String>[];
     bool hasC2pa = false;
@@ -22,58 +35,94 @@ class C2paService {
     String? negativePrompt;
     final generationParams = <String, dynamic>{};
 
-    // 1. Scan binary bytes for C2PA JUMBF boxes or Content Credentials markers
-    final byteString = _extractSearchableStrings(bytes);
-
-    if (byteString.contains('c2pa') ||
-        byteString.contains('jumb') ||
-        byteString.contains('urn:uuid:c2pa') ||
-        byteString.contains('c2pa.manifest')) {
+    // 2. Process Rust C2PA findings if present
+    if (c2paModel != null && c2paModel.hasC2pa) {
       hasC2pa = true;
       signatures.add('C2PA Content Credentials Manifest detected');
 
-      if (byteString.contains('Adobe') || byteString.contains('adobe')) {
-        c2paIssuer = 'Adobe Content Authenticity Initiative';
-      } else if (byteString.contains('Truepic')) {
-        c2paIssuer = 'Truepic Lens';
-      } else if (byteString.contains('Microsoft')) {
-        c2paIssuer = 'Microsoft Content Credentials';
-      } else if (byteString.contains('Google')) {
-        c2paIssuer = 'Google SynthID';
+      final sig = c2paModel.signature;
+      if (sig != null) {
+        c2paIssuer = sig.issuer ?? sig.commonName;
+        if (c2paIssuer != null) {
+          signatures.add('Signer Issuer: $c2paIssuer');
+        }
+        if (sig.algorithm != null) {
+          signatures.add('Algorithm: ${sig.algorithm!.toUpperCase()}');
+        }
+        if (sig.validationState != null) {
+          signatures.add('Cryptographic Signature: ${sig.validationState}');
+        }
       }
 
-      if (byteString.contains('c2pa.created')) {
-        c2paActions.add('c2pa.created');
+      for (final act in c2paModel.actions) {
+        c2paActions.add(act.action);
+        if (act.isAiAction) {
+          signatures.add('AI Provenance Action: ${act.action}');
+        }
       }
-      if (byteString.contains('c2pa.edited')) {
-        c2paActions.add('c2pa.edited');
+
+      final ai = c2paModel.aiDetails;
+      if (ai != null) {
+        if (ai.modelDisplay != null) {
+          signatures.add('AI Generator Model: ${ai.modelDisplay}');
+        } else if (ai.modelName != null) {
+          signatures.add('AI Generator Model: ${ai.modelName}');
+        }
+        if (ai.company != null) {
+          signatures.add('AI Organization: ${ai.company}');
+        }
+        if (ai.digitalSourceType != null) {
+          signatures.add('Digital Source Type: ${ai.digitalSourceType}');
+        }
       }
-      if (byteString.contains('c2pa.placed')) {
-        c2paActions.add('c2pa.placed');
+
+      if (c2paModel.ingredients.isNotEmpty) {
+        signatures.add(
+          'Provenance Chain: ${c2paModel.ingredients.length} ingredient asset(s) linked',
+        );
+      }
+
+      // If Rust verified AI generation via C2PA assertions or claim generator
+      if (c2paModel.isAiGenerated || (ai != null && ai.isAiGenerated)) {
+        final aiModelName = ai?.modelDisplay ?? ai?.modelName ?? 'Generative AI Model';
+        final org = ai?.company ?? c2paIssuer ?? 'AI Generator';
+
+        return AiDetectionResult(
+          classification: ForensicClassification.aiGenerated,
+          confidence: AiConfidence.high,
+          verdict: 'AI-Generated Image ($aiModelName)',
+          explanation:
+              'Cryptographically verified C2PA Content Credentials confirm this asset was generated or modified by AI ($org). Signature status: ${sig?.validationState ?? "Valid"}.',
+          generator: org,
+          model: aiModelName,
+          hasC2paManifest: true,
+          c2paIssuer: c2paIssuer,
+          c2paActions: c2paActions,
+          detectedSignatures: signatures,
+          c2paData: c2paModel,
+        );
       }
     }
 
-    // 2. Check EXIF tag values for AI generation fingerprints
+    // 3. Scan EXIF tag values for AI generation fingerprints (Stable Diffusion, Midjourney, etc.)
     final tagValues = exifTags.values.map((v) => v.toString()).toList();
     final tagString = tagValues.join(' \n ');
 
     // Stable Diffusion / Automatic1111 / ComfyUI / Forge / WebUI
     if (_containsIgnoreCase(tagString, 'Negative prompt:') ||
-        _containsIgnoreCase(tagString, 'Steps:') &&
+        (_containsIgnoreCase(tagString, 'Steps:') &&
             _containsIgnoreCase(tagString, 'Sampler:') &&
-            _containsIgnoreCase(tagString, 'CFG scale:') ||
+            _containsIgnoreCase(tagString, 'CFG scale:')) ||
         _containsIgnoreCase(tagString, 'ComfyUI') ||
         _containsIgnoreCase(tagString, 'Stable Diffusion') ||
-        _containsIgnoreCase(tagString, 'AUTOMATIC1111') ||
-        _containsIgnoreCase(byteString, 'ComfyUI') ||
-        _containsIgnoreCase(byteString, 'StableDiffusion')) {
+        _containsIgnoreCase(tagString, 'AUTOMATIC1111')) {
       generator = 'Stable Diffusion Ecosystem';
       signatures.add(
         'Stable Diffusion / Automatic1111 / ComfyUI metadata structure found',
       );
 
       _extractStableDiffusionParams(
-        tagString.isNotEmpty ? tagString : byteString,
+        tagString,
         generationParams,
         (p) => prompt = p,
         (np) => negativePrompt = np,
@@ -95,16 +144,16 @@ class C2paService {
         c2paIssuer: c2paIssuer,
         c2paActions: c2paActions,
         detectedSignatures: signatures,
+        c2paData: c2paModel,
       );
     }
 
     // Midjourney
     if (_containsIgnoreCase(tagString, 'Midjourney') ||
-        _containsIgnoreCase(byteString, 'Midjourney') ||
         _containsIgnoreCase(tagString, '--v 5') ||
         _containsIgnoreCase(tagString, '--v 6') ||
-        _containsIgnoreCase(tagString, '--ar ') &&
-            _containsIgnoreCase(tagString, '--stylize')) {
+        (_containsIgnoreCase(tagString, '--ar ') &&
+            _containsIgnoreCase(tagString, '--stylize'))) {
       generator = 'Midjourney';
       signatures.add('Midjourney generation signature detected');
 
@@ -122,15 +171,15 @@ class C2paService {
         c2paIssuer: c2paIssuer,
         c2paActions: c2paActions,
         detectedSignatures: signatures,
+        c2paData: c2paModel,
       );
     }
 
     // DALL-E / OpenAI / ChatGPT
     if (_containsIgnoreCase(tagString, 'DALL·E') ||
         _containsIgnoreCase(tagString, 'DALL-E') ||
-        _containsIgnoreCase(byteString, 'DALL-E') ||
-        _containsIgnoreCase(tagString, 'OpenAI') &&
-            _containsIgnoreCase(tagString, 'generative')) {
+        (_containsIgnoreCase(tagString, 'OpenAI') &&
+            _containsIgnoreCase(tagString, 'generative'))) {
       generator = 'OpenAI DALL·E';
       signatures.add('DALL·E provenance signature detected');
 
@@ -148,13 +197,13 @@ class C2paService {
         c2paIssuer: c2paIssuer,
         c2paActions: c2paActions,
         detectedSignatures: signatures,
+        c2paData: c2paModel,
       );
     }
 
     // Adobe Firefly
     if (_containsIgnoreCase(tagString, 'Adobe Firefly') ||
-        _containsIgnoreCase(byteString, 'Adobe Firefly') ||
-        _containsIgnoreCase(byteString, 'adobe:firefly')) {
+        _containsIgnoreCase(tagString, 'adobe:firefly')) {
       generator = 'Adobe Firefly';
       signatures.add('Adobe Firefly AI generation signature detected');
 
@@ -171,13 +220,13 @@ class C2paService {
         c2paIssuer: c2paIssuer ?? 'Adobe CAI',
         c2paActions: c2paActions,
         detectedSignatures: signatures,
+        c2paData: c2paModel,
       );
     }
 
     // Flux / Black Forest Labs
     if (_containsIgnoreCase(tagString, 'FLUX.1') ||
-        _containsIgnoreCase(tagString, 'Black Forest Labs') ||
-        _containsIgnoreCase(byteString, 'FLUX.1')) {
+        _containsIgnoreCase(tagString, 'Black Forest Labs')) {
       generator = 'Black Forest Labs (FLUX)';
       signatures.add('FLUX.1 generation signature detected');
 
@@ -194,6 +243,7 @@ class C2paService {
         c2paIssuer: c2paIssuer,
         c2paActions: c2paActions,
         detectedSignatures: signatures,
+        c2paData: c2paModel,
       );
     }
 
@@ -230,7 +280,9 @@ class C2paService {
           'Hardware optical sensor metadata verified',
           if (hasGps) 'Authentic GPS telemetry recorded',
           if (hasDateOriginal) 'Original shutter timestamp recorded',
+          ...signatures,
         ],
+        c2paData: c2paModel,
       );
     }
 
@@ -252,7 +304,11 @@ class C2paService {
           hasC2paManifest: hasC2pa,
           c2paIssuer: c2paIssuer,
           c2paActions: c2paActions,
-          detectedSignatures: ['Editing software marker: $softwareTag'],
+          detectedSignatures: [
+            'Editing software marker: $softwareTag',
+            ...signatures,
+          ],
+          c2paData: c2paModel,
         );
       }
     }
@@ -261,13 +317,15 @@ class C2paService {
     return AiDetectionResult(
       classification: ForensicClassification.inconclusive,
       confidence: AiConfidence.none,
-      verdict: 'Inconclusive / Clean Metadata',
-      explanation:
-          'No synthetic AI generation markers or verified raw camera sensor tags were found. Metadata may have been stripped or cleaned by social media platforms.',
+      verdict: hasC2pa ? 'C2PA Verified Asset' : 'Inconclusive / Clean Metadata',
+      explanation: hasC2pa
+          ? 'Image contains C2PA metadata with no explicit AI generation actions recorded.'
+          : 'No synthetic AI generation markers or verified raw camera sensor tags were found. Metadata may have been stripped or cleaned by social media platforms.',
       hasC2paManifest: hasC2pa,
       c2paIssuer: c2paIssuer,
       c2paActions: c2paActions,
-      detectedSignatures: hasC2pa ? ['C2PA Manifest present'] : [],
+      detectedSignatures: hasC2pa ? signatures : [],
+      c2paData: c2paModel,
     );
   }
 
@@ -283,78 +341,38 @@ class C2paService {
     return null;
   }
 
-  static String _extractSearchableStrings(Uint8List bytes) {
-    // Scan leading bytes (up to 128KB) and trailing bytes for text metadata / XMP / C2PA
-    final buffer = StringBuffer();
-    final headerLength = bytes.length < 131072 ? bytes.length : 131072;
-    for (int i = 0; i < headerLength; i++) {
-      final b = bytes[i];
-      if (b >= 32 && b <= 126) {
-        buffer.writeCharCode(b);
-      } else {
-        buffer.write(' ');
-      }
-    }
-
-    if (bytes.length > 131072) {
-      final tailStart = bytes.length - 32768;
-      for (int i = tailStart; i < bytes.length; i++) {
-        final b = bytes[i];
-        if (b >= 32 && b <= 126) {
-          buffer.writeCharCode(b);
-        } else {
-          buffer.write(' ');
-        }
-      }
-    }
-    return buffer.toString();
-  }
-
   static void _extractStableDiffusionParams(
     String text,
     Map<String, dynamic> params,
-    void Function(String) setPrompt,
-    void Function(String) setNegPrompt,
-    void Function(String) setModel,
+    Function(String) setPrompt,
+    Function(String) setNegativePrompt,
+    Function(String) setModel,
   ) {
-    if (text.contains('Negative prompt:')) {
-      final parts = text.split('Negative prompt:');
-      final promptText = parts[0].trim();
-      setPrompt(promptText);
-
-      final negAndParams = parts[1];
-      if (negAndParams.contains('Steps:')) {
-        final negParts = negAndParams.split('Steps:');
-        setNegPrompt(negParts[0].trim());
-
-        final paramString = 'Steps:${negParts[1]}';
-        _parseParamString(paramString, params, setModel);
-      } else {
-        setNegPrompt(negAndParams.trim());
-      }
-    } else if (text.contains('Steps:') && text.contains('Sampler:')) {
-      final stepsIndex = text.indexOf('Steps:');
-      if (stepsIndex > 0) {
-        setPrompt(text.substring(0, stepsIndex).trim());
-      }
-      _parseParamString(text.substring(stepsIndex), params, setModel);
+    final lines = text.split('\n');
+    final firstLine = lines.isNotEmpty ? lines[0].trim() : '';
+    if (firstLine.isNotEmpty && !firstLine.startsWith('Negative prompt:')) {
+      setPrompt(firstLine);
+      params['Prompt'] = firstLine;
     }
-  }
 
-  static void _parseParamString(
-    String paramString,
-    Map<String, dynamic> params,
-    void Function(String) setModel,
-  ) {
-    final pairs = paramString.split(',');
-    for (final pair in pairs) {
-      final kv = pair.split(':');
-      if (kv.length >= 2) {
-        final k = kv[0].trim();
-        final v = kv.sublist(1).join(':').trim();
-        params[k] = v;
-        if (k.toLowerCase() == 'model') {
-          setModel(v);
+    for (final line in lines) {
+      final trimmed = line.trim();
+      if (trimmed.startsWith('Negative prompt:')) {
+        final np = trimmed.replaceFirst('Negative prompt:', '').trim();
+        setNegativePrompt(np);
+        params['Negative Prompt'] = np;
+      } else if (trimmed.startsWith('Steps:')) {
+        final parts = trimmed.split(',');
+        for (final part in parts) {
+          final kv = part.split(':');
+          if (kv.length == 2) {
+            final key = kv[0].trim();
+            final val = kv[1].trim();
+            params[key] = val;
+            if (key.toLowerCase() == 'model') {
+              setModel(val);
+            }
+          }
         }
       }
     }
