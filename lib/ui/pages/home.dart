@@ -1,7 +1,5 @@
-import 'package:exifapp/src/rust/api/simple.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:toastification/toastification.dart';
 
 import '../../core/state/forensics_controller.dart';
 import '../../theme.dart';
@@ -22,23 +20,7 @@ class _HomePageState extends State<HomePage> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final controller = widget.controller;
 
-    void greetMe() {
-      toastification.show(
-        alignment: Alignment.topCenter,
-        type: ToastificationType.success,
-        title: Text("Rust"),
-        description: Text(greet(name: "Kagema")),
-      );
-    }
-
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: greetMe,
-        child: CircleAvatar(
-          foregroundImage: AssetImage('assets/rust.png'),
-          radius: 20,
-        ),
-      ),
       backgroundColor: isDark
           ? const Color(0xFF0D0F11)
           : const Color(0xFFF4F6F8),

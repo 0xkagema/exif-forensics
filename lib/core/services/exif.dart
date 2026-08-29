@@ -79,6 +79,7 @@ class ExifServices {
     final aiDetection = C2paService.analyzeProvenance(
       bytes: bytes,
       exifTags: rawTags,
+      mimeType: mimeType,
     );
 
     return ForensicsReport(
