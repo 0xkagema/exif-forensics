@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import '../../core/state/forensics_controller.dart';
 import '../../theme.dart';
 import 'export_dialog.dart';
@@ -12,88 +13,15 @@ class AppHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor = isDark ? const Color(0xFF14171A) : Colors.white;
     final borderColor = isDark
         ? const Color(0xFF262B30)
         : const Color(0xFFE5E8EB);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      decoration: BoxDecoration(
-        color: bgColor,
-        border: Border(bottom: BorderSide(color: borderColor, width: 1)),
-      ),
+
       child: Row(
         children: [
-          // Logo & App Title
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: BrandColors.primary.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(AppRadius.md),
-              border: Border.all(
-                color: BrandColors.primary.withValues(alpha: 0.3),
-                width: 1,
-              ),
-            ),
-            child: const FaIcon(
-              FontAwesomeIcons.shieldHalved,
-              color: BrandColors.primary,
-              size: 20,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'EXIF Forensics',
-                    style: TextStyle(
-                      fontFamily: AppTheme.fontFamily,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.3,
-                      color: isDark ? BrandColors.white : BrandColors.darkGrey,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: 2,
-                    ),
-                    decoration: BoxDecoration(
-                      color: BrandColors.tertiary,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: const Text(
-                      'OSINT',
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                        color: BrandColors.white,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Text(
-                'Image Metadata & C2PA Provenance Inspector',
-                style: TextStyle(
-                  fontSize: 11,
-                  color: isDark ? BrandColors.neutral : const Color(0xFF666666),
-                ),
-              ),
-            ],
-          ),
-
-          const Spacer(),
-
           // If report is available, show action buttons
           if (controller.isSuccess && controller.report != null) ...[
             // File badge
