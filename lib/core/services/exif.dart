@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+
 import 'package:crypto/crypto.dart';
 import 'package:exif/exif.dart';
 
@@ -96,20 +97,7 @@ class ExifServices {
     );
   }
 
-  /// Legacy helper method for direct raw map extraction
-  static Future<Map<String, dynamic>> readExifData(Uint8List bytes) async {
-    try {
-      final exifData = await readExifFromBytes(bytes);
-      final Map<String, dynamic> data = {};
-      for (var i in exifData.entries) {
-        data[i.key] = i.value;
-      }
-      return data;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
+  /// detect filetype by looking at the magic number
   static String _detectMimeType(Uint8List bytes, String fileName) {
     if (bytes.length >= 3 &&
         bytes[0] == 0xFF &&
@@ -156,41 +144,26 @@ class ExifServices {
     return 'image/unknown';
   }
 
-  static Map<String, Map<String, dynamic>> _groupTags(
-    Map<String, dynamic> rawTags,
-  ) {
-    final Map<String, Map<String, dynamic>> groups = {
-      'GPS': {},
-      'Image': {},
-      'EXIF': {},
-      'Interoperability': {},
-      'MakerNote': {},
-      'Thumbnail': {},
-      'Other': {},
-    };
-
-    for (final entry in rawTags.entries) {
-      final key = entry.key;
-      if (key.startsWith('GPS ')) {
-        groups['GPS']![key] = entry.value;
-      } else if (key.startsWith('Image ')) {
-        groups['Image']![key] = entry.value;
-      } else if (key.startsWith('EXIF ')) {
-        groups['EXIF']![key] = entry.value;
-      } else if (key.startsWith('Interoperability ')) {
-        groups['Interoperability']![key] = entry.value;
-      } else if (key.toLowerCase().contains('makernote')) {
-        groups['MakerNote']![key] = entry.value;
-      } else if (key.startsWith('Thumbnail ')) {
-        groups['Thumbnail']![key] = entry.value;
-      } else {
-        groups['Other']![key] = entry.value;
-      }
-    }
-
-    // Remove empty categories
-    groups.removeWhere((key, value) => value.isEmpty);
-    return groups;
+  static DeviceDetails _extractDevice(Map<String, dynamic> exif) {
+    return DeviceDetails(
+      manufacturer: _getTagPrintable(exif, ['Image Make']),
+      model: _getTagPrintable(exif, ['Image Model']),
+      softwareVersion: _getTagPrintable(exif, ['Image Software']),
+      lensMake: _getTagPrintable(exif, ['EXIF LensMake']),
+      lensModel: _getTagPrintable(exif, ['EXIF LensModel']),
+      lensSpecification: _getTagPrintable(exif, ['EXIF LensSpecification']),
+      cameraOwner: _getTagPrintable(exif, [
+        'EXIF CameraOwnerName',
+        'Image CameraOwnerName',
+      ]),
+      bodySerialNumber: _getTagPrintable(exif, [
+        'EXIF BodySerialNumber',
+        'EXIF SerialNumber',
+      ]),
+      lensSerialNumber: _getTagPrintable(exif, ['EXIF LensSerialNumber']),
+      artist: _getTagPrintable(exif, ['Image Artist']),
+      copyright: _getTagPrintable(exif, ['Image Copyright']),
+    );
   }
 
   static PhotoLocation? _extractLocation(Map<String, dynamic> exif) {
@@ -274,80 +247,6 @@ class ExifServices {
     }
   }
 
-  static double? _parseExifCoordinate(String value, String ref) {
-    try {
-      final clean = value.replaceAll('[', '').replaceAll(']', '').trim();
-      final parts = clean.split(',');
-      if (parts.length < 3) return null;
-
-      final degrees = _parseFractionOrDouble(parts[0].trim()) ?? 0;
-      final minutes = _parseFractionOrDouble(parts[1].trim()) ?? 0;
-      final seconds = _parseFractionOrDouble(parts[2].trim()) ?? 0;
-
-      double decimal = degrees + (minutes / 60.0) + (seconds / 3600.0);
-      final direction = ref.trim().toUpperCase();
-      if (direction == 'S' || direction == 'W') {
-        decimal *= -1;
-      }
-      return decimal;
-    } catch (_) {
-      return null;
-    }
-  }
-
-  static String _formatDms(String value, String ref) {
-    try {
-      final clean = value.replaceAll('[', '').replaceAll(']', '').trim();
-      final parts = clean.split(',');
-      if (parts.length < 3) return '$value $ref';
-
-      final degrees = (_parseFractionOrDouble(parts[0].trim()) ?? 0).toInt();
-      final minutes = (_parseFractionOrDouble(parts[1].trim()) ?? 0).toInt();
-      final seconds = _parseFractionOrDouble(parts[2].trim()) ?? 0;
-
-      return '$degrees° $minutes\' ${seconds.toStringAsFixed(2)}" $ref'.trim();
-    } catch (_) {
-      return '$value $ref';
-    }
-  }
-
-  static double? _parseFractionOrDouble(String str) {
-    final s = str.trim();
-    if (s.contains('/')) {
-      final parts = s.split('/');
-      if (parts.length == 2) {
-        final num = double.tryParse(parts[0].trim());
-        final den = double.tryParse(parts[1].trim());
-        if (num != null && den != null && den != 0) {
-          return num / den;
-        }
-      }
-    }
-    return double.tryParse(s);
-  }
-
-  static DeviceDetails _extractDevice(Map<String, dynamic> exif) {
-    return DeviceDetails(
-      manufacturer: _getTagPrintable(exif, ['Image Make']),
-      model: _getTagPrintable(exif, ['Image Model']),
-      softwareVersion: _getTagPrintable(exif, ['Image Software']),
-      lensMake: _getTagPrintable(exif, ['EXIF LensMake']),
-      lensModel: _getTagPrintable(exif, ['EXIF LensModel']),
-      lensSpecification: _getTagPrintable(exif, ['EXIF LensSpecification']),
-      cameraOwner: _getTagPrintable(exif, [
-        'EXIF CameraOwnerName',
-        'Image CameraOwnerName',
-      ]),
-      bodySerialNumber: _getTagPrintable(exif, [
-        'EXIF BodySerialNumber',
-        'EXIF SerialNumber',
-      ]),
-      lensSerialNumber: _getTagPrintable(exif, ['EXIF LensSerialNumber']),
-      artist: _getTagPrintable(exif, ['Image Artist']),
-      copyright: _getTagPrintable(exif, ['Image Copyright']),
-    );
-  }
-
   static PhotographyDetails _extractPhotography(Map<String, dynamic> exif) {
     return PhotographyDetails(
       iso: _getTagPrintable(exif, [
@@ -388,6 +287,22 @@ class ExifServices {
     );
   }
 
+  static String _formatDms(String value, String ref) {
+    try {
+      final clean = value.replaceAll('[', '').replaceAll(']', '').trim();
+      final parts = clean.split(',');
+      if (parts.length < 3) return '$value $ref';
+
+      final degrees = (_parseFractionOrDouble(parts[0].trim()) ?? 0).toInt();
+      final minutes = (_parseFractionOrDouble(parts[1].trim()) ?? 0).toInt();
+      final seconds = _parseFractionOrDouble(parts[2].trim()) ?? 0;
+
+      return '$degrees° $minutes\' ${seconds.toStringAsFixed(2)}" $ref'.trim();
+    } catch (_) {
+      return '$value $ref';
+    }
+  }
+
   static String? _getTagPrintable(
     Map<String, dynamic> exif,
     List<String> tagNames,
@@ -404,9 +319,62 @@ class ExifServices {
     return null;
   }
 
-  static int? _parseInt(String? str) {
-    if (str == null) return null;
-    return int.tryParse(str.trim());
+  static Map<String, Map<String, dynamic>> _groupTags(
+    Map<String, dynamic> rawTags,
+  ) {
+    final Map<String, Map<String, dynamic>> groups = {
+      'GPS': {},
+      'Image': {},
+      'EXIF': {},
+      'Interoperability': {},
+      'MakerNote': {},
+      'Thumbnail': {},
+      'Other': {},
+    };
+
+    for (final entry in rawTags.entries) {
+      final key = entry.key;
+      if (key.startsWith('GPS ')) {
+        groups['GPS']![key] = entry.value;
+      } else if (key.startsWith('Image ')) {
+        groups['Image']![key] = entry.value;
+      } else if (key.startsWith('EXIF ')) {
+        groups['EXIF']![key] = entry.value;
+      } else if (key.startsWith('Interoperability ')) {
+        groups['Interoperability']![key] = entry.value;
+      } else if (key.toLowerCase().contains('makernote')) {
+        groups['MakerNote']![key] = entry.value;
+      } else if (key.startsWith('Thumbnail ')) {
+        groups['Thumbnail']![key] = entry.value;
+      } else {
+        groups['Other']![key] = entry.value;
+      }
+    }
+
+    // Remove empty categories
+    groups.removeWhere((key, value) => value.isEmpty);
+    return groups;
+  }
+
+  static double? _parseExifCoordinate(String value, String ref) {
+    try {
+      final clean = value.replaceAll('[', '').replaceAll(']', '').trim();
+      final parts = clean.split(',');
+      if (parts.length < 3) return null;
+
+      final degrees = _parseFractionOrDouble(parts[0].trim()) ?? 0;
+      final minutes = _parseFractionOrDouble(parts[1].trim()) ?? 0;
+      final seconds = _parseFractionOrDouble(parts[2].trim()) ?? 0;
+
+      double decimal = degrees + (minutes / 60.0) + (seconds / 3600.0);
+      final direction = ref.trim().toUpperCase();
+      if (direction == 'S' || direction == 'W') {
+        decimal *= -1;
+      }
+      return decimal;
+    } catch (_) {
+      return null;
+    }
   }
 
   static DateTime? _parseExifDate(String? dateStr) {
@@ -422,5 +390,25 @@ class ExifServices {
     } catch (_) {
       return null;
     }
+  }
+
+  static double? _parseFractionOrDouble(String str) {
+    final s = str.trim();
+    if (s.contains('/')) {
+      final parts = s.split('/');
+      if (parts.length == 2) {
+        final num = double.tryParse(parts[0].trim());
+        final den = double.tryParse(parts[1].trim());
+        if (num != null && den != null && den != 0) {
+          return num / den;
+        }
+      }
+    }
+    return double.tryParse(s);
+  }
+
+  static int? _parseInt(String? str) {
+    if (str == null) return null;
+    return int.tryParse(str.trim());
   }
 }
