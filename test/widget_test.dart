@@ -1,6 +1,6 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:exifapp/main.dart';
 import 'package:exifapp/ui/components/drop_zone.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('App renders correctly with initial DropZone', (

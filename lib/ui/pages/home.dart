@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: greetMe,
         child: CircleAvatar(
-          foregroundImage: AssetImage('rust.png'),
+          foregroundImage: AssetImage('assets/rust.png'),
           radius: 20,
         ),
       ),
@@ -223,13 +223,9 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(height: 24),
-            const SizedBox(
-              width: 180,
-              child: LinearProgressIndicator(
-                backgroundColor: Color(0xFF2B313A),
-                valueColor: AlwaysStoppedAnimation<Color>(BrandColors.primary),
-                minHeight: 4,
-              ),
+            CircularProgressIndicator(
+              backgroundColor: Color(0xFF2B313A),
+              valueColor: AlwaysStoppedAnimation<Color>(BrandColors.primary),
             ),
             const SizedBox(height: 18),
             Text(
