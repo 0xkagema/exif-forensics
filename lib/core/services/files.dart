@@ -19,12 +19,6 @@ class FileServices {
       rethrow;
     }
   }
-
-  /// Legacy helper for backwards compatibility
-  static Future<Uint8List> selectImageFileAndReturnBytes() async {
-    final fileData = await selectImageFile();
-    return fileData.bytes;
-  }
 }
 
 class SelectedFileData {
