@@ -8,3 +8,17 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 String greet({required String name}) =>
     RustLib.instance.api.crateApiSimpleGreet(name: name);
+
+String parseC2Pa({required List<int> imageBytes, String? mimeType}) => RustLib
+    .instance
+    .api
+    .crateApiSimpleParseC2Pa(imageBytes: imageBytes, mimeType: mimeType);
+
+/// WASM binding returning pretty-printed JSON for inspection and debugging.
+Future<String> parseC2PaPretty({
+  required List<int> imageBytes,
+  String? mimeType,
+}) => RustLib.instance.api.crateApiSimpleParseC2PaPretty(
+  imageBytes: imageBytes,
+  mimeType: mimeType,
+);
