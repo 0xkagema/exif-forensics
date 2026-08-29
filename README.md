@@ -28,6 +28,7 @@ EXIF Forensics helps investigators, photographers, journalists, OSINT researcher
 ### Stuff I wish it had -> coming up
 
 - Details about the software that edited the image -> Adobe Photoshop etc
+- Ability to load web resources -> paste an image link
 
 ### Example Metadata
 
@@ -110,9 +111,14 @@ flutter pub get
 #### Web
 
 ```bash
-flutter_rust_bridge_codegen build-web
-# ... or any other standard Flutter ways
+flutter_rust_bridge_codegen build-web 
 flutter run --web-header=Cross-Origin-Opener-Policy=same-origin --web-header=Cross-Origin-Embedder-Policy=require-corp
+```
+
+#### Linux, Windows & Mac
+
+```bash
+flutter run
 ```
 
 ## Supported Metadata
