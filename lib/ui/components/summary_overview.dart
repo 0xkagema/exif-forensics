@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+// using Material icons instead of FontAwesome
 import '../../core/models/models.dart';
 import '../../theme.dart';
 
@@ -44,7 +45,7 @@ class SummaryOverview extends StatelessWidget {
               childAspectRatio: constraints.maxWidth > 650 ? 2.1 : 1.7,
               children: [
                 _StatTile(
-                  icon: FontAwesomeIcons.robot,
+                  icon: Icons.smart_toy,
                   title: 'AI Forensics',
                   value: report.aiDetection.isAiGenerated
                       ? 'AI Generated'
@@ -59,7 +60,7 @@ class SummaryOverview extends StatelessWidget {
                   isDark: isDark,
                 ),
                 _StatTile(
-                  icon: FontAwesomeIcons.locationDot,
+                  icon: Icons.location_on,
                   title: 'GPS Location',
                   value: report.hasLocation
                       ? report.location!.formattedDecimal
@@ -74,7 +75,7 @@ class SummaryOverview extends StatelessWidget {
                   onTap: report.hasLocation ? onNavigateToMap : null,
                 ),
                 _StatTile(
-                  icon: FontAwesomeIcons.camera,
+                  icon: Icons.camera_alt,
                   title: 'Capture Hardware',
                   value: report.device.displayName,
                   subtitle:
@@ -84,7 +85,7 @@ class SummaryOverview extends StatelessWidget {
                   onTap: onNavigateToDevice,
                 ),
                 _StatTile(
-                  icon: FontAwesomeIcons.sliders,
+                  icon: Icons.tune,
                   title: 'Photography',
                   value: report.photography.fNumber != null
                       ? 'f/${report.photography.fNumber} • ${report.photography.exposureTime ?? ""}'
@@ -95,7 +96,7 @@ class SummaryOverview extends StatelessWidget {
                   onTap: onNavigateToPhotography,
                 ),
                 _StatTile(
-                  icon: FontAwesomeIcons.clock,
+                  icon: Icons.access_time,
                   title: 'Capture Timestamp',
                   value: report.captureDateTimeString ?? 'Not Recorded',
                   subtitle: report.timeZoneOffset != null
@@ -105,7 +106,7 @@ class SummaryOverview extends StatelessWidget {
                   isDark: isDark,
                 ),
                 _StatTile(
-                  icon: FontAwesomeIcons.tags,
+                  icon: Icons.label,
                   title: 'IFD Tags Extracted',
                   value: '${report.rawTags.length} Tags',
                   subtitle:
@@ -133,8 +134,8 @@ class SummaryOverview extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const FaIcon(
-                    FontAwesomeIcons.timeline,
+                  const Icon(
+                    Icons.timeline,
                     size: 14,
                     color: BrandColors.primary,
                   ),
@@ -151,7 +152,7 @@ class SummaryOverview extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               _TimelineEvent(
-                icon: FontAwesomeIcons.camera,
+                icon: Icons.camera_alt,
                 label: 'Original Shutter Capture',
                 time: report.captureDateTimeString ?? 'Unknown / Not in EXIF',
                 isRecorded: report.captureDateTimeString != null,
@@ -159,7 +160,7 @@ class SummaryOverview extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               _TimelineEvent(
-                icon: FontAwesomeIcons.microchip,
+                icon: Icons.memory,
                 label: 'Sensor Digitization',
                 time:
                     report.digitizedDateTime?.toIso8601String() ??
@@ -169,7 +170,7 @@ class SummaryOverview extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               _TimelineEvent(
-                icon: FontAwesomeIcons.penToSquare,
+                icon: Icons.edit,
                 label: 'File Modification / Last Saved',
                 time:
                     report.modifiedDateTime?.toIso8601String() ??
@@ -186,7 +187,7 @@ class SummaryOverview extends StatelessWidget {
 }
 
 class _StatTile extends StatelessWidget {
-  final FaIconData icon;
+  final IconData icon;
   final String title;
   final String value;
   final String subtitle;
@@ -224,7 +225,7 @@ class _StatTile extends StatelessWidget {
         children: [
           Row(
             children: [
-              FaIcon(icon, size: 12, color: iconColor),
+              Icon(icon, size: 12, color: iconColor),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
@@ -240,8 +241,8 @@ class _StatTile extends StatelessWidget {
                 ),
               ),
               if (onTap != null)
-                FaIcon(
-                  FontAwesomeIcons.arrowRight,
+                Icon(
+                  Icons.arrow_forward,
                   size: 10,
                   color: isDark
                       ? const Color(0xFF6E7681)
@@ -284,7 +285,7 @@ class _StatTile extends StatelessWidget {
 }
 
 class _TimelineEvent extends StatelessWidget {
-  final FaIconData icon;
+  final IconData icon;
   final String label;
   final String time;
   final bool isRecorded;
@@ -310,7 +311,7 @@ class _TimelineEvent extends StatelessWidget {
                 : (isDark ? const Color(0xFF22272E) : const Color(0xFFECEFF2)),
             shape: BoxShape.circle,
           ),
-          child: FaIcon(
+          child: Icon(
             icon,
             size: 11,
             color: isRecorded ? BrandColors.success : BrandColors.neutral,

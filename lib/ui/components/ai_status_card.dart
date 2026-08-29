@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// switched to Material icons; removed font_awesome_flutter import
 import 'package:toastification/toastification.dart';
 
 import '../../core/models/models.dart';
@@ -57,7 +57,7 @@ class AiStatusCard extends StatelessWidget {
                     color: statusColor.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
-                  child: FaIcon(statusIcon, color: statusColor, size: 16),
+                  child: Icon(statusIcon, color: statusColor, size: 16),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -108,14 +108,16 @@ class AiStatusCard extends StatelessWidget {
                                 color: BrandColors.info.withValues(alpha: 0.2),
                                 borderRadius: BorderRadius.circular(4),
                                 border: Border.all(
-                                  color: BrandColors.info.withValues(alpha: 0.4),
+                                  color: BrandColors.info.withValues(
+                                    alpha: 0.4,
+                                  ),
                                 ),
                               ),
                               child: const Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  FaIcon(
-                                    FontAwesomeIcons.certificate,
+                                  Icon(
+                                    Icons.verified,
                                     size: 9,
                                     color: BrandColors.info,
                                   ),
@@ -196,14 +198,14 @@ class AiStatusCard extends StatelessWidget {
                     children: [
                       if (aiDetection.generator != null)
                         _DetailChip(
-                          icon: FontAwesomeIcons.gears,
+                          icon: Icons.settings,
                           label: 'Engine / Tool',
                           value: aiDetection.generator!,
                           isDark: isDark,
                         ),
                       if (aiDetection.model != null)
                         _DetailChip(
-                          icon: FontAwesomeIcons.cube,
+                          icon: Icons.widgets,
                           label: 'Model',
                           value: aiDetection.model!,
                           isDark: isDark,
@@ -211,21 +213,21 @@ class AiStatusCard extends StatelessWidget {
                       if (aiDetails?.company != null &&
                           aiDetails!.company != aiDetection.generator)
                         _DetailChip(
-                          icon: FontAwesomeIcons.building,
+                          icon: Icons.apartment,
                           label: 'Organization',
                           value: aiDetails.company!,
                           isDark: isDark,
                         ),
                       if (aiDetails?.digitalSourceType != null)
                         _DetailChip(
-                          icon: FontAwesomeIcons.fingerprint,
+                          icon: Icons.fingerprint,
                           label: 'IPTC Source',
                           value: aiDetails!.digitalSourceType!.split('/').last,
                           isDark: isDark,
                         ),
                       if (aiDetails?.generationDate != null)
                         _DetailChip(
-                          icon: FontAwesomeIcons.calendarDay,
+                          icon: Icons.calendar_today,
                           label: 'Generated On',
                           value: aiDetails?.generationDate ?? '',
                           isDark: isDark,
@@ -258,8 +260,8 @@ class AiStatusCard extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                const FaIcon(
-                                  FontAwesomeIcons.shieldHalved,
+                                const Icon(
+                                  Icons.shield,
                                   color: BrandColors.info,
                                   size: 15,
                                 ),
@@ -283,16 +285,18 @@ class AiStatusCard extends StatelessWidget {
                                   vertical: 3,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: (sig!.isSignatureValid
-                                          ? BrandColors.success
-                                          : BrandColors.danger)
-                                      .withValues(alpha: 0.15),
+                                  color:
+                                      (sig!.isSignatureValid
+                                              ? BrandColors.success
+                                              : BrandColors.danger)
+                                          .withValues(alpha: 0.15),
                                   borderRadius: BorderRadius.circular(4),
                                   border: Border.all(
-                                    color: (sig.isSignatureValid
-                                            ? BrandColors.success
-                                            : BrandColors.danger)
-                                        .withValues(alpha: 0.3),
+                                    color:
+                                        (sig.isSignatureValid
+                                                ? BrandColors.success
+                                                : BrandColors.danger)
+                                            .withValues(alpha: 0.3),
                                   ),
                                 ),
                                 child: Text(
@@ -317,7 +321,8 @@ class AiStatusCard extends StatelessWidget {
                             value: sig.issuer ?? 'Unspecified Issuer',
                             isDark: isDark,
                           ),
-                          if (sig.commonName != null && sig.commonName != sig.issuer)
+                          if (sig.commonName != null &&
+                              sig.commonName != sig.issuer)
                             _C2paDataRow(
                               label: 'Common Name (CN)',
                               value: sig.commonName!,
@@ -362,17 +367,20 @@ class AiStatusCard extends StatelessWidget {
                         Row(
                           children: [
                             OutlinedButton.icon(
-                              onPressed: () => _showRawManifestDialog(context, isDark),
+                              onPressed: () =>
+                                  _showRawManifestDialog(context, isDark),
                               style: OutlinedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 10,
                                   vertical: 6,
                                 ),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(AppRadius.sm),
+                                  borderRadius: BorderRadius.circular(
+                                    AppRadius.sm,
+                                  ),
                                 ),
                               ),
-                              icon: const FaIcon(FontAwesomeIcons.code, size: 11),
+                              icon: const Icon(Icons.code, size: 11),
                               label: const Text(
                                 'Inspect Manifest JSON',
                                 style: TextStyle(fontSize: 11),
@@ -390,8 +398,8 @@ class AiStatusCard extends StatelessWidget {
                 if (actions.isNotEmpty) ...[
                   Row(
                     children: [
-                      const FaIcon(
-                        FontAwesomeIcons.listCheck,
+                      const Icon(
+                        Icons.list_alt,
                         size: 13,
                         color: BrandColors.primary,
                       ),
@@ -401,7 +409,9 @@ class AiStatusCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 12.5,
                           fontWeight: FontWeight.w700,
-                          color: isDark ? BrandColors.white : BrandColors.darkGrey,
+                          color: isDark
+                              ? BrandColors.white
+                              : BrandColors.darkGrey,
                         ),
                       ),
                     ],
@@ -409,10 +419,14 @@ class AiStatusCard extends StatelessWidget {
                   const SizedBox(height: 8),
                   Container(
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF14181D) : const Color(0xFFF9FAFB),
+                      color: isDark
+                          ? const Color(0xFF14181D)
+                          : const Color(0xFFF9FAFB),
                       borderRadius: BorderRadius.circular(AppRadius.md),
                       border: Border.all(
-                        color: isDark ? const Color(0xFF22272E) : const Color(0xFFE5E7EB),
+                        color: isDark
+                            ? const Color(0xFF22272E)
+                            : const Color(0xFFE5E7EB),
                       ),
                     ),
                     padding: const EdgeInsets.all(12),
@@ -456,7 +470,7 @@ class AiStatusCard extends StatelessWidget {
                           count: validation.successes.length,
                           label: 'Passed Checks',
                           color: BrandColors.success,
-                          icon: FontAwesomeIcons.circleCheck,
+                          icon: Icons.check_circle,
                           isDark: isDark,
                         ),
                       if (validation.informational.isNotEmpty)
@@ -464,7 +478,7 @@ class AiStatusCard extends StatelessWidget {
                           count: validation.informational.length,
                           label: 'Notices',
                           color: BrandColors.info,
-                          icon: FontAwesomeIcons.circleInfo,
+                          icon: Icons.info,
                           isDark: isDark,
                         ),
                       if (validation.failures.isNotEmpty)
@@ -472,7 +486,7 @@ class AiStatusCard extends StatelessWidget {
                           count: validation.failures.length,
                           label: 'Failures',
                           color: BrandColors.danger,
-                          icon: FontAwesomeIcons.triangleExclamation,
+                          icon: Icons.warning,
                           isDark: isDark,
                         ),
                     ],
@@ -488,8 +502,8 @@ class AiStatusCard extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          const FaIcon(
-                            FontAwesomeIcons.terminal,
+                          const Icon(
+                            Icons.terminal,
                             size: 12,
                             color: BrandColors.primary,
                           ),
@@ -510,7 +524,7 @@ class AiStatusCard extends StatelessWidget {
                         onPressed: () =>
                             _copyText(context, aiDetection.prompt!, 'Prompt'),
                         tooltip: 'Copy Prompt',
-                        icon: const FaIcon(FontAwesomeIcons.copy, size: 12),
+                        icon: const Icon(Icons.copy, size: 12),
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
                       ),
@@ -563,8 +577,8 @@ class AiStatusCard extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          FaIcon(
-                            FontAwesomeIcons.circleCheck,
+                          Icon(
+                            Icons.check_circle,
                             size: 12,
                             color: statusColor,
                           ),
@@ -616,16 +630,16 @@ class AiStatusCard extends StatelessWidget {
     }
   }
 
-  FaIconData _getStatusIcon() {
+  IconData _getStatusIcon() {
     switch (aiDetection.classification) {
       case ForensicClassification.aiGenerated:
-        return FontAwesomeIcons.robot;
+        return Icons.smart_toy;
       case ForensicClassification.cameraOriginal:
-        return FontAwesomeIcons.camera;
+        return Icons.camera_alt;
       case ForensicClassification.digitallyEdited:
-        return FontAwesomeIcons.penToSquare;
+        return Icons.edit;
       case ForensicClassification.inconclusive:
-        return FontAwesomeIcons.circleQuestion;
+        return Icons.help;
     }
   }
 
@@ -633,7 +647,9 @@ class AiStatusCard extends StatelessWidget {
     final rawManifest = aiDetection.c2paRawManifest;
     final jsonString = rawManifest != null
         ? const JsonEncoder.withIndent('  ').convert(rawManifest)
-        : const JsonEncoder.withIndent('  ').convert(aiDetection.c2paData?.toMap() ?? {});
+        : const JsonEncoder.withIndent(
+            '  ',
+          ).convert(aiDetection.c2paData?.toMap() ?? {});
 
     showDialog(
       context: context,
@@ -658,8 +674,8 @@ class AiStatusCard extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          const FaIcon(
-                            FontAwesomeIcons.code,
+                          const Icon(
+                            Icons.code,
                             size: 16,
                             color: BrandColors.primary,
                           ),
@@ -669,7 +685,9 @@ class AiStatusCard extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
-                              color: isDark ? BrandColors.white : BrandColors.darkGrey,
+                              color: isDark
+                                  ? BrandColors.white
+                                  : BrandColors.darkGrey,
                             ),
                           ),
                         ],
@@ -677,14 +695,18 @@ class AiStatusCard extends StatelessWidget {
                       Row(
                         children: [
                           IconButton(
-                            onPressed: () => _copyText(context, jsonString, 'Raw Manifest JSON'),
+                            onPressed: () => _copyText(
+                              context,
+                              jsonString,
+                              'Raw Manifest JSON',
+                            ),
                             tooltip: 'Copy JSON',
-                            icon: const FaIcon(FontAwesomeIcons.copy, size: 14),
+                            icon: const Icon(Icons.copy, size: 14),
                           ),
                           IconButton(
                             onPressed: () => Navigator.of(context).pop(),
                             tooltip: 'Close',
-                            icon: const FaIcon(FontAwesomeIcons.xmark, size: 16),
+                            icon: const Icon(Icons.close, size: 16),
                           ),
                         ],
                       ),
@@ -696,10 +718,14 @@ class AiStatusCard extends StatelessWidget {
                       width: double.infinity,
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF0F1115) : const Color(0xFFF4F6F8),
+                        color: isDark
+                            ? const Color(0xFF0F1115)
+                            : const Color(0xFFF4F6F8),
                         borderRadius: BorderRadius.circular(AppRadius.sm),
                         border: Border.all(
-                          color: isDark ? const Color(0xFF22272E) : const Color(0xFFE2E7EC),
+                          color: isDark
+                              ? const Color(0xFF22272E)
+                              : const Color(0xFFE2E7EC),
                         ),
                       ),
                       child: SingleChildScrollView(
@@ -709,7 +735,9 @@ class AiStatusCard extends StatelessWidget {
                             fontFamily: 'monospace',
                             fontSize: 12,
                             height: 1.45,
-                            color: isDark ? const Color(0xFFC0CAD5) : const Color(0xFF2D3748),
+                            color: isDark
+                                ? const Color(0xFFC0CAD5)
+                                : const Color(0xFF2D3748),
                           ),
                         ),
                       ),
@@ -744,14 +772,19 @@ class _ActionHistoryItem extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: (action.isAiAction ? BrandColors.primary : BrandColors.secondary)
-                .withValues(alpha: 0.15),
+            color:
+                (action.isAiAction
+                        ? BrandColors.primary
+                        : BrandColors.secondary)
+                    .withValues(alpha: 0.15),
             shape: BoxShape.circle,
           ),
-          child: FaIcon(
-            action.isAiAction ? FontAwesomeIcons.robot : FontAwesomeIcons.gear,
+          child: Icon(
+            action.isAiAction ? Icons.smart_toy : Icons.settings,
             size: 11,
-            color: action.isAiAction ? BrandColors.primary : BrandColors.secondary,
+            color: action.isAiAction
+                ? BrandColors.primary
+                : BrandColors.secondary,
           ),
         ),
         const SizedBox(width: 10),
@@ -772,7 +805,10 @@ class _ActionHistoryItem extends StatelessWidget {
                   if (action.isAiAction) ...[
                     const SizedBox(width: 6),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                        vertical: 1,
+                      ),
                       decoration: BoxDecoration(
                         color: BrandColors.primary.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(3),
@@ -789,13 +825,16 @@ class _ActionHistoryItem extends StatelessWidget {
                   ],
                 ],
               ),
-              if (action.softwareAgent != null || action.softwareAgentName != null) ...[
+              if (action.softwareAgent != null ||
+                  action.softwareAgentName != null) ...[
                 const SizedBox(height: 2),
                 Text(
                   'Tool: ${action.softwareAgent ?? action.softwareAgentName!}',
                   style: TextStyle(
                     fontSize: 11,
-                    color: isDark ? const Color(0xFF9CA3AF) : const Color(0xFF4B5563),
+                    color: isDark
+                        ? const Color(0xFF9CA3AF)
+                        : const Color(0xFF4B5563),
                   ),
                 ),
               ],
@@ -805,7 +844,9 @@ class _ActionHistoryItem extends StatelessWidget {
                   'When: ${action.when!}',
                   style: TextStyle(
                     fontSize: 10.5,
-                    color: isDark ? BrandColors.neutral : const Color(0xFF6B7280),
+                    color: isDark
+                        ? BrandColors.neutral
+                        : const Color(0xFF6B7280),
                   ),
                 ),
               ],
@@ -846,7 +887,9 @@ class _C2paDataRow extends StatelessWidget {
               style: TextStyle(
                 fontSize: 11.5,
                 fontWeight: FontWeight.w600,
-                color: isDark ? const Color(0xFF8B949E) : const Color(0xFF57606A),
+                color: isDark
+                    ? const Color(0xFF8B949E)
+                    : const Color(0xFF57606A),
               ),
             ),
           ),
@@ -869,10 +912,12 @@ class _C2paDataRow extends StatelessWidget {
                     onTap: onCopy,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: FaIcon(
-                        FontAwesomeIcons.copy,
+                      child: Icon(
+                        Icons.copy,
                         size: 11,
-                        color: isDark ? BrandColors.neutral : const Color(0xFF6E7681),
+                        color: isDark
+                            ? BrandColors.neutral
+                            : const Color(0xFF6E7681),
                       ),
                     ),
                   ),
@@ -886,7 +931,7 @@ class _C2paDataRow extends StatelessWidget {
 }
 
 class _DetailChip extends StatelessWidget {
-  final FaIconData icon;
+  final IconData icon;
   final String label;
   final String value;
   final bool isDark;
@@ -912,7 +957,7 @@ class _DetailChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FaIcon(icon, size: 11, color: BrandColors.secondary),
+          Icon(icon, size: 11, color: BrandColors.secondary),
           const SizedBox(width: 6),
           Text(
             '$label: ',
@@ -944,7 +989,7 @@ class _ValidationBadge extends StatelessWidget {
   final int count;
   final String label;
   final Color color;
-  final FaIconData icon;
+  final IconData icon;
   final bool isDark;
 
   const _ValidationBadge({
@@ -967,7 +1012,7 @@ class _ValidationBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FaIcon(icon, size: 10, color: color),
+          Icon(icon, size: 10, color: color),
           const SizedBox(width: 5),
           Text(
             '$count $label',

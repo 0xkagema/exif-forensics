@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+// using Material icons instead of FontAwesome
 
 import '../../core/state/forensics_controller.dart';
 import '../../theme.dart';
@@ -120,8 +121,8 @@ class _HomePageState extends State<HomePage> {
                 color: BrandColors.danger.withValues(alpha: 0.12),
                 shape: BoxShape.circle,
               ),
-              child: const FaIcon(
-                FontAwesomeIcons.triangleExclamation,
+              child: const Icon(
+                Icons.warning,
                 size: 32,
                 color: BrandColors.danger,
               ),
@@ -162,7 +163,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
               ),
-              icon: const FaIcon(FontAwesomeIcons.arrowRotateLeft, size: 14),
+              icon: const Icon(Icons.rotate_left, size: 14),
               label: const Text('Try Another Image'),
             ),
           ],
@@ -198,8 +199,8 @@ class _HomePageState extends State<HomePage> {
                 color: BrandColors.primary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: const FaIcon(
-                FontAwesomeIcons.shieldHalved,
+              child: const Icon(
+                Icons.shield,
                 size: 32,
                 color: BrandColors.primary,
               ),
@@ -313,17 +314,17 @@ class _HomePageState extends State<HomePage> {
   Widget _buildTabBar(ForensicsController controller, bool isDark) {
     final report = controller.report!;
     final tabs = [
-      _TabItem(title: 'Overview', icon: FontAwesomeIcons.tableCellsLarge),
-      _TabItem(title: 'Device & Lens', icon: FontAwesomeIcons.cameraRetro),
-      _TabItem(title: 'Photography', icon: FontAwesomeIcons.sliders),
+      _TabItem(title: 'Overview', icon: Icons.grid_view),
+      _TabItem(title: 'Device & Lens', icon: Icons.camera_alt),
+      _TabItem(title: 'Photography', icon: Icons.tune),
       _TabItem(
         title: 'Location',
-        icon: FontAwesomeIcons.locationDot,
+        icon: Icons.location_on,
         badge: report.hasLocation ? 'GPS' : null,
       ),
       _TabItem(
         title: 'Raw Tags',
-        icon: FontAwesomeIcons.tags,
+        icon: Icons.label,
         badge: '${report.rawTags.length}',
       ),
     ];
@@ -366,7 +367,7 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      FaIcon(
+                      Icon(
                         item.icon,
                         size: 13,
                         color: isSelected
@@ -437,7 +438,7 @@ class _HomePageState extends State<HomePage> {
 
 class _TabItem {
   final String title;
-  final FaIconData icon;
+  final IconData icon;
   final String? badge;
 
   const _TabItem({required this.title, required this.icon, this.badge});

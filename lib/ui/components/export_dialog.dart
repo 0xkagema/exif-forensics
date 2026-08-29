@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// using Material icons instead of FontAwesome
 import 'package:toastification/toastification.dart';
+
 import '../../core/models/forensics_report.dart';
 import '../../theme.dart';
 
@@ -36,22 +37,6 @@ class _ExportDialogState extends State<ExportDialog> {
     }
   }
 
-  void _copyToClipboard() {
-    Clipboard.setData(ClipboardData(text: _currentContent));
-    toastification.show(
-      title: const Text('Copied to Clipboard'),
-      description: Text(
-        _selectedFormat == 0
-            ? 'Markdown report copied'
-            : _selectedFormat == 1
-            ? 'JSON data copied'
-            : 'Text summary copied',
-      ),
-      type: ToastificationType.success,
-      autoCloseDuration: const Duration(seconds: 3),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -74,8 +59,8 @@ class _ExportDialogState extends State<ExportDialog> {
               // Dialog Header
               Row(
                 children: [
-                  const FaIcon(
-                    FontAwesomeIcons.fileArrowDown,
+                  const Icon(
+                    Icons.file_download,
                     color: BrandColors.primary,
                     size: 20,
                   ),
@@ -91,7 +76,7 @@ class _ExportDialogState extends State<ExportDialog> {
                   const Spacer(),
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const FaIcon(FontAwesomeIcons.xmark, size: 16),
+                    icon: const Icon(Icons.close, size: 16),
                   ),
                 ],
               ),
@@ -102,14 +87,14 @@ class _ExportDialogState extends State<ExportDialog> {
                 children: [
                   _FormatChoiceChip(
                     label: 'Markdown (.md)',
-                    icon: FontAwesomeIcons.markdown,
+                    icon: Icons.folder,
                     isSelected: _selectedFormat == 0,
                     onTap: () => setState(() => _selectedFormat = 0),
                   ),
                   const SizedBox(width: 8),
                   _FormatChoiceChip(
                     label: 'JSON Data (.json)',
-                    icon: FontAwesomeIcons.code,
+                    icon: Icons.code,
                     isSelected: _selectedFormat == 1,
                     onTap: () => setState(() => _selectedFormat = 1),
                   ),
@@ -166,7 +151,7 @@ class _ExportDialogState extends State<ExportDialog> {
                         borderRadius: BorderRadius.circular(AppRadius.md),
                       ),
                     ),
-                    icon: const FaIcon(FontAwesomeIcons.copy, size: 14),
+                    icon: const Icon(Icons.copy, size: 14),
                     label: const Text('Copy to Clipboard'),
                   ),
                 ],
@@ -177,11 +162,27 @@ class _ExportDialogState extends State<ExportDialog> {
       ),
     );
   }
+
+  void _copyToClipboard() {
+    Clipboard.setData(ClipboardData(text: _currentContent));
+    toastification.show(
+      title: const Text('Copied to Clipboard'),
+      description: Text(
+        _selectedFormat == 0
+            ? 'Markdown report copied'
+            : _selectedFormat == 1
+            ? 'JSON data copied'
+            : 'Text summary copied',
+      ),
+      type: ToastificationType.success,
+      autoCloseDuration: const Duration(seconds: 3),
+    );
+  }
 }
 
 class _FormatChoiceChip extends StatelessWidget {
   final String label;
-  final FaIconData icon;
+  final IconData icon;
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -214,7 +215,7 @@ class _FormatChoiceChip extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            FaIcon(
+            Icon(
               icon,
               size: 13,
               color: isSelected

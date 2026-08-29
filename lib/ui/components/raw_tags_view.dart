@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// using Material icons instead of FontAwesome
 import 'package:toastification/toastification.dart';
+
 import '../../core/state/forensics_controller.dart';
 import '../../theme.dart';
 
@@ -9,30 +10,6 @@ class RawTagsView extends StatelessWidget {
   final ForensicsController controller;
 
   const RawTagsView({super.key, required this.controller});
-
-  void _copyTag(BuildContext context, String key, String value) {
-    Clipboard.setData(ClipboardData(text: '$key: $value'));
-    toastification.show(
-      title: const Text('Copied Tag'),
-      description: Text('$key copied to clipboard'),
-      type: ToastificationType.success,
-      autoCloseDuration: const Duration(seconds: 2),
-    );
-  }
-
-  void _copyAllTags(BuildContext context, Map<String, dynamic> tags) {
-    final buffer = StringBuffer();
-    for (final entry in tags.entries) {
-      buffer.writeln('${entry.key}: ${entry.value}');
-    }
-    Clipboard.setData(ClipboardData(text: buffer.toString()));
-    toastification.show(
-      title: const Text('Copied All Tags'),
-      description: Text('${tags.length} tags copied to clipboard'),
-      type: ToastificationType.success,
-      autoCloseDuration: const Duration(seconds: 2),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +53,8 @@ class RawTagsView extends StatelessWidget {
                         color: BrandColors.info.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(AppRadius.md),
                       ),
-                      child: const FaIcon(
-                        FontAwesomeIcons.tags,
+                      child: const Icon(
+                        Icons.label,
                         color: BrandColors.info,
                         size: 16,
                       ),
@@ -118,7 +95,7 @@ class RawTagsView extends StatelessWidget {
                             vertical: 8,
                           ),
                         ),
-                        icon: const FaIcon(FontAwesomeIcons.copy, size: 12),
+                        icon: const Icon(Icons.copy, size: 12),
                         label: const Text(
                           'Copy All',
                           style: TextStyle(fontSize: 11),
@@ -136,7 +113,7 @@ class RawTagsView extends StatelessWidget {
                         'Search tag name or value (e.g. GPS, Shutter, ISO, Make)...',
                     prefixIcon: const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12),
-                      child: FaIcon(FontAwesomeIcons.magnifyingGlass, size: 14),
+                      child: Icon(Icons.search, size: 14),
                     ),
                     prefixIconConstraints: const BoxConstraints(
                       minWidth: 40,
@@ -144,10 +121,7 @@ class RawTagsView extends StatelessWidget {
                     ),
                     suffixIcon: controller.searchQuery.isNotEmpty
                         ? IconButton(
-                            icon: const FaIcon(
-                              FontAwesomeIcons.circleXmark,
-                              size: 14,
-                            ),
+                            icon: const Icon(Icons.clear, size: 14),
                             onPressed: () => controller.setSearchQuery(''),
                           )
                         : null,
@@ -201,8 +175,8 @@ class RawTagsView extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const FaIcon(
-                      FontAwesomeIcons.filterCircleXmark,
+                    const Icon(
+                      Icons.filter_alt_off,
                       size: 28,
                       color: BrandColors.neutral,
                     ),
@@ -313,8 +287,8 @@ class RawTagsView extends StatelessWidget {
                       IconButton(
                         onPressed: () => _copyTag(context, key, value),
                         tooltip: 'Copy tag',
-                        icon: const FaIcon(
-                          FontAwesomeIcons.copy,
+                        icon: const Icon(
+                          Icons.copy,
                           size: 12,
                           color: BrandColors.neutral,
                         ),
@@ -328,6 +302,30 @@ class RawTagsView extends StatelessWidget {
             ),
         ],
       ),
+    );
+  }
+
+  void _copyAllTags(BuildContext context, Map<String, dynamic> tags) {
+    final buffer = StringBuffer();
+    for (final entry in tags.entries) {
+      buffer.writeln('${entry.key}: ${entry.value}');
+    }
+    Clipboard.setData(ClipboardData(text: buffer.toString()));
+    toastification.show(
+      title: const Text('Copied All Tags'),
+      description: Text('${tags.length} tags copied to clipboard'),
+      type: ToastificationType.success,
+      autoCloseDuration: const Duration(seconds: 2),
+    );
+  }
+
+  void _copyTag(BuildContext context, String key, String value) {
+    Clipboard.setData(ClipboardData(text: '$key: $value'));
+    toastification.show(
+      title: const Text('Copied Tag'),
+      description: Text('$key copied to clipboard'),
+      type: ToastificationType.success,
+      autoCloseDuration: const Duration(seconds: 2),
     );
   }
 }

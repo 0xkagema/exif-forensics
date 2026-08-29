@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+// using Material icons instead of FontAwesome
 
 import '../../core/state/forensics_controller.dart';
 import '../../theme.dart';
@@ -37,8 +38,8 @@ class AppHeader extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const FaIcon(
-                    FontAwesomeIcons.fileImage,
+                  const Icon(
+                    Icons.image,
                     size: 13,
                     color: BrandColors.secondary,
                   ),
@@ -74,7 +75,7 @@ class AppHeader extends StatelessWidget {
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
               ),
-              icon: const FaIcon(FontAwesomeIcons.fileArrowDown, size: 14),
+              icon: const Icon(Icons.file_download, size: 14),
               label: const Text('Export', style: TextStyle(fontSize: 12)),
             ),
             const SizedBox(width: 8),
@@ -93,7 +94,7 @@ class AppHeader extends StatelessWidget {
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
               ),
-              icon: const FaIcon(FontAwesomeIcons.arrowRotateLeft, size: 13),
+              icon: const Icon(Icons.rotate_left, size: 13),
               label: const Text('New Scan', style: TextStyle(fontSize: 12)),
             ),
             const SizedBox(width: 8),
@@ -103,8 +104,8 @@ class AppHeader extends StatelessWidget {
           IconButton(
             onPressed: () => controller.toggleTheme(),
             tooltip: isDark ? 'Switch to Light Theme' : 'Switch to Dark Theme',
-            icon: FaIcon(
-              isDark ? FontAwesomeIcons.sun : FontAwesomeIcons.moon,
+            icon: Icon(
+              isDark ? Icons.wb_sunny : Icons.nightlight_round,
               size: 16,
               color: isDark ? const Color(0xFFFFD166) : BrandColors.tertiary,
             ),

@@ -1,7 +1,7 @@
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// using Material icons instead of FontAwesome
 import 'package:toastification/toastification.dart';
 
 import '../../core/state/forensics_controller.dart';
@@ -125,10 +125,10 @@ class _DropZoneState extends State<DropZone> {
                               shape: BoxShape.circle,
                             ),
                             child: Center(
-                              child: FaIcon(
+                              child: Icon(
                                 _isDragging
-                                    ? FontAwesomeIcons.fileCirclePlus
-                                    : FontAwesomeIcons.cloudArrowUp,
+                                    ? Icons.file_upload
+                                    : Icons.cloud_upload,
                                 color: _isDragging
                                     ? dragHoverColor
                                     : primaryColor,
@@ -180,10 +180,7 @@ class _DropZoneState extends State<DropZone> {
                               ),
                               elevation: 3,
                             ),
-                            icon: const FaIcon(
-                              FontAwesomeIcons.folderOpen,
-                              size: 15,
-                            ),
+                            icon: const Icon(Icons.folder_open, size: 15),
                             label: const Text(
                               'Browse File',
                               style: TextStyle(
@@ -208,22 +205,22 @@ class _DropZoneState extends State<DropZone> {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   _FeaturePill(
-                    icon: FontAwesomeIcons.robot,
+                    icon: Icons.smart_toy,
                     label: 'AI & C2PA Detection',
                     isDark: isDark,
                   ),
                   _FeaturePill(
-                    icon: FontAwesomeIcons.locationDot,
+                    icon: Icons.location_on,
                     label: 'GPS Map Telemetry',
                     isDark: isDark,
                   ),
                   _FeaturePill(
-                    icon: FontAwesomeIcons.cameraRetro,
+                    icon: Icons.camera_alt,
                     label: 'Camera & Lens Hardware',
                     isDark: isDark,
                   ),
                   _FeaturePill(
-                    icon: FontAwesomeIcons.fingerprint,
+                    icon: Icons.fingerprint,
                     label: 'Cryptographic Hashes',
                     isDark: isDark,
                   ),
@@ -238,7 +235,7 @@ class _DropZoneState extends State<DropZone> {
 }
 
 class _FeaturePill extends StatelessWidget {
-  final FaIconData icon;
+  final IconData icon;
   final String label;
   final bool isDark;
 
@@ -262,7 +259,7 @@ class _FeaturePill extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FaIcon(icon, size: 12, color: BrandColors.secondary),
+          Icon(icon, size: 12, color: BrandColors.secondary),
           const SizedBox(width: 6),
           Text(
             label,

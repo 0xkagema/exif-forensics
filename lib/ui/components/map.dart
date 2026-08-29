@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// using Material icons instead of FontAwesome
 import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../core/models/models.dart';
 import '../../theme.dart';
 
@@ -16,66 +17,82 @@ class LocationMapView extends StatefulWidget {
   State<LocationMapView> createState() => _LocationMapViewState();
 }
 
-class _LocationMapViewState extends State<LocationMapView> {
-  MapController? _mapController;
+class _CoordPill extends StatelessWidget {
+  final String label;
+  final String value;
+  final IconData icon;
+  final bool isDark;
+  final VoidCallback onCopy;
+
+  const _CoordPill({
+    required this.label,
+    required this.value,
+    required this.icon,
+    required this.isDark,
+    required this.onCopy,
+  });
 
   @override
-  void initState() {
-    super.initState();
-    if (widget.location != null) {
-      _mapController = MapController.withPosition(
-        initPosition: GeoPoint(
-          latitude: widget.location!.latitude,
-          longitude: widget.location!.longitude,
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF131518) : const Color(0xFFF6F8FA),
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        border: Border.all(
+          color: isDark ? const Color(0xFF22262B) : const Color(0xFFE5E9EC),
         ),
-      );
-    }
-  }
-
-  @override
-  void didUpdateWidget(covariant LocationMapView oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.location != null &&
-        (oldWidget.location?.latitude != widget.location!.latitude ||
-            oldWidget.location?.longitude != widget.location!.longitude)) {
-      _mapController?.dispose();
-      _mapController = MapController.withPosition(
-        initPosition: GeoPoint(
-          latitude: widget.location!.latitude,
-          longitude: widget.location!.longitude,
-        ),
-      );
-    }
-  }
-
-  @override
-  void dispose() {
-    _mapController?.dispose();
-    super.dispose();
-  }
-
-  Future<void> _launchUrl(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } else {
-      toastification.show(
-        title: const Text('Error'),
-        description: const Text('Could not open map URL'),
-        type: ToastificationType.error,
-      );
-    }
-  }
-
-  void _copy(String text, String label) {
-    Clipboard.setData(ClipboardData(text: text));
-    toastification.show(
-      title: const Text('Copied'),
-      description: Text('$label copied to clipboard'),
-      type: ToastificationType.success,
-      autoCloseDuration: const Duration(seconds: 2),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, size: 11, color: BrandColors.primary),
+              const SizedBox(width: 6),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w600,
+                  color: isDark
+                      ? const Color(0xFF8B949E)
+                      : const Color(0xFF57606A),
+                ),
+              ),
+              const Spacer(),
+              InkWell(
+                onTap: onCopy,
+                borderRadius: BorderRadius.circular(4),
+                child: const Padding(
+                  padding: EdgeInsets.all(2),
+                  child: Icon(
+                    Icons.copy,
+                    size: 11,
+                    color: BrandColors.neutral,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          SelectableText(
+            value,
+            style: TextStyle(
+              fontFamily: 'monospace',
+              fontSize: 12.5,
+              fontWeight: FontWeight.w700,
+              color: isDark ? BrandColors.white : BrandColors.darkGrey,
+            ),
+          ),
+        ],
+      ),
     );
   }
+}
+
+class _LocationMapViewState extends State<LocationMapView> {
+  MapController? _mapController;
 
   @override
   Widget build(BuildContext context) {
@@ -106,8 +123,8 @@ class _LocationMapViewState extends State<LocationMapView> {
                       : const Color(0xFFF0F4F8),
                   shape: BoxShape.circle,
                 ),
-                child: const FaIcon(
-                  FontAwesomeIcons.locationPinLock,
+                child: const Icon(
+                  Icons.location_on,
                   size: 32,
                   color: BrandColors.neutral,
                 ),
@@ -162,8 +179,8 @@ class _LocationMapViewState extends State<LocationMapView> {
                     color: BrandColors.primary.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
-                  child: const FaIcon(
-                    FontAwesomeIcons.locationDot,
+                  child: const Icon(
+                    Icons.location_on,
                     color: BrandColors.primary,
                     size: 16,
                   ),
@@ -204,7 +221,7 @@ class _LocationMapViewState extends State<LocationMapView> {
                       vertical: 8,
                     ),
                   ),
-                  icon: const FaIcon(FontAwesomeIcons.mapLocationDot, size: 12),
+                  icon: const Icon(Icons.map, size: 12),
                   label: const Text(
                     'Google Maps',
                     style: TextStyle(fontSize: 11),
@@ -219,7 +236,7 @@ class _LocationMapViewState extends State<LocationMapView> {
                       vertical: 8,
                     ),
                   ),
-                  icon: const FaIcon(FontAwesomeIcons.globe, size: 12),
+                  icon: const Icon(Icons.public, size: 12),
                   label: const Text('OSM', style: TextStyle(fontSize: 11)),
                 ),
               ],
@@ -262,7 +279,7 @@ class _LocationMapViewState extends State<LocationMapView> {
                       child: _CoordPill(
                         label: 'Decimal Coordinates',
                         value: loc.formattedDecimal,
-                        icon: FontAwesomeIcons.crosshairs,
+                        icon: Icons.gps_fixed,
                         isDark: isDark,
                         onCopy: () =>
                             _copy(loc.formattedDecimal, 'Decimal Coordinates'),
@@ -273,7 +290,7 @@ class _LocationMapViewState extends State<LocationMapView> {
                       child: _CoordPill(
                         label: 'DMS Coordinates',
                         value: loc.formattedDms,
-                        icon: FontAwesomeIcons.compass,
+                        icon: Icons.explore,
                         isDark: isDark,
                         onCopy: () =>
                             _copy(loc.formattedDms, 'DMS Coordinates'),
@@ -294,28 +311,28 @@ class _LocationMapViewState extends State<LocationMapView> {
                     children: [
                       if (loc.altitude != null)
                         _TelemetryTag(
-                          icon: FontAwesomeIcons.mountain,
+                          icon: Icons.terrain,
                           label: 'Altitude',
                           value: '${loc.altitude!.toStringAsFixed(1)} m',
                           isDark: isDark,
                         ),
                       if (loc.speed != null)
                         _TelemetryTag(
-                          icon: FontAwesomeIcons.gauge,
+                          icon: Icons.speed,
                           label: 'Speed',
                           value: '${loc.speed} km/h',
                           isDark: isDark,
                         ),
                       if (loc.imgDirection != null)
                         _TelemetryTag(
-                          icon: FontAwesomeIcons.locationArrow,
+                          icon: Icons.navigation,
                           label: 'Heading',
                           value: '${loc.imgDirection!.toStringAsFixed(1)}°',
                           isDark: isDark,
                         ),
                       if (loc.gpsDateStamp != null)
                         _TelemetryTag(
-                          icon: FontAwesomeIcons.clock,
+                          icon: Icons.access_time,
                           label: 'GPS Date',
                           value: loc.gpsDateStamp!,
                           isDark: isDark,
@@ -330,84 +347,68 @@ class _LocationMapViewState extends State<LocationMapView> {
       ),
     );
   }
-}
-
-class _CoordPill extends StatelessWidget {
-  final String label;
-  final String value;
-  final FaIconData icon;
-  final bool isDark;
-  final VoidCallback onCopy;
-
-  const _CoordPill({
-    required this.label,
-    required this.value,
-    required this.icon,
-    required this.isDark,
-    required this.onCopy,
-  });
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF131518) : const Color(0xFFF6F8FA),
-        borderRadius: BorderRadius.circular(AppRadius.md),
-        border: Border.all(
-          color: isDark ? const Color(0xFF22262B) : const Color(0xFFE5E9EC),
+  void didUpdateWidget(covariant LocationMapView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.location != null &&
+        (oldWidget.location?.latitude != widget.location!.latitude ||
+            oldWidget.location?.longitude != widget.location!.longitude)) {
+      _mapController?.dispose();
+      _mapController = MapController.withPosition(
+        initPosition: GeoPoint(
+          latitude: widget.location!.latitude,
+          longitude: widget.location!.longitude,
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              FaIcon(icon, size: 11, color: BrandColors.primary),
-              const SizedBox(width: 6),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 10.5,
-                  fontWeight: FontWeight.w600,
-                  color: isDark
-                      ? const Color(0xFF8B949E)
-                      : const Color(0xFF57606A),
-                ),
-              ),
-              const Spacer(),
-              InkWell(
-                onTap: onCopy,
-                borderRadius: BorderRadius.circular(4),
-                child: const Padding(
-                  padding: EdgeInsets.all(2),
-                  child: FaIcon(
-                    FontAwesomeIcons.copy,
-                    size: 11,
-                    color: BrandColors.neutral,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 6),
-          SelectableText(
-            value,
-            style: TextStyle(
-              fontFamily: 'monospace',
-              fontSize: 12.5,
-              fontWeight: FontWeight.w700,
-              color: isDark ? BrandColors.white : BrandColors.darkGrey,
-            ),
-          ),
-        ],
-      ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _mapController?.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.location != null) {
+      _mapController = MapController.withPosition(
+        initPosition: GeoPoint(
+          latitude: widget.location!.latitude,
+          longitude: widget.location!.longitude,
+        ),
+      );
+    }
+  }
+
+  void _copy(String text, String label) {
+    Clipboard.setData(ClipboardData(text: text));
+    toastification.show(
+      title: const Text('Copied'),
+      description: Text('$label copied to clipboard'),
+      type: ToastificationType.success,
+      autoCloseDuration: const Duration(seconds: 2),
     );
+  }
+
+  Future<void> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      toastification.show(
+        title: const Text('Error'),
+        description: const Text('Could not open map URL'),
+        type: ToastificationType.error,
+      );
+    }
   }
 }
 
 class _TelemetryTag extends StatelessWidget {
-  final FaIconData icon;
+  final IconData icon;
   final String label;
   final String value;
   final bool isDark;
@@ -433,7 +434,7 @@ class _TelemetryTag extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FaIcon(icon, size: 11, color: BrandColors.secondary),
+          Icon(icon, size: 11, color: BrandColors.secondary),
           const SizedBox(width: 6),
           Text(
             '$label: ',
