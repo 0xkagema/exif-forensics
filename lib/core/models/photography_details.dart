@@ -69,6 +69,8 @@ class PhotographyDetails {
     return 'Unknown';
   }
 
+  Map<String, dynamic> toJson() => toMap();
+
   Map<String, dynamic> toMap() {
     return {
       'iso': iso,
@@ -99,6 +101,4 @@ class PhotographyDetails {
       'sensingMethod': sensingMethod,
     };
   }
-
-  Map<String, dynamic> toJson() => toMap();
 }

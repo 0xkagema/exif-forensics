@@ -39,6 +39,8 @@ class PhotoLocation {
   String get openStreetMapUrl =>
       'https://www.openstreetmap.org/?mlat=$latitude&mlon=$longitude#map=16/$latitude/$longitude';
 
+  Map<String, dynamic> toJson() => toMap();
+
   Map<String, dynamic> toMap() {
     return {
       'latitude': latitude,
@@ -55,6 +57,4 @@ class PhotoLocation {
       'openStreetMapUrl': openStreetMapUrl,
     };
   }
-
-  Map<String, dynamic> toJson() => toMap();
 }

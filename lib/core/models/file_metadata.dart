@@ -19,7 +19,7 @@ class FileMetadata {
 
   String get dimensionsString {
     if (width != null && height != null) {
-      return '$width × $height px';
+      return '$width x $height px';
     }
     return 'Unknown';
   }

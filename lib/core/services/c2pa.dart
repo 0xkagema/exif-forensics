@@ -2,6 +2,9 @@ import 'dart:typed_data';
 
 import '../models/ai_detection.dart';
 
+
+// Rust comes in here
+
 class C2paService {
   /// Analyzes image bytes and extracted EXIF tags for AI generation markers,
   /// C2PA manifests, and digital provenance signatures.
