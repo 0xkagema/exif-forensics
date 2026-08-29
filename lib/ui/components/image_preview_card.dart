@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toastification/toastification.dart';
+
 import '../../core/models/models.dart';
 import '../../theme.dart';
 
@@ -16,58 +16,6 @@ class ImagePreviewCard extends StatelessWidget {
     required this.file,
     this.resolution,
   });
-
-  void _copyToClipboard(BuildContext context, String text, String label) {
-    Clipboard.setData(ClipboardData(text: text));
-    toastification.show(
-      title: const Text('Copied'),
-      description: Text('$label copied to clipboard'),
-      type: ToastificationType.success,
-      autoCloseDuration: const Duration(seconds: 2),
-    );
-  }
-
-  void _showZoomDialog(BuildContext context) {
-    if (imageBytes == null) return;
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        backgroundColor: Colors.transparent,
-        insetPadding: const EdgeInsets.all(16),
-        child: Stack(
-          alignment: Alignment.topRight,
-          children: [
-            InteractiveViewer(
-              minScale: 0.5,
-              maxScale: 4.0,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(AppRadius.md),
-                child: Image.memory(imageBytes!, fit: BoxFit.contain),
-              ),
-            ),
-            Positioned(
-              top: 10,
-              right: 10,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.black54,
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const FaIcon(
-                    FontAwesomeIcons.xmark,
-                    color: Colors.white,
-                    size: 16,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,16 +52,16 @@ class ImagePreviewCard extends StatelessWidget {
                           imageBytes!,
                           fit: BoxFit.contain,
                           errorBuilder: (_, _, _) => const Center(
-                            child: FaIcon(
-                              FontAwesomeIcons.image,
+                            child: Icon(
+                              Icons.image,
                               size: 48,
                               color: BrandColors.neutral,
                             ),
                           ),
                         )
                       : const Center(
-                          child: FaIcon(
-                            FontAwesomeIcons.image,
+                          child: Icon(
+                            Icons.image,
                             size: 48,
                             color: BrandColors.neutral,
                           ),
@@ -133,8 +81,8 @@ class ImagePreviewCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(AppRadius.sm),
                         child: const Padding(
                           padding: EdgeInsets.all(8),
-                          child: FaIcon(
-                            FontAwesomeIcons.expand,
+                          child: Icon(
+                            Icons.open_in_full,
                             color: Colors.white,
                             size: 14,
                           ),
@@ -230,8 +178,8 @@ class ImagePreviewCard extends StatelessWidget {
                 // Hashes section title
                 Row(
                   children: [
-                    const FaIcon(
-                      FontAwesomeIcons.fingerprint,
+                    const Icon(
+                      Icons.fingerprint,
                       size: 13,
                       color: BrandColors.primary,
                     ),
@@ -272,6 +220,54 @@ class ImagePreviewCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _copyToClipboard(BuildContext context, String text, String label) {
+    Clipboard.setData(ClipboardData(text: text));
+    toastification.show(
+      title: const Text('Copied'),
+      description: Text('$label copied to clipboard'),
+      type: ToastificationType.success,
+      autoCloseDuration: const Duration(seconds: 2),
+    );
+  }
+
+  void _showZoomDialog(BuildContext context) {
+    if (imageBytes == null) return;
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.all(16),
+        child: Stack(
+          alignment: Alignment.topRight,
+          children: [
+            InteractiveViewer(
+              minScale: 0.5,
+              maxScale: 4.0,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                child: Image.memory(imageBytes!, fit: BoxFit.contain),
+              ),
+            ),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.black54,
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.close, color: Colors.white, size: 16),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -339,11 +335,7 @@ class _HashRow extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
             child: const Padding(
               padding: EdgeInsets.all(4),
-              child: FaIcon(
-                FontAwesomeIcons.copy,
-                size: 11,
-                color: BrandColors.neutral,
-              ),
+              child: Icon(Icons.copy, size: 11, color: BrandColors.neutral),
             ),
           ),
         ],

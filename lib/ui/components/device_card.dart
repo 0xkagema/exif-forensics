@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toastification/toastification.dart';
+
 import '../../core/models/models.dart';
 import '../../theme.dart';
 
@@ -9,16 +9,6 @@ class DeviceCard extends StatelessWidget {
   final DeviceDetails device;
 
   const DeviceCard({super.key, required this.device});
-
-  void _copy(BuildContext context, String text, String label) {
-    Clipboard.setData(ClipboardData(text: text));
-    toastification.show(
-      title: const Text('Copied'),
-      description: Text('$label copied to clipboard'),
-      type: ToastificationType.success,
-      autoCloseDuration: const Duration(seconds: 2),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +38,8 @@ class DeviceCard extends StatelessWidget {
                     color: BrandColors.primary.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
-                  child: const FaIcon(
-                    FontAwesomeIcons.cameraRetro,
+                  child: const Icon(
+                    Icons.camera_alt,
                     color: BrandColors.primary,
                     size: 16,
                   ),
@@ -92,7 +82,7 @@ class DeviceCard extends StatelessWidget {
             child: Column(
               children: [
                 _DeviceInfoTile(
-                  icon: FontAwesomeIcons.industry,
+                  icon: Icons.precision_manufacturing,
                   title: 'Manufacturer',
                   value: device.manufacturer ?? 'Not Specified',
                   isDark: isDark,
@@ -103,7 +93,7 @@ class DeviceCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 _DeviceInfoTile(
-                  icon: FontAwesomeIcons.camera,
+                  icon: Icons.camera_alt,
                   title: 'Device Model',
                   value: device.model ?? 'Not Specified',
                   isDark: isDark,
@@ -113,7 +103,7 @@ class DeviceCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 _DeviceInfoTile(
-                  icon: FontAwesomeIcons.microchip,
+                  icon: Icons.memory,
                   title: 'Software / Firmware',
                   value: device.softwareVersion ?? 'Not Specified',
                   isDark: isDark,
@@ -127,7 +117,7 @@ class DeviceCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 _DeviceInfoTile(
-                  icon: FontAwesomeIcons.circleDot,
+                  icon: Icons.circle,
                   title: 'Lens Model',
                   value:
                       device.lensModel ??
@@ -146,7 +136,7 @@ class DeviceCard extends StatelessWidget {
                     device.lensSerialNumber != null) ...[
                   const SizedBox(height: 12),
                   _DeviceInfoTile(
-                    icon: FontAwesomeIcons.barcode,
+                    icon: Icons.qr_code,
                     title: 'Serial Number',
                     value:
                         device.bodySerialNumber ??
@@ -163,7 +153,7 @@ class DeviceCard extends StatelessWidget {
                 if (device.artist != null || device.copyright != null) ...[
                   const SizedBox(height: 12),
                   _DeviceInfoTile(
-                    icon: FontAwesomeIcons.userPen,
+                    icon: Icons.person,
                     title: 'Photographer / Artist',
                     value: device.artist ?? device.copyright ?? 'N/A',
                     isDark: isDark,
@@ -181,10 +171,20 @@ class DeviceCard extends StatelessWidget {
       ),
     );
   }
+
+  void _copy(BuildContext context, String text, String label) {
+    Clipboard.setData(ClipboardData(text: text));
+    toastification.show(
+      title: const Text('Copied'),
+      description: Text('$label copied to clipboard'),
+      type: ToastificationType.success,
+      autoCloseDuration: const Duration(seconds: 2),
+    );
+  }
 }
 
 class _DeviceInfoTile extends StatelessWidget {
-  final FaIconData icon;
+  final IconData icon;
   final String title;
   final String value;
   final bool isDark;
@@ -213,7 +213,7 @@ class _DeviceInfoTile extends StatelessWidget {
       ),
       child: Row(
         children: [
-          FaIcon(
+          Icon(
             icon,
             size: 14,
             color: isSpecified ? BrandColors.secondary : BrandColors.neutral,
@@ -255,11 +255,7 @@ class _DeviceInfoTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(4),
               child: const Padding(
                 padding: EdgeInsets.all(4),
-                child: FaIcon(
-                  FontAwesomeIcons.copy,
-                  size: 11,
-                  color: BrandColors.neutral,
-                ),
+                child: Icon(Icons.copy, size: 11, color: BrandColors.neutral),
               ),
             ),
           ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import '../../core/models/models.dart';
 import '../../theme.dart';
 
@@ -36,8 +36,8 @@ class PhotographyCard extends StatelessWidget {
                     color: BrandColors.secondary.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
-                  child: const FaIcon(
-                    FontAwesomeIcons.sliders,
+                  child: const Icon(
+                    Icons.tune,
                     color: BrandColors.secondary,
                     size: 16,
                   ),
@@ -88,7 +88,7 @@ class PhotographyCard extends StatelessWidget {
                   childAspectRatio: constraints.maxWidth > 550 ? 1.6 : 1.7,
                   children: [
                     _MetricTile(
-                      icon: FontAwesomeIcons.gaugeHigh,
+                      icon: Icons.speed,
                       label: 'Shutter Speed',
                       value:
                           photography.exposureTime ??
@@ -97,7 +97,7 @@ class PhotographyCard extends StatelessWidget {
                       isDark: isDark,
                     ),
                     _MetricTile(
-                      icon: FontAwesomeIcons.camera,
+                      icon: Icons.camera_alt,
                       label: 'Aperture',
                       value: photography.fNumber != null
                           ? 'f/${photography.fNumber}'
@@ -105,13 +105,13 @@ class PhotographyCard extends StatelessWidget {
                       isDark: isDark,
                     ),
                     _MetricTile(
-                      icon: FontAwesomeIcons.film,
+                      icon: Icons.movie,
                       label: 'ISO Sensitivity',
                       value: photography.iso ?? 'N/A',
                       isDark: isDark,
                     ),
                     _MetricTile(
-                      icon: FontAwesomeIcons.rulerHorizontal,
+                      icon: Icons.straighten,
                       label: 'Focal Length',
                       value: photography.focalLength ?? 'N/A',
                       subtitle: photography.focalLength35mm != null
@@ -131,28 +131,28 @@ class PhotographyCard extends StatelessWidget {
             child: Column(
               children: [
                 _DetailRow(
-                  icon: FontAwesomeIcons.bolt,
+                  icon: Icons.flash_on,
                   label: 'Flash Status',
                   value: photography.flash ?? 'Not recorded',
                   isDark: isDark,
                 ),
                 const SizedBox(height: 8),
                 _DetailRow(
-                  icon: FontAwesomeIcons.sun,
+                  icon: Icons.wb_sunny,
                   label: 'White Balance',
                   value: photography.whiteBalance ?? 'Auto / Not recorded',
                   isDark: isDark,
                 ),
                 const SizedBox(height: 8),
                 _DetailRow(
-                  icon: FontAwesomeIcons.bullseye,
+                  icon: Icons.center_focus_strong,
                   label: 'Metering Mode',
                   value: photography.meteringMode ?? 'Not recorded',
                   isDark: isDark,
                 ),
                 const SizedBox(height: 8),
                 _DetailRow(
-                  icon: FontAwesomeIcons.palette,
+                  icon: Icons.palette,
                   label: 'Color Space',
                   value: photography.colorSpace ?? 'sRGB / Standard',
                   isDark: isDark,
@@ -160,7 +160,7 @@ class PhotographyCard extends StatelessWidget {
                 if (photography.exposureProgram != null) ...[
                   const SizedBox(height: 8),
                   _DetailRow(
-                    icon: FontAwesomeIcons.barsProgress,
+                    icon: Icons.bar_chart,
                     label: 'Exposure Program',
                     value: photography.exposureProgram!,
                     isDark: isDark,
@@ -169,7 +169,7 @@ class PhotographyCard extends StatelessWidget {
                 if (photography.orientation != null) ...[
                   const SizedBox(height: 8),
                   _DetailRow(
-                    icon: FontAwesomeIcons.rotate,
+                    icon: Icons.screen_rotation,
                     label: 'Orientation',
                     value: photography.orientation!,
                     isDark: isDark,
@@ -185,8 +185,59 @@ class PhotographyCard extends StatelessWidget {
   }
 }
 
+class _DetailRow extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+  final bool isDark;
+
+  const _DetailRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.isDark,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF131518) : const Color(0xFFF8FAFB),
+        borderRadius: BorderRadius.circular(AppRadius.sm),
+        border: Border.all(
+          color: isDark ? const Color(0xFF202428) : const Color(0xFFE9ECEF),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 12, color: BrandColors.secondary),
+          const SizedBox(width: 10),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: isDark ? const Color(0xFF9AA4B0) : const Color(0xFF555E68),
+            ),
+          ),
+          const Spacer(),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: isDark ? BrandColors.white : BrandColors.darkGrey,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _MetricTile extends StatelessWidget {
-  final FaIconData icon;
+  final IconData icon;
   final String label;
   final String value;
   final String? subtitle;
@@ -217,7 +268,7 @@ class _MetricTile extends StatelessWidget {
         children: [
           Row(
             children: [
-              FaIcon(icon, size: 12, color: BrandColors.primary),
+              Icon(icon, size: 12, color: BrandColors.primary),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
@@ -254,57 +305,6 @@ class _MetricTile extends StatelessWidget {
               ),
             ),
           ],
-        ],
-      ),
-    );
-  }
-}
-
-class _DetailRow extends StatelessWidget {
-  final FaIconData icon;
-  final String label;
-  final String value;
-  final bool isDark;
-
-  const _DetailRow({
-    required this.icon,
-    required this.label,
-    required this.value,
-    required this.isDark,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF131518) : const Color(0xFFF8FAFB),
-        borderRadius: BorderRadius.circular(AppRadius.sm),
-        border: Border.all(
-          color: isDark ? const Color(0xFF202428) : const Color(0xFFE9ECEF),
-        ),
-      ),
-      child: Row(
-        children: [
-          FaIcon(icon, size: 12, color: BrandColors.secondary),
-          const SizedBox(width: 10),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: isDark ? const Color(0xFF9AA4B0) : const Color(0xFF555E68),
-            ),
-          ),
-          const Spacer(),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: isDark ? BrandColors.white : BrandColors.darkGrey,
-            ),
-          ),
         ],
       ),
     );
