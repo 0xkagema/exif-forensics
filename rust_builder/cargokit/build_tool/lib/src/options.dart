@@ -232,7 +232,7 @@ class CargokitCrateOptions {
 
 class CargokitUserOptions {
   // When Rustup is installed always build locally unless user opts into
-  // using precompiled binaries.
+
   static bool defaultUsePrecompiledBinaries() {
     return Rustup.executablePath() == null;
   }
