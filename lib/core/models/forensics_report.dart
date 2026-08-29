@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'ai_detection.dart';
 import 'device.dart';
 import 'file_metadata.dart';
@@ -34,8 +35,14 @@ class ForensicsReport {
     required this.groupedTags,
   });
 
-  bool get hasLocation => location != null;
   bool get hasExifData => rawTags.isNotEmpty;
+  bool get hasLocation => location != null;
+
+  String toFormattedJson() {
+    return const JsonEncoder.withIndent('  ').convert(toMap());
+  }
+
+  Map<String, dynamic> toJson() => toMap();
 
   Map<String, dynamic> toMap() {
     return {
@@ -54,12 +61,6 @@ class ForensicsReport {
       'tagCount': rawTags.length,
       'rawTags': rawTags.map((k, v) => MapEntry(k, v.toString())),
     };
-  }
-
-  Map<String, dynamic> toJson() => toMap();
-
-  String toFormattedJson() {
-    return const JsonEncoder.withIndent('  ').convert(toMap());
   }
 
   String toMarkdownReport() {
@@ -114,19 +115,25 @@ class ForensicsReport {
 
     buffer.writeln('## 4. Hardware & Camera Device');
     buffer.writeln('- **Device:** ${device.displayName}');
-    if (device.manufacturer != null)
+    if (device.manufacturer != null) {
       buffer.writeln('- **Manufacturer:** ${device.manufacturer}');
+    }
     if (device.model != null) buffer.writeln('- **Model:** ${device.model}');
-    if (device.softwareVersion != null)
+    if (device.softwareVersion != null) {
       buffer.writeln('- **Software / Firmware:** ${device.softwareVersion}');
-    if (device.lensModel != null)
+    }
+    if (device.lensModel != null) {
       buffer.writeln('- **Lens Model:** ${device.lensModel}');
-    if (device.bodySerialNumber != null)
+    }
+    if (device.bodySerialNumber != null) {
       buffer.writeln('- **Body Serial Number:** ${device.bodySerialNumber}');
-    if (device.artist != null)
+    }
+    if (device.artist != null) {
       buffer.writeln('- **Artist / Photographer:** ${device.artist}');
-    if (device.copyright != null)
+    }
+    if (device.copyright != null) {
       buffer.writeln('- **Copyright:** ${device.copyright}');
+    }
     buffer.writeln('');
 
     buffer.writeln('## 5. Photographic Parameters');
