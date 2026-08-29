@@ -20,6 +20,7 @@ class ForensicsController extends ChangeNotifier {
   int get activeTabIndex => _activeTabIndex;
   String? get errorMessage => _errorMessage;
   String? get fileName => _fileName;
+
   /// Returns filtered raw tags based on search query and selected category
   Map<String, dynamic> get filteredRawTags {
     if (_report == null) return {};
@@ -39,15 +40,18 @@ class ForensicsController extends ChangeNotifier {
         if (category == 'GPS') return entry.key.startsWith('GPS ');
         if (category == 'Image') return entry.key.startsWith('Image ');
         if (category == 'EXIF') return entry.key.startsWith('EXIF ');
-        if (category == 'Interoperability')
+        if (category == 'Interoperability') {
           return entry.key.startsWith('Interoperability ');
-        if (category == 'MakerNote')
+        }
+        if (category == 'MakerNote') {
           return entry.key.toLowerCase().contains('makernote');
+        }
         if (category == 'Thumbnail') return entry.key.startsWith('Thumbnail ');
         return true;
       }),
     );
   }
+
   Uint8List? get imageBytes => _imageBytes;
   bool get isDarkMode => _isDarkMode;
   bool get isError => _status == ForensicsStatus.error;
