@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
-// using Material icons instead of FontAwesome
 import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -66,11 +65,7 @@ class _CoordPill extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4),
                 child: const Padding(
                   padding: EdgeInsets.all(2),
-                  child: Icon(
-                    Icons.copy,
-                    size: 11,
-                    color: BrandColors.neutral,
-                  ),
+                  child: Icon(Icons.copy, size: 11, color: BrandColors.neutral),
                 ),
               ),
             ],

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// using Material icons instead of FontAwesome
 import 'package:toastification/toastification.dart';
 
 import '../../core/state/forensics_controller.dart';

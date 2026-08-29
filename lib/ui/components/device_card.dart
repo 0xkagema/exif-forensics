@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// using Material icons instead of FontAwesome
 import 'package:toastification/toastification.dart';
 
 import '../../core/models/models.dart';
@@ -254,13 +253,9 @@ class _DeviceInfoTile extends StatelessWidget {
             InkWell(
               onTap: onCopy,
               borderRadius: BorderRadius.circular(4),
-                child: const Padding(
+              child: const Padding(
                 padding: EdgeInsets.all(4),
-                child: Icon(
-                  Icons.copy,
-                  size: 11,
-                  color: BrandColors.neutral,
-                ),
+                child: Icon(Icons.copy, size: 11, color: BrandColors.neutral),
               ),
             ),
           ],

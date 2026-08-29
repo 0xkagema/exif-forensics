@@ -1,7 +1,6 @@
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-// using Material icons instead of FontAwesome
 import 'package:toastification/toastification.dart';
 
 import '../../core/state/forensics_controller.dart';

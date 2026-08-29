@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// using Material icons instead of FontAwesome
 import 'package:toastification/toastification.dart';
 
 import '../../core/models/models.dart';
@@ -80,7 +79,7 @@ class ImagePreviewCard extends StatelessWidget {
                       child: InkWell(
                         onTap: () => _showZoomDialog(context),
                         borderRadius: BorderRadius.circular(AppRadius.sm),
-                          child: const Padding(
+                        child: const Padding(
                           padding: EdgeInsets.all(8),
                           child: Icon(
                             Icons.open_in_full,
@@ -261,13 +260,9 @@ class ImagePreviewCard extends StatelessWidget {
                   color: Colors.black54,
                   shape: BoxShape.circle,
                 ),
-                  child: IconButton(
+                child: IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 16,
-                  ),
+                  icon: const Icon(Icons.close, color: Colors.white, size: 16),
                 ),
               ),
             ),
@@ -340,11 +335,7 @@ class _HashRow extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
             child: const Padding(
               padding: EdgeInsets.all(4),
-              child: Icon(
-                Icons.copy,
-                size: 11,
-                color: BrandColors.neutral,
-              ),
+              child: Icon(Icons.copy, size: 11, color: BrandColors.neutral),
             ),
           ),
         ],

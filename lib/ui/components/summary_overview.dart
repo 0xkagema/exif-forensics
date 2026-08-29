@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// using Material icons instead of FontAwesome
 import '../../core/models/models.dart';
 import '../../theme.dart';
 
