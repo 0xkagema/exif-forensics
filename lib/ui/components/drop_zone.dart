@@ -37,43 +37,6 @@ class _DropZoneState extends State<DropZone> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Hero Badge
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: primaryColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: primaryColor.withValues(alpha: 0.25),
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const FaIcon(
-                      FontAwesomeIcons.wandMagicSparkles,
-                      color: BrandColors.primary,
-                      size: 13,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'AI & EXIF Metadata Forensics',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: isDark
-                            ? BrandColors.white
-                            : BrandColors.darkGrey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-
               // Title & Subtitle
               Text(
                 'Extract Deep Intelligence From Any Image',
