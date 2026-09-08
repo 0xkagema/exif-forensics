@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // switched to Material icons; removed font_awesome_flutter import
-import 'package:toastification/toastification.dart';
 
 import '../../core/models/models.dart';
 import '../../extensions.dart';

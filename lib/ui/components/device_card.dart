@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:toastification/toastification.dart';
 
 import '../../core/models/models.dart';
 import '../../extensions.dart';

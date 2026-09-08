@@ -2,7 +2,6 @@ import 'package:desktop_drop/desktop_drop.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:exifapp/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:toastification/toastification.dart';
 
 import '../../core/state/forensics_controller.dart';
 import '../../theme.dart';
