@@ -112,7 +112,7 @@ flutter pub get
 
 ```bash
 flutter_rust_bridge_codegen build-web
-flutter run --web-header=Cross-Origin-Opener-Policy=same-origin --web-header=Cross-Origin-Embedder-Policy=credentialless
+flutter run -d chrome --web-header=Cross-Origin-Opener-Policy=same-origin --web-header=Cross-Origin-Embedder-Policy=credentialless
 ```
 
 #### Linux, Windows & Mac
