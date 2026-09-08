@@ -5,6 +5,7 @@ import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/models/models.dart';
+import '../../extensions.dart';
 import '../../theme.dart';
 
 class LocationMapView extends StatefulWidget {
@@ -380,12 +381,7 @@ class _LocationMapViewState extends State<LocationMapView> {
 
   void _copy(String text, String label) {
     Clipboard.setData(ClipboardData(text: text));
-    toastification.show(
-      title: const Text('Copied'),
-      description: Text('$label copied to clipboard'),
-      type: ToastificationType.success,
-      autoCloseDuration: const Duration(seconds: 2),
-    );
+    context.showSuccessToast('$label copied to clipboard', title: 'Copied');
   }
 
   Future<void> _launchUrl(String url) async {
@@ -393,11 +389,7 @@ class _LocationMapViewState extends State<LocationMapView> {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
-      toastification.show(
-        title: const Text('Error'),
-        description: const Text('Could not open map URL'),
-        type: ToastificationType.error,
-      );
+      context.showErrorToast('Could not open map URL', title: 'Error');
     }
   }
 }

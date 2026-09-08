@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:toastification/toastification.dart';
 
 import '../../core/state/forensics_controller.dart';
+import '../../extensions.dart';
 import '../../theme.dart';
 
 class RawTagsView extends StatelessWidget {
@@ -310,21 +311,12 @@ class RawTagsView extends StatelessWidget {
       buffer.writeln('${entry.key}: ${entry.value}');
     }
     Clipboard.setData(ClipboardData(text: buffer.toString()));
-    toastification.show(
-      title: const Text('Copied All Tags'),
-      description: Text('${tags.length} tags copied to clipboard'),
-      type: ToastificationType.success,
-      autoCloseDuration: const Duration(seconds: 2),
-    );
+
+    context.showSuccessToast('All tags copied to clipboard', title: 'Copied');
   }
 
   void _copyTag(BuildContext context, String key, String value) {
     Clipboard.setData(ClipboardData(text: '$key: $value'));
-    toastification.show(
-      title: const Text('Copied Tag'),
-      description: Text('$key copied to clipboard'),
-      type: ToastificationType.success,
-      autoCloseDuration: const Duration(seconds: 2),
-    );
+    context.showSuccessToast('$key copied to clipboard', title: 'Copied');
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:toastification/toastification.dart';
 
 import '../../core/models/forensics_report.dart';
+import '../../extensions.dart';
 import '../../theme.dart';
 
 void showExportDialog(BuildContext context, ForensicsReport report) {
@@ -164,17 +165,13 @@ class _ExportDialogState extends State<ExportDialog> {
 
   void _copyToClipboard() {
     Clipboard.setData(ClipboardData(text: _currentContent));
-    toastification.show(
-      title: const Text('Copied to Clipboard'),
-      description: Text(
-        _selectedFormat == 0
-            ? 'Markdown report copied'
-            : _selectedFormat == 1
-            ? 'JSON data copied'
-            : 'Text summary copied',
-      ),
-      type: ToastificationType.success,
-      autoCloseDuration: const Duration(seconds: 3),
+    context.showSuccessToast(
+      _selectedFormat == 0
+          ? 'Markdown report copied'
+          : _selectedFormat == 1
+          ? 'JSON data copied'
+          : 'Text summary copied',
+      title: 'Copied',
     );
   }
 }

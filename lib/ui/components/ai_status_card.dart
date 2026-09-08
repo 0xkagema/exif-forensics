@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:toastification/toastification.dart';
 
 import '../../core/models/models.dart';
+import '../../extensions.dart';
 import '../../theme.dart';
 
 class AiStatusCard extends StatelessWidget {
@@ -609,12 +610,7 @@ class AiStatusCard extends StatelessWidget {
 
   void _copyText(BuildContext context, String text, String label) {
     Clipboard.setData(ClipboardData(text: text));
-    toastification.show(
-      title: const Text('Copied'),
-      description: Text('$label copied to clipboard'),
-      type: ToastificationType.success,
-      autoCloseDuration: const Duration(seconds: 2),
-    );
+    context.showSuccessToast('$label copied to clipboard', title: 'Copied');
   }
 
   Color _getStatusColor() {
