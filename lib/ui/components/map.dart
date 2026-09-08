@@ -98,6 +98,84 @@ class _LocationMapViewState extends State<LocationMapView> {
         : const Color(0xFFE2E6EA);
     final loc = widget.location;
 
+    // dont show map on desktop
+
+    if (Theme.of(context).platform == TargetPlatform.windows ||
+        Theme.of(context).platform == TargetPlatform.linux ||
+        Theme.of(context).platform == TargetPlatform.macOS) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
+        decoration: BoxDecoration(
+          color: cardBg,
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          border: Border.all(color: borderColor),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? const Color(0xFF21262C)
+                      : const Color(0xFFF0F4F8),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.desktop_windows,
+                  size: 32,
+                  color: BrandColors.neutral,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Map Preview Not Available on Desktop',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: isDark ? BrandColors.white : BrandColors.darkGrey,
+                ),
+              ),
+              const SizedBox(height: 6),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 420),
+                child: Text(
+                  'The interactive map preview is only available on web and mobile platforms due to limitations of the underlying map library.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12.5,
+                    height: 1.4,
+                    color: isDark
+                        ? BrandColors.neutral
+                        : const Color(0xFF6B7280),
+                  ),
+                ),
+              ),
+
+              if (loc != null) ...[
+                const SizedBox(height: 16),
+                OutlinedButton.icon(
+                  onPressed: () => _launchUrl(loc.googleMapsUrl),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 8,
+                    ),
+                  ),
+                  icon: const Icon(Icons.map, size: 12),
+                  label: const Text(
+                    'Open in Google Maps',
+                    style: TextStyle(fontSize: 11),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      );
+    }
+
     if (loc == null) {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
