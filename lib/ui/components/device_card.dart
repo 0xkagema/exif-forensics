@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../../core/models/models.dart';
 import '../../extensions.dart';
 import '../../theme.dart';
+import '../../utils.dart';
 
 class DeviceCard extends StatelessWidget {
   final DeviceDetails device;
@@ -167,6 +168,54 @@ class DeviceCard extends StatelessWidget {
               ],
             ),
           ),
+
+          // search device on Google
+          if (device.manufacturer != null || device.model != null) ...[
+            const Divider(height: 1),
+            InkWell(
+              onTap: () {
+                final query = [
+                  if (device.manufacturer != null) device.manufacturer!,
+                  if (device.model != null) device.model!,
+                ].join(' ');
+                launchGoogleSearch(query);
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? const Color(0xFF131518)
+                      : const Color(0xFFF6F8FA),
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(AppRadius.lg),
+                    bottomRight: Radius.circular(AppRadius.lg),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.search,
+                      size: 16,
+                      color: BrandColors.primary,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Search Device on Google',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: BrandColors.primary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
