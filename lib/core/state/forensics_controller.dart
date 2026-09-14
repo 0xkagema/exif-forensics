@@ -76,7 +76,6 @@ class ForensicsController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await Future.delayed(const Duration(milliseconds: 120));
       _loadingStage = 'Analyzing C2PA signatures & AI provenance patterns...';
       notifyListeners();
 
