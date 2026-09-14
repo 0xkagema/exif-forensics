@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/state/forensics_controller.dart';
 import '../../theme.dart';
-import '../components/components.dart';
+import '../widgets/widgets.dart';
 
 class HomePage extends StatefulWidget {
   final ForensicsController controller;
