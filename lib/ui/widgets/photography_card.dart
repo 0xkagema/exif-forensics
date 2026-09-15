@@ -43,29 +43,33 @@ class PhotographyCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Photography & Optical Settings',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        color: isDark
-                            ? BrandColors.white
-                            : BrandColors.darkGrey,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Photography & Optical Settings',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: isDark
+                              ? BrandColors.white
+                              : BrandColors.darkGrey,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'Sensor parameters, exposure, and color calibration',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: isDark
-                            ? BrandColors.neutral
-                            : const Color(0xFF6B7280),
+                      Text(
+                        'Sensor parameters, exposure, and color calibration',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: isDark
+                              ? BrandColors.neutral
+                              : const Color(0xFF6B7280),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -213,21 +217,31 @@ class _DetailRow extends StatelessWidget {
         children: [
           Icon(icon, size: 12, color: BrandColors.secondary),
           const SizedBox(width: 10),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: isDark ? const Color(0xFF9AA4B0) : const Color(0xFF555E68),
+          Expanded(
+            child: Text(
+              label,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: isDark
+                    ? const Color(0xFF9AA4B0)
+                    : const Color(0xFF555E68),
+              ),
             ),
           ),
-          const Spacer(),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: isDark ? BrandColors.white : BrandColors.darkGrey,
+          const SizedBox(width: 12),
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: isDark ? BrandColors.white : BrandColors.darkGrey,
+              ),
             ),
           ),
         ],

@@ -64,15 +64,19 @@ class _ExportDialogState extends State<ExportDialog> {
                     size: 20,
                   ),
                   const SizedBox(width: 12),
-                  Text(
-                    'Export Forensics Report',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: isDark ? BrandColors.white : BrandColors.darkGrey,
+                  Expanded(
+                    child: Text(
+                      'Export Forensics Report',
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: isDark
+                            ? BrandColors.white
+                            : BrandColors.darkGrey,
+                      ),
                     ),
                   ),
-                  const Spacer(),
                   IconButton(
                     onPressed: () => Navigator.pop(context),
                     icon: const Icon(Icons.close, size: 16),
@@ -82,7 +86,9 @@ class _ExportDialogState extends State<ExportDialog> {
               const SizedBox(height: 12),
 
               // Format selector tabs
-              Row(
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
                 children: [
                   _FormatChoiceChip(
                     label: 'Markdown (.md)',
@@ -90,7 +96,6 @@ class _ExportDialogState extends State<ExportDialog> {
                     isSelected: _selectedFormat == 0,
                     onTap: () => setState(() => _selectedFormat = 0),
                   ),
-                  const SizedBox(width: 8),
                   _FormatChoiceChip(
                     label: 'JSON Data (.json)',
                     icon: Icons.code,
@@ -129,14 +134,15 @@ class _ExportDialogState extends State<ExportDialog> {
               const SizedBox(height: 16),
 
               // Action buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                alignment: WrapAlignment.end,
                 children: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
                     child: const Text('Close'),
                   ),
-                  const SizedBox(width: 8),
                   ElevatedButton.icon(
                     onPressed: _copyToClipboard,
                     style: ElevatedButton.styleFrom(
