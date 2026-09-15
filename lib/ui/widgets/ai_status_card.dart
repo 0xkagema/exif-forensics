@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 // switched to Material icons; removed font_awesome_flutter import
 
 import '../../core/models/models.dart';
@@ -131,31 +132,6 @@ class AiStatusCard extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                      const SizedBox(height: 2),
-                      Row(
-                        children: [
-                          Text(
-                            'AI & Provenance Forensics',
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: isDark
-                                  ? BrandColors.neutral
-                                  : const Color(0xFF666666),
-                            ),
-                          ),
-                          if (c2pa != null && c2pa.hasC2pa) ...[
-                            const SizedBox(width: 6),
-                            Text(
-                              '• Rust C2PA Engine',
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: BrandColors.secondary,
                               ),
                             ),
                           ],
