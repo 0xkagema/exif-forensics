@@ -33,9 +33,6 @@ migrate_working_dir/
 /build/*
 /coverage/
 
-# Keep build/web/vercel.json tracked while ignoring the rest of build/
-!/build/web/
-!/build/web/vercel.json
 
 # Symbolication related
 app.*.symbols
