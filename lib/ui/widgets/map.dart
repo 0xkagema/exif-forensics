@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
@@ -99,12 +100,12 @@ class _LocationMapViewState extends State<LocationMapView> {
         ? const Color(0xFF262C32)
         : const Color(0xFFE2E6EA);
     final loc = widget.location;
+    final isMapSupported =
+        kIsWeb ||
+        defaultTargetPlatform == TargetPlatform.android ||
+        defaultTargetPlatform == TargetPlatform.iOS;
 
-    // dont show map on desktop
-
-    if (Theme.of(context).platform == TargetPlatform.windows ||
-        Theme.of(context).platform == TargetPlatform.linux ||
-        Theme.of(context).platform == TargetPlatform.macOS) {
+    if (!isMapSupported) {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
         decoration: BoxDecoration(
