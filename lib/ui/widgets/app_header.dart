@@ -12,9 +12,6 @@ class AppHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final borderColor = isDark
-        ? const Color(0xFF262B30)
-        : const Color(0xFFE5E8EB);
 
     return LayoutBuilder(
       builder: (context, constraints) {
