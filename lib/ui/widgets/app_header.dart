@@ -28,57 +28,6 @@ class AppHeader extends StatelessWidget {
           ),
           child: Row(
             children: [
-              // If report is available, show file badge on the left
-              if (controller.isSuccess && controller.report != null) ...[
-                Flexible(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: isCompact ? 200 : 380,
-                    ),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: isCompact ? 8 : 12,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? const Color(0xFF1E2328)
-                            : const Color(0xFFF0F3F6),
-                        borderRadius: BorderRadius.circular(AppRadius.md),
-                        border: Border.all(color: borderColor),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.image,
-                            size: 13,
-                            color: BrandColors.secondary,
-                          ),
-                          const SizedBox(width: 8),
-                          Flexible(
-                            child: Text(
-                              controller.report!.file.fileName,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                overflow: TextOverflow.ellipsis,
-                                color: isDark
-                                    ? BrandColors.white
-                                    : BrandColors.darkGrey,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-
-              // Spreads out header elements across the full width on wide screens
-              const Spacer(),
-
               // Right-aligned action buttons
               if (controller.isSuccess && controller.report != null) ...[
                 // Export report button
@@ -155,8 +104,10 @@ class AppHeader extends StatelessWidget {
                       ),
                     ),
                     icon: const Icon(Icons.rotate_left, size: 13),
-                    label:
-                        const Text('New Scan', style: TextStyle(fontSize: 12)),
+                    label: const Text(
+                      'New Scan',
+                      style: TextStyle(fontSize: 12),
+                    ),
                   ),
                 const SizedBox(width: 8),
               ],
@@ -164,13 +115,15 @@ class AppHeader extends StatelessWidget {
               // Theme toggle button
               IconButton(
                 onPressed: () => controller.toggleTheme(),
-                tooltip:
-                    isDark ? 'Switch to Light Theme' : 'Switch to Dark Theme',
+                tooltip: isDark
+                    ? 'Switch to Light Theme'
+                    : 'Switch to Dark Theme',
                 icon: Icon(
                   isDark ? Icons.wb_sunny : Icons.nightlight_round,
                   size: 16,
-                  color:
-                      isDark ? const Color(0xFFFFD166) : BrandColors.tertiary,
+                  color: isDark
+                      ? const Color(0xFFFFD166)
+                      : BrandColors.tertiary,
                 ),
               ),
             ],
