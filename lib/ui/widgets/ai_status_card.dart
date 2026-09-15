@@ -36,7 +36,6 @@ class AiStatusCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header Banner
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             decoration: BoxDecoration(
@@ -63,21 +62,21 @@ class AiStatusCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
+                      Text(
+                        aiDetection.verdict,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: isDark
+                              ? BrandColors.white
+                              : BrandColors.darkGrey,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 4,
                         children: [
-                          Flexible(
-                            child: Text(
-                              aiDetection.verdict,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                                color: isDark
-                                    ? BrandColors.white
-                                    : BrandColors.darkGrey,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
                           Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 6,
@@ -96,8 +95,7 @@ class AiStatusCard extends StatelessWidget {
                               ),
                             ),
                           ),
-                          if (aiDetection.hasC2paManifest) ...[
-                            const SizedBox(width: 6),
+                          if (aiDetection.hasC2paManifest)
                             Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 6,
@@ -132,7 +130,6 @@ class AiStatusCard extends StatelessWidget {
                                 ],
                               ),
                             ),
-                          ],
                         ],
                       ),
                     ],
@@ -229,8 +226,8 @@ class AiStatusCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               children: [
@@ -240,18 +237,23 @@ class AiStatusCard extends StatelessWidget {
                                   size: 15,
                                 ),
                                 const SizedBox(width: 8),
-                                Text(
-                                  'C2PA Cryptographic Provenance',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w700,
-                                    color: isDark
-                                        ? BrandColors.white
-                                        : BrandColors.darkGrey,
+                                Flexible(
+                                  child: Text(
+                                    'C2PA Cryptographic Provenance',
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700,
+                                      color: isDark
+                                          ? BrandColors.white
+                                          : BrandColors.darkGrey,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
+                            if (sig?.validationState != null)
+                              const SizedBox(height: 8),
                             if (sig?.validationState != null)
                               Container(
                                 padding: const EdgeInsets.symmetric(
@@ -641,25 +643,30 @@ class AiStatusCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.code,
-                            size: 16,
-                            color: BrandColors.primary,
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            'Raw C2PA Manifest JSON',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: isDark
-                                  ? BrandColors.white
-                                  : BrandColors.darkGrey,
+                      Expanded(
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.code,
+                              size: 16,
+                              color: BrandColors.primary,
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                'Raw C2PA Manifest JSON',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: isDark
+                                      ? BrandColors.white
+                                      : BrandColors.darkGrey,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Row(
                         children: [
