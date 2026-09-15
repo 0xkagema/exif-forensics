@@ -143,6 +143,107 @@ class AppTheme {
           color: BrandColors.neutral,
         ),
       ),
+
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: BrandColors.primary,
+          foregroundColor: BrandColors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          elevation: 2,
+        ),
+      ),
+
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: BrandColors.primary,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          side: const BorderSide(color: BrandColors.primary, width: 1),
+        ),
+      ),
+
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: BrandColors.primary,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+      ),
+
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: BrandColors.darkGrey,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: Color(0xFF2E353D)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: Color(0xFF2E353D)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: BrandColors.primary, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: BrandColors.danger),
+        ),
+        labelStyle: GoogleFonts.ibmPlexSans(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: BrandColors.neutral,
+        ),
+        hintStyle: GoogleFonts.ibmPlexSans(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: BrandColors.neutral,
+        ),
+      ),
+
+      cardTheme: CardThemeData(
+        color: BrandColors.darkGrey,
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+
+      chipTheme: ChipThemeData(
+        backgroundColor: BrandColors.secondary.withValues(alpha: 0.1),
+        selectedColor: BrandColors.secondary,
+        labelStyle: GoogleFonts.ibmPlexSans(
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+          color: BrandColors.white,
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: BrandColors.tertiary,
+        contentTextStyle: GoogleFonts.ibmPlexSans(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: BrandColors.white,
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        behavior: SnackBarBehavior.floating,
+      ),
+
+      dialogTheme: DialogThemeData(
+        backgroundColor: BrandColors.darkGrey,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        titleTextStyle: GoogleFonts.ibmPlexSans(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: BrandColors.white,
+        ),
+        contentTextStyle: GoogleFonts.ibmPlexSans(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: BrandColors.white,
+        ),
+      ),
     );
   }
 
@@ -269,10 +370,6 @@ class AppTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: BrandColors.primary,
           foregroundColor: BrandColors.white,
-          textStyle: GoogleFonts.ibmPlexSans(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           elevation: 2,
@@ -282,10 +379,6 @@ class AppTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: BrandColors.primary,
-          textStyle: GoogleFonts.ibmPlexSans(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           side: const BorderSide(color: BrandColors.primary, width: 1),
@@ -295,10 +388,6 @@ class AppTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: BrandColors.primary,
-          textStyle: GoogleFonts.ibmPlexSans(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
