@@ -10,6 +10,11 @@ EXIF Forensics helps investigators, photographers, journalists, OSINT researcher
 
 ---
 
+## inspired by 
+
+- https://ampedsoftware.com/authenticate
+- https://tineye.com/technology
+
 ## Features
 
 ### Current Features

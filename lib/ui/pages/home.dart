@@ -23,20 +23,11 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: isDark
           ? const Color(0xFF0D0F11)
           : const Color(0xFFF4F6F8),
+      appBar: AppHeader(controller: controller),
       body: SafeArea(
-        child: Column(
-          children: [
-            // Top App Bar
-            AppHeader(controller: controller),
-
-            // Main View Body
-            Expanded(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 250),
-                child: _buildBody(context, controller, isDark),
-              ),
-            ),
-          ],
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 250),
+          child: _buildBody(context, controller, isDark),
         ),
       ),
     );
