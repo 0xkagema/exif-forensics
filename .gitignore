@@ -49,6 +49,9 @@ app.*.map.json
 # test images
 test-images/
 
+# issue screenshots
+issue-screenshots/
+
 # signing keys
 android/key.properties
 android/app/app.keystore
