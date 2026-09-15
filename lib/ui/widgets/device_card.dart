@@ -178,7 +178,11 @@ class DeviceCard extends StatelessWidget {
                   if (device.manufacturer != null) device.manufacturer!,
                   if (device.model != null) device.model!,
                 ].join(' ');
-                launchGoogleSearch(query);
+                try {
+                  launchGoogleSearch(query);
+                } catch (e) {
+                  context.showErrorToast('Failed to launch Google search: $e');
+                }
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(
